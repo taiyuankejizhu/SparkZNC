@@ -159,7 +159,7 @@ void GPMI_Info(void)
 */
 void ISA_Info(void)
 {
-    printf("ISR Info!");
+    printf("ISR is no need info!");
 }
 
 /*
