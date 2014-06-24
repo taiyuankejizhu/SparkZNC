@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon.png</file>
+        <file>en.qm</file>
+        <file>nomal.png</file>
+        <file>press.png</file>
+        <file>hover.png</file>
+    </qresource>
+</RCC>
