@@ -11,7 +11,7 @@
 #define B_LENGTH 20         /*布尔数组的长度*/
 #define UINT_LENGTH 10      /*无符号整型数组的长度*/
 #define L_LENGTH 20         /*长整型数组的长度*/
-#define C_LENGTH 20         /*字符型数组的长度*/
+#define C_LENGTH 255        /*字符型数组的长度*/
 
 #define B_UPDATE 0          /*布尔数组有更新的开关索引*/
 #define B_PUMP 1            /*冷却油泵的开关索引*/
@@ -29,6 +29,8 @@
 #define B_SCREEN 13         /*屏幕状态的索引*/
 #define B_SHUTDOWN 14       /*关机的开关索引*/
 #define B_SOUND 15          /*按键声音的开关索引*/
+#define B_Z_UP 16           /*Z上限报警的开关索引*/
+#define B_Z_DOWN 17         /*Z下限报警的开关索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -62,31 +64,59 @@
 #define L_Y_VELOCITY 18     /*Y轴速度值的索引*/
 #define L_Z_VELOCITY 19     /*Z轴速度值的索引*/
 
-#define C_IO_0 0            /*IO_0的值的索引*/
-#define C_IO_1 1            /*IO_1的值的索引*/
-#define C_IO_2 2            /*IO_2的值的索引*/
-#define C_IO_3 3            /*IO_3的值的索引*/
-#define C_IO_4 4            /*IO_4的值的索引*/
+#define X_OFFSET 0x00       /*X轴地址偏移*/
+#define Y_OFFSET 0x40       /*Y轴地址偏移*/
+#define Z_OFFSET 0x80       /*Z轴地址偏移*/
+#define U_OFFSET 0xC0       /*放电地址偏移*/
+#define P_OFFSET 0xE0       /*IO地址偏移*/
 
-#define C_OTPS_0 5          /*OTPS_0的值的索引*/
-#define C_OTPS_1 6          /*OTPS_1的值的索引*/
-#define C_IOPS_0 7          /*IOPS_0的值的索引*/
+#define C_X_IN0 0x10+X_OFFSET       /*X_IN0的值的索引*/
+#define C_X_IN1 0x11+X_OFFSET       /*X_IN1的值的索引*/
+#define C_X_OT0 0x13+X_OFFSET       /*X_OT0的值的索引*/
+#define C_X_OT1 0x14+X_OFFSET       /*X_OT1的值的索引*/
+#define C_X_OT2 0x15+X_OFFSET       /*X_OT2的值的索引*/
+#define C_X_CP0 0x20+X_OFFSET       /*X_CP0的值的索引*/
+#define C_X_CP1 0x21+X_OFFSET       /*X_CP1的值的索引*/
+#define C_X_CP2 0x22+X_OFFSET       /*X_CP2的值的索引*/
+#define C_X_CS0 0x2c+X_OFFSET       /*X_CS0的值的索引*/
+#define C_X_CS1 0x2d+X_OFFSET       /*X_CS1的值的索引*/
 
-#define C_OTPX_0 8          /*OTPX_0的值的索引*/
-#define C_OTPX_1 9          /*OTPX_1的值的索引*/
-#define C_IOPX_0 10         /*IOPX_0的值的索引*/
+#define C_Y_IN0 0x10+Y_OFFSET       /*Y_IN0的值的索引*/
+#define C_Y_IN1 0x11+Y_OFFSET       /*Y_IN1的值的索引*/
+#define C_Y_OT0 0x13+Y_OFFSET       /*Y_OT00的值的索引*/
+#define C_Y_OT1 0x14+Y_OFFSET       /*Y_OT1的值的索引*/
+#define C_Y_OT2 0x15+Y_OFFSET       /*Y_OT2的值的索引*/
+#define C_Y_CP0 0x20+Y_OFFSET       /*Y_CP0的值的索引*/
+#define C_Y_CP1 0x21+Y_OFFSET       /*Y_CP1的值的索引*/
+#define C_Y_CP2 0x22+Y_OFFSET       /*Y_CP2的值的索引*/
+#define C_Y_CS0 0x2c+Y_OFFSET       /*Y_CS0的值的索引*/
+#define C_Y_CS1 0x2d+Y_OFFSET       /*Y_CS1的值的索引*/
 
-#define C_OTPY_0 11          /*OTPY_0的值的索引*/
-#define C_OTPY_1 12          /*OTPY_1的值的索引*/
-#define C_IOPY_0 13         /*IOPY_0的值的索引*/
+#define C_Z_IN0 0x10+Z_OFFSET       /*Z_IN0的值的索引*/
+#define C_Z_IN1 0x11+Z_OFFSET       /*Z_IN1的值的索引*/
+#define C_Z_OT0 0x13+Z_OFFSET       /*Z_OT0的值的索引,**x*****Z轴ENZ,***x****sl3,*****xxxZ轴间隙*/
+#define C_Z_OT1 0x14+Z_OFFSET       /*Z_OT1的值的索引*/
+#define C_Z_OT2 0x15+Z_OFFSET       /*Z_OT2的值的索引*/
+#define C_Z_CP0 0x20+Z_OFFSET       /*Z_CP0的值的索引*/
+#define C_Z_CP1 0x21+Z_OFFSET       /*Z_CP1的值的索引*/
+#define C_Z_CP2 0x22+Z_OFFSET       /*Z_CP2的值的索引*/
+#define C_Z_CS0 0x2c+Z_OFFSET       /*Z_CS0的值的索引*/
+#define C_Z_CS1 0x2d+Z_OFFSET       /*Z_CS1的值的索引*/
 
-#define C_OTPZ_0 14          /*OTPZ_0的值的索引*/
-#define C_OTPZ_1 15          /*OTPZ_1的值的索引*/
-#define C_IOPZ_0 16         /*IOPZ_0的值的索引*/
+#define C_U_DVT 0x00+U_OFFSET          /*U_DVT的值的索引*/
+#define C_U_IN0 0x10+U_OFFSET          /*U_IN0的值的索引*/
+#define C_U_IN1 0x11+U_OFFSET          /*U_IN1的值的索引*/
+#define C_U_OT0 0x13+U_OFFSET          /*U_OT0的值的索引*/
+#define C_U_OT1 0x14+U_OFFSET          /*U_OT1的值的索引*/
+#define C_U_OT2 0x15+U_OFFSET          /*U_OT2的值的索引*/
 
-#define C_IOX_0 17          /*IOX_0的值的索引*/
-#define C_IOY_0 18          /*IOY_0的值的索引*/
-#define C_IOZ_0 19          /*IOZ_0的值的索引*/
+#define C_P_IO0 0x00+P_OFFSET            /*P_IO0的值的索引,xxx*****音量大小,***x****音量开关,****x***24V电压开关*/
+#define C_P_IO1 0x01+P_OFFSET            /*P_IO1的值的索引,*x******总电源开关标志,**x*****放电极性标志,****x***油泵开关标志,*****x**变压器开关标志,******x*风扇开关标志,*******x副电源开关标志*/
+#define C_P_IO2 0x02+P_OFFSET            /*P_IO2的值的索引,********放电电流值*/
+#define C_P_IO3 0x03+P_OFFSET            /*P_IO3的值的索引,****xxxx高电压数值*/
+#define C_P_IO4 0x04+P_OFFSET            /*P_IO4的值的索引*/
+#define C_P_IO5 0x05+P_OFFSET            /*P_IO5的值的索引*/
+#define C_P_IO6 0x06+P_OFFSET            /*P_IO6的值的索引*/
 
 struct Table
 {

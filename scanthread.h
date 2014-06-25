@@ -18,6 +18,15 @@ public:
     unsigned int c_cycle;
 
     void run();
+    static long X_Count();
+    static long Y_Count();
+    static long Z_Count();
+    static long X_Velocity();
+    static long Y_Velocity();
+    static long Z_Velocity();
+    static char Voltage_Read();
+    static void Check_Alert();
+    static void Update_Relay();
 signals:
 
 public slots:

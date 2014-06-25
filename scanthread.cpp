@@ -3,24 +3,29 @@
 #include "fpga.h"
 #include "qdebug.h"
 
+#define _WRITE_BYTE_(a) FPGA_Write(a ,spark_info->c_array + a ,1)
+#define _READ_BYTE_(a) FPGA_Read(a,spark_info->c_array + a ,1)
+
 ScanThread::ScanThread(QObject *parent) :
     QThread(parent)
 {
     a_cycle = 0;
     b_cycle = 0;
+    c_cycle = 0;
 
     /*初始化IO*/
-    IOZ0_Write(spark_info->c_array[C_IOZ_0]);
+    _WRITE_BYTE_(C_Z_OT0);
+    _WRITE_BYTE_(C_Z_OT1);
 
-    OSC0_Write(spark_info->c_array[C_OTPS_0]);
-    OSC1_Write(spark_info->c_array[C_OTPS_1]);
-    OSC2_Write(0xff);
+    _WRITE_BYTE_(C_U_OT0);
+    _WRITE_BYTE_(C_U_OT1);
+    _WRITE_BYTE_(C_U_OT2);
 
-    IO0_Write(spark_info->c_array[C_IO_0]);
-    IO1_Write(spark_info->c_array[C_IO_1]);
-    IO2_Write(spark_info->c_array[C_IO_2]);
-    IO3_Write(spark_info->c_array[C_IO_3]);
-    IO4_Write(spark_info->c_array[C_IO_4]);
+    _WRITE_BYTE_(C_P_IO0);
+    _WRITE_BYTE_(C_P_IO1);
+    _WRITE_BYTE_(C_P_IO2);
+    _WRITE_BYTE_(C_P_IO3);
+    _WRITE_BYTE_(C_P_IO4);
 
 }
 
@@ -46,31 +51,8 @@ void ScanThread::run()
 
         /*布尔数组发生更新，重新输出IO*/
         if(spark_info->b_array[B_UPDATE]){
-
-            if(spark_info->b_array[B_SOUND])
-                spark_info->c_array[C_IO_0] |= 0x08;
-            else
-                spark_info->c_array[C_IO_0] &= 0xf7;
-
-            if(spark_info->b_array[B_PUMP])
-                spark_info->c_array[C_IO_1] |= 0x10;
-            else
-                spark_info->c_array[C_IO_1] &= 0xef;
-
-            if(spark_info->b_array[B_POWER])
-                spark_info->c_array[C_IO_1] |= 0x80;
-            else
-                spark_info->c_array[C_IO_1] &= 0x7f;
-
-            /*更新IO端口*/
-            IO0_Write(spark_info->c_array[C_IO_0]);
-            IO1_Write(spark_info->c_array[C_IO_1]);
-
+            Update_Relay();
             spark_info->b_array[B_UPDATE] = false;
-        }
-        else{
-            spark_info->c_array[C_IO_0] = spark_info->c_array[C_IO_0];
-            spark_info->c_array[C_IO_1] = spark_info->c_array[C_IO_1];
         }
 
         /*读取光栅计数值*/
@@ -90,8 +72,224 @@ void ScanThread::run()
         /*读取电压值*/
         spark_info->setUInt(UINT_VOLTAGE ,Voltage_Read());
 
+        /*检查报警信息*/
+        Check_Alert();
+
         msleep(200);
     }
 
     /*to do something*/
+}
+
+long ScanThread::X_Count()
+{
+    long ret = 0;
+    _READ_BYTE_(C_X_CP0);
+    _READ_BYTE_(C_X_CP1);
+    _READ_BYTE_(C_X_CP2);
+
+    if(spark_info->c_array[C_X_CP2] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Y_Count()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Y_CP0);
+    _READ_BYTE_(C_Y_CP1);
+    _READ_BYTE_(C_Y_CP2);
+
+    if(spark_info->c_array[C_Y_CP0] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP0];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP0];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Z_Count()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_CP0);
+    _READ_BYTE_(C_Z_CP1);
+    _READ_BYTE_(C_Z_CP2);
+
+    if(spark_info->c_array[C_Z_CP2] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP2];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::X_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_X_CS0);
+    _READ_BYTE_(C_X_CS1);
+
+    if(_READ_BYTE_(C_X_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Y_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Y_CS0);
+    _READ_BYTE_(C_Y_CS1);
+
+    if(_READ_BYTE_(C_Y_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Z_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_CS0);
+    _READ_BYTE_(C_Z_CS1);
+
+    if(_READ_BYTE_(C_Z_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+char ScanThread::Voltage_Read()
+{
+    char ret = 0;
+    _READ_BYTE_(C_U_DVT);
+    ret = spark_info->c_array[C_U_DVT];
+    return ret;
+}
+
+void ScanThread::Check_Alert()
+{
+    /*更新IO端口*/
+    _READ_BYTE_(C_U_IN0);
+    _READ_BYTE_(C_Z_IN0);
+
+    /*火警*/
+    if(spark_info->c_array[C_U_IN0] & 0x80){
+        spark_info->setBool(B_FIRE ,true);
+    }
+    else{
+        spark_info->setBool(B_FIRE ,false);
+    }
+
+    /*Z上限*/
+    if(spark_info->c_array[C_Z_IN0] & 0x08){
+        spark_info->setBool(B_Z_UP ,true);
+    }
+    else{
+        spark_info->setBool(B_Z_UP ,false);
+    }
+
+    /*Z下限*/
+    if(spark_info->c_array[C_Z_IN0] & 0x04){
+        spark_info->setBool(B_Z_DOWN ,true);
+    }
+    else{
+        spark_info->setBool(B_Z_DOWN ,false);
+    }
+}
+
+void ScanThread::Update_Relay()
+{
+    if(spark_info->b_array[B_SOUND])
+        spark_info->c_array[C_P_IO0] |= 0x08;
+    else
+        spark_info->c_array[C_P_IO0] &= 0xf7;
+
+    if(spark_info->b_array[B_PUMP])
+        spark_info->c_array[C_P_IO1] |= 0x10;
+    else
+        spark_info->c_array[C_P_IO1] &= 0xef;
+
+    if(spark_info->b_array[B_POWER])
+        spark_info->c_array[C_P_IO1] |= 0x80;
+    else
+        spark_info->c_array[C_P_IO1] &= 0x7f;
+
+    /*更新IO端口*/
+    _WRITE_BYTE_(C_P_IO0);
+    _WRITE_BYTE_(C_P_IO1);
 }
