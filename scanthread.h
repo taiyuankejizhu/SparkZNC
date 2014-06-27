@@ -24,6 +24,7 @@ public:
     static long X_Velocity();
     static long Y_Velocity();
     static long Z_Velocity();
+    static long Z_Origin();
     static char Voltage_Read();
     static void Check_Alert();
     static void Update_Relay();

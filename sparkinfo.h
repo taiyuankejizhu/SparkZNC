@@ -8,7 +8,7 @@
 #define L_SLOT 2            /*长整型数组的槽标记*/
 #define C_SLOT 3            /*字符型数组的槽标记*/
 
-#define B_LENGTH 20         /*布尔数组的长度*/
+#define B_LENGTH 25         /*布尔数组的长度*/
 #define UINT_LENGTH 10      /*无符号整型数组的长度*/
 #define L_LENGTH 20         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
@@ -31,6 +31,9 @@
 #define B_SOUND 15          /*按键声音的开关索引*/
 #define B_Z_UP 16           /*Z上限报警的开关索引*/
 #define B_Z_DOWN 17         /*Z下限报警的开关索引*/
+#define B_FAN 18            /*风扇的开关索引*/
+#define B_TRANS_A 19        /*大变压器的开关索引*/
+#define B_OSCF 20           /*OSCF的开关索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -100,23 +103,26 @@
 #define C_Z_CP0 0x20+Z_OFFSET       /*Z_CP0的值的索引*/
 #define C_Z_CP1 0x21+Z_OFFSET       /*Z_CP1的值的索引*/
 #define C_Z_CP2 0x22+Z_OFFSET       /*Z_CP2的值的索引*/
+#define C_Z_OP0 0x26+Z_OFFSET       /*Z_OP0的值的索引*/
+#define C_Z_OP1 0x27+Z_OFFSET       /*Z_OP1的值的索引*/
+#define C_Z_OP2 0x28+Z_OFFSET       /*Z_OP2的值的索引*/
 #define C_Z_CS0 0x2c+Z_OFFSET       /*Z_CS0的值的索引*/
 #define C_Z_CS1 0x2d+Z_OFFSET       /*Z_CS1的值的索引*/
 
-#define C_U_DVT 0x00+U_OFFSET          /*U_DVT的值的索引*/
-#define C_U_IN0 0x10+U_OFFSET          /*U_IN0的值的索引*/
-#define C_U_IN1 0x11+U_OFFSET          /*U_IN1的值的索引*/
-#define C_U_OT0 0x13+U_OFFSET          /*U_OT0的值的索引*/
-#define C_U_OT1 0x14+U_OFFSET          /*U_OT1的值的索引*/
-#define C_U_OT2 0x15+U_OFFSET          /*U_OT2的值的索引*/
+#define C_U_DVT 0x00+U_OFFSET       /*U_DVT的值的索引*/
+#define C_U_IN0 0x10+U_OFFSET       /*U_IN0的值的索引*/
+#define C_U_IN1 0x11+U_OFFSET       /*U_IN1的值的索引*/
+#define C_U_OT0 0x13+U_OFFSET       /*U_OT0的值的索引*/
+#define C_U_OT1 0x14+U_OFFSET       /*U_OT1的值的索引*/
+#define C_U_OT2 0x15+U_OFFSET       /*U_OT2的值的索引*/
 
-#define C_P_IO0 0x00+P_OFFSET            /*P_IO0的值的索引,xxx*****音量大小,***x****音量开关,****x***24V电压开关*/
-#define C_P_IO1 0x01+P_OFFSET            /*P_IO1的值的索引,*x******总电源开关标志,**x*****放电极性标志,****x***油泵开关标志,*****x**变压器开关标志,******x*风扇开关标志,*******x副电源开关标志*/
-#define C_P_IO2 0x02+P_OFFSET            /*P_IO2的值的索引,********放电电流值*/
-#define C_P_IO3 0x03+P_OFFSET            /*P_IO3的值的索引,****xxxx高电压数值*/
-#define C_P_IO4 0x04+P_OFFSET            /*P_IO4的值的索引*/
-#define C_P_IO5 0x05+P_OFFSET            /*P_IO5的值的索引*/
-#define C_P_IO6 0x06+P_OFFSET            /*P_IO6的值的索引*/
+#define C_P_IO0 0x00+P_OFFSET       /*P_IO0的值的索引,xxx*****音量大小,***x****音量开关,****x***24V电压开关*/
+#define C_P_IO1 0x01+P_OFFSET       /*P_IO1的值的索引,*x******总电源开关标志,**x*****放电极性标志,****x***油泵开关标志,*****x**变压器开关标志,******x*风扇开关标志,*******x副电源开关标志*/
+#define C_P_IO2 0x02+P_OFFSET       /*P_IO2的值的索引,********放电电流值*/
+#define C_P_IO3 0x03+P_OFFSET       /*P_IO3的值的索引,****xxxx高电压数值*/
+#define C_P_IO4 0x04+P_OFFSET       /*P_IO4的值的索引*/
+#define C_P_IO5 0x05+P_OFFSET       /*P_IO5的值的索引*/
+#define C_P_IO6 0x06+P_OFFSET       /*P_IO6的值的索引*/
 
 struct Table
 {
@@ -178,6 +184,7 @@ const bool bool_init[] = {
         false ,true ,false ,false ,false ,
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
+        false ,false ,false ,false ,false ,
 };
 
 const unsigned int uint_init[] = {
@@ -190,13 +197,6 @@ const long long_init[] = {
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
-};
-
-const char char_init[] = {
-        0x10 ,0x80 ,0x00 ,0x00 ,0x00 ,
-        0x00 ,0x0b ,0x00 ,0x00 ,0x00 ,
-        0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,
-        0x00 ,0x00 ,0xe0 ,0x00 ,0x00 ,
 };
 
 class SparkInfo : public QObject
@@ -214,6 +214,7 @@ public:
 
 private:
     void tableInit();
+    void carryInit();
 
 signals:
     /*放电开关信号*/

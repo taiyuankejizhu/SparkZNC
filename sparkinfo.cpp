@@ -8,12 +8,30 @@ SparkInfo::SparkInfo(QObject *parent) :
     memcpy(b_array , bool_init ,sizeof b_array);
     memcpy(uint_array , uint_init ,sizeof uint_array);
     memcpy(l_array , long_init ,sizeof l_array);
-    memcpy(c_array , char_init ,sizeof c_array);
+    memset(c_array ,0x00 ,sizeof c_array);
+
+    carryInit();
     tableInit();
 
     /*当前表的索引改变时，更新表的数据*/
     connect(this ,SIGNAL(tableIndexChange()) ,this ,SLOT(updateTable()));
 
+}
+
+void SparkInfo::carryInit()
+{
+    c_array[C_Z_OT0] = 0xe0;
+    c_array[C_Z_OT1] = 0x00;
+
+    c_array[C_U_OT0] = 0x00;
+    c_array[C_U_OT1] = 0x0b;
+    c_array[C_U_OT2] = 0x00;
+
+    c_array[C_P_IO0] = 0x10;
+    c_array[C_P_IO1] = 0x80;
+    c_array[C_P_IO2] = 0x00;
+    c_array[C_P_IO3] = 0x00;
+    c_array[C_P_IO4] = 0x00;
 }
 
 void SparkInfo::tableInit()
@@ -90,8 +108,8 @@ void SparkInfo::setBool(unsigned int i,bool b)
 {
     if(i < B_LENGTH){
         /*布尔数组状态更新*/
-        if(i != 0)
-            b_array[0] = true;
+        if(i != B_UPDATE && b_array[i] != b)
+            b_array[B_UPDATE] = true;
         b_array[i] = b;
         if(i == B_START|| i == B_TIME){
             emit startChange();
@@ -105,8 +123,8 @@ void SparkInfo::reverseBool(unsigned int i)
 {
     if(i < B_LENGTH){
         /*布尔数组状态更新*/
-        if(i != 0)
-            b_array[0] = true;
+        if(i != B_UPDATE)
+            b_array[B_UPDATE] = true;
         if(b_array[i])
             b_array[i] = false;
         else

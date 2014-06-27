@@ -120,9 +120,9 @@ long ScanThread::Y_Count()
     else
         ret = 0x00;
     ret <<= 8;
-    ret += spark_info->c_array[C_Y_CP0];
+    ret += spark_info->c_array[C_Y_CP2];
     ret <<= 8;
-    ret += spark_info->c_array[C_Y_CP0];
+    ret += spark_info->c_array[C_Y_CP1];
     ret <<= 8;
     ret += spark_info->c_array[C_Y_CP0];
 
@@ -149,9 +149,9 @@ long ScanThread::Z_Count()
     ret <<= 8;
     ret += spark_info->c_array[C_Z_CP2];
     ret <<= 8;
-    ret += spark_info->c_array[C_Z_CP2];
+    ret += spark_info->c_array[C_Z_CP1];
     ret <<= 8;
-    ret += spark_info->c_array[C_Z_CP2];
+    ret += spark_info->c_array[C_Z_CP0];
 
     if(ret > 9999999)
         ret = 9999999;
@@ -233,6 +233,29 @@ long ScanThread::Z_Velocity()
     return ret;
 }
 
+long ScanThread::Z_Origin()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_OP0);
+    _READ_BYTE_(C_Z_OP1);
+    _READ_BYTE_(C_Z_OP2);
+
+    if(_READ_BYTE_(C_Z_OP2) & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP0];
+
+    return ret;
+}
+
 char ScanThread::Voltage_Read()
 {
     char ret = 0;
@@ -284,12 +307,28 @@ void ScanThread::Update_Relay()
     else
         spark_info->c_array[C_P_IO1] &= 0xef;
 
+    if(spark_info->b_array[B_TRANS_A])
+        spark_info->c_array[C_P_IO1] |= 0x20;
+    else
+        spark_info->c_array[C_P_IO1] &= 0xdf;
+
+    if(spark_info->b_array[B_FAN])
+        spark_info->c_array[C_P_IO1] |= 0x40;
+    else
+        spark_info->c_array[C_P_IO1] &= 0xbf;
+
     if(spark_info->b_array[B_POWER])
         spark_info->c_array[C_P_IO1] |= 0x80;
     else
         spark_info->c_array[C_P_IO1] &= 0x7f;
 
+    if(spark_info->b_array[B_OSCF])
+        spark_info->c_array[C_U_OT1] |= 0x80;
+    else
+        spark_info->c_array[C_U_OT1] &= 0x7f;
+
     /*更新IO端口*/
     _WRITE_BYTE_(C_P_IO0);
     _WRITE_BYTE_(C_P_IO1);
+    _WRITE_BYTE_(C_U_OT1);
 }
