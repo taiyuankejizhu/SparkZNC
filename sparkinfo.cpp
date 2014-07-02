@@ -49,7 +49,7 @@ void SparkInfo::tableInit()
             table.Shenggao[i] = table_init.Shenggao[i];
             table.Gongshi[i] = table_init.Gongshi[i];
             table.Mianji[i] = table_init.Mianji[i];
-            table.Jixin[i] = table_init.Jixin[i];
+            table.Jixing[i] = table_init.Jixing[i];
             table.Gaoya[i] = table_init.Gaoya[i];
             table.Index[i] = table_init.Index[i];
         }
@@ -73,7 +73,7 @@ void SparkInfo::tableAuto(long deep ,unsigned int current,unsigned int area,unsi
         table.Shenggao[i] = 0;
         table.Gongshi[i] = 0;
         table.Mianji[i] = area;
-        table.Jixin[i] = 0;
+        table.Jixing[i] = 0;
         table.Gaoya[i] = 0;
         table.Index[i] = i+1;
     }
@@ -93,7 +93,7 @@ void SparkInfo::tableClear()
         table.Shenggao[i] = 0;
         table.Gongshi[i] = 0;
         table.Mianji[i] = 0;
-        table.Jixin[i] = 0;
+        table.Jixing[i] = 0;
         table.Gaoya[i] = 0;
         table.Index[i] = 0 ;
     }

@@ -2,6 +2,10 @@
 #define SPARKINFO_H
 
 #include <QObject>
+#include "fpga.h"
+
+#define _WRITE_BYTE_(a) FPGA_Write(a ,spark_info->c_array + a ,1)
+#define _READ_BYTE_(a) FPGA_Read(a,spark_info->c_array + a ,1)
 
 #define B_SLOT 0            /*布尔数组的槽标记*/
 #define UINT_SLOT 1         /*无符号整型数组的槽标记*/
@@ -34,6 +38,8 @@
 #define B_FAN 18            /*风扇的开关索引*/
 #define B_TRANS_A 19        /*大变压器的开关索引*/
 #define B_OSCF 20           /*OSCF的开关索引*/
+#define B_POWER_ALL 21      /*总电源的开关索引*/
+#define B_SELECT 22         /*待加工行已选择开关的索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -100,6 +106,10 @@
 #define C_Z_OT0 0x13+Z_OFFSET       /*Z_OT0的值的索引,**x*****Z轴ENZ,***x****sl3,*****xxxZ轴间隙*/
 #define C_Z_OT1 0x14+Z_OFFSET       /*Z_OT1的值的索引*/
 #define C_Z_OT2 0x15+Z_OFFSET       /*Z_OT2的值的索引*/
+#define C_Z_STT 0x16+Z_OFFSET       /*Z_STT的值的索引*/
+#define C_Z_STP 0x19+Z_OFFSET       /*Z_STP的值的索引*/
+#define C_Z_STI 0x1a+Z_OFFSET       /*Z_STI的值的索引*/
+#define C_Z_STD 0x1b+Z_OFFSET       /*Z_STD的值的索引*/
 #define C_Z_CP0 0x20+Z_OFFSET       /*Z_CP0的值的索引*/
 #define C_Z_CP1 0x21+Z_OFFSET       /*Z_CP1的值的索引*/
 #define C_Z_CP2 0x22+Z_OFFSET       /*Z_CP2的值的索引*/
@@ -108,8 +118,18 @@
 #define C_Z_OP2 0x28+Z_OFFSET       /*Z_OP2的值的索引*/
 #define C_Z_CS0 0x2c+Z_OFFSET       /*Z_CS0的值的索引*/
 #define C_Z_CS1 0x2d+Z_OFFSET       /*Z_CS1的值的索引*/
+#define C_Z_TP0 0x30+Z_OFFSET       /*Z_TP0的值的索引*/
+#define C_Z_TP1 0x31+Z_OFFSET       /*Z_TP1的值的索引*/
+#define C_Z_TP2 0x32+Z_OFFSET       /*Z_TP2的值的索引*/
+#define C_Z_TS0 0x3c+Z_OFFSET       /*Z_TS0的值的索引*/
+#define C_Z_TS1 0x3d+Z_OFFSET       /*Z_TS1的值的索引*/
 
 #define C_U_DVT 0x00+U_OFFSET       /*U_DVT的值的索引*/
+#define C_U_GVT 0x02+U_OFFSET       /*U_GVT的值的索引*/
+#define C_U_PW0 0x04+U_OFFSET       /*U_PW0的值的索引*/
+#define C_U_PW1 0x05+U_OFFSET       /*U_PW1的值的索引*/
+#define C_U_PG0 0x08+U_OFFSET       /*U_PG0的值的索引*/
+#define C_U_PG1 0x09+U_OFFSET       /*U_PG1的值的索引*/
 #define C_U_IN0 0x10+U_OFFSET       /*U_IN0的值的索引*/
 #define C_U_IN1 0x11+U_OFFSET       /*U_IN1的值的索引*/
 #define C_U_OT0 0x13+U_OFFSET       /*U_OT0的值的索引*/
@@ -135,7 +155,7 @@ struct Table
     unsigned char Shenggao[10]; /*升高*/
     unsigned char Gongshi[10];  /*工时*/
     unsigned char Mianji[10];   /*面积*/
-    unsigned char Jixin[10];    /*极性*/
+    unsigned char Jixing[10];    /*极性*/
     unsigned char Gaoya[10];    /*高压*/
     unsigned char Index[10];    /*索引*/
 };

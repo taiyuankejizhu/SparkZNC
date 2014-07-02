@@ -237,7 +237,8 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
             break;
         /*放电监听D键*/
         case Qt::Key_D:
-            spark_info->reverseBool(B_START);
+            if(spark_info->b_array[B_SELECT])
+                spark_info->reverseBool(B_START);
             break;
         case Qt::Key_X:
             command ->setFocus();
@@ -278,6 +279,7 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
                     spark_info->setUInt(UINT_END_ROW ,ui->tableView->currentIndex().row());
                     start_or_end = true;
                 }
+                spark_info->setBool(B_SELECT ,true);
             }
             else if(table_state == TABLE_DELETE){
                 if(model->rowCount() > 0){
@@ -384,7 +386,7 @@ void MainInterface::tableAddRow(int i)
     item8->setTextAlignment(Qt::AlignCenter);
     QStandardItem* item9 = new QStandardItem(QString::number(spark_info->table.Mianji[i]));
     item9->setTextAlignment(Qt::AlignCenter);
-    QStandardItem* item10 = new QStandardItem(QString::number(spark_info->table.Jixin[i]));
+    QStandardItem* item10 = new QStandardItem(QString::number(spark_info->table.Jixing[i]));
     item10->setTextAlignment(Qt::AlignCenter);
     QStandardItem* item11 = new QStandardItem(QString::number(spark_info->table.Gaoya[i]));
     item11->setTextAlignment(Qt::AlignCenter);
@@ -558,7 +560,7 @@ void MainInterface::tableDataUpdate()
             item8->setTextAlignment(Qt::AlignCenter);
             QStandardItem* item9 = new QStandardItem(QString::number(spark_info->table.Mianji[i]));
             item9->setTextAlignment(Qt::AlignCenter);
-            QStandardItem* item10 = new QStandardItem(QString::number(spark_info->table.Jixin[i]));
+            QStandardItem* item10 = new QStandardItem(QString::number(spark_info->table.Jixing[i]));
             item10->setTextAlignment(Qt::AlignCenter);
             QStandardItem* item11 = new QStandardItem(QString::number(spark_info->table.Gaoya[i]));
             item11->setTextAlignment(Qt::AlignCenter);
@@ -582,9 +584,7 @@ void MainInterface::tableRollUpdate()
     unsigned int row = 0;
     unsigned int column = 0;
     if(table_state == TABLE_SHOW){
-        if(spark_info->uint_array[UINT_CURRENT_ROM] < TABLE_ROWS&&
-           spark_info->uint_array[UINT_START_ROW] < TABLE_ROWS&&
-           spark_info->uint_array[UINT_END_ROW] < TABLE_ROWS){
+        if(spark_info->b_array[B_SELECT]){
             for(row = 0;row < abs(model->rowCount());row++){
                 QBrush brush;
                 if(row == spark_info->uint_array[UINT_CURRENT_ROM]){
@@ -697,7 +697,7 @@ void MainInterface::submitTable()
         spark_info->table.Shenggao[i] = model->item(i,j++)->text().toUInt(&ok ,10);
         spark_info->table.Gongshi[i] = model->item(i,j++)->text().toUInt(&ok ,10);
         spark_info->table.Mianji[i] = model->item(i,j++)->text().toUInt(&ok ,10);
-        spark_info->table.Jixin[i] = model->item(i,j++)->text().toUInt(&ok ,10);
+        spark_info->table.Jixing[i] = model->item(i,j++)->text().toUInt(&ok ,10);
         spark_info->table.Gaoya[i] = model->item(i,j++)->text().toUInt(&ok ,10);
         /*Index字段不为0*/
         spark_info->table.Index[i] = i + 1;

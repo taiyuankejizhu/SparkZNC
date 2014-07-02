@@ -3,15 +3,13 @@
 #include "fpga.h"
 #include "qdebug.h"
 
-#define _WRITE_BYTE_(a) FPGA_Write(a ,spark_info->c_array + a ,1)
-#define _READ_BYTE_(a) FPGA_Read(a,spark_info->c_array + a ,1)
-
 ScanThread::ScanThread(QObject *parent) :
     QThread(parent)
 {
     a_cycle = 0;
     b_cycle = 0;
     c_cycle = 0;
+    d_cycle = 0;
 
     /*初始化IO*/
     _WRITE_BYTE_(C_Z_OT0);
@@ -44,10 +42,19 @@ void ScanThread::run()
             b_cycle = 0;
         }
 
+        if(d_cycle == D_CYCLE){
+            /*to do*/
+            d_cycle = 0;
+            spark_info->setBool(B_FAN ,false);
+        }
+
         if(spark_info->b_array[B_SHUTDOWN])
             a_cycle++;
         if(spark_info->b_array[B_SLEEP])
             b_cycle++;
+        if(spark_info->b_array[B_FAN] && !spark_info->b_array[B_START]){
+            d_cycle++;
+        }
 
         /*布尔数组发生更新，重新输出IO*/
         if(spark_info->b_array[B_UPDATE]){
@@ -56,9 +63,9 @@ void ScanThread::run()
         }
 
         /*读取光栅计数值*/
-        spark_info->setLong(L_X_COUNTER ,X_Count());
-        spark_info->setLong(L_Y_COUNTER ,Y_Count());
-        spark_info->setLong(L_Z_COUNTER ,Z_Count());
+        //spark_info->setLong(L_X_COUNTER ,X_Count());
+        //spark_info->setLong(L_Y_COUNTER ,Y_Count());
+        //spark_info->setLong(L_Z_COUNTER ,Z_Count());
 
         /*读取速度值*/
         if(c_cycle == C_CYCLE){
@@ -302,6 +309,11 @@ void ScanThread::Update_Relay()
     else
         spark_info->c_array[C_P_IO0] &= 0xf7;
 
+    if(spark_info->b_array[B_POWER_ALL])
+        spark_info->c_array[C_P_IO1] |= 0x02;
+    else
+        spark_info->c_array[C_P_IO1] &= 0xfd;
+
     if(spark_info->b_array[B_PUMP])
         spark_info->c_array[C_P_IO1] |= 0x10;
     else
@@ -322,6 +334,11 @@ void ScanThread::Update_Relay()
     else
         spark_info->c_array[C_P_IO1] &= 0x7f;
 
+    if(spark_info->b_array[B_START])
+        spark_info->c_array[C_U_OT1] |= 0x01;
+    else
+        spark_info->c_array[C_U_OT1] &= 0xfe;
+
     if(spark_info->b_array[B_OSCF])
         spark_info->c_array[C_U_OT1] |= 0x80;
     else
@@ -331,4 +348,9 @@ void ScanThread::Update_Relay()
     _WRITE_BYTE_(C_P_IO0);
     _WRITE_BYTE_(C_P_IO1);
     _WRITE_BYTE_(C_U_OT1);
+}
+
+ScanThread::~ScanThread()
+{
+
 }
