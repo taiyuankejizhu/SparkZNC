@@ -23,7 +23,7 @@ void SparkInfo::carryInit()
     c_array[C_Z_OT0] = 0xe0;
     c_array[C_Z_OT1] = 0x00;
 
-    c_array[C_U_OT0] = 0x00;
+    c_array[C_U_OT0] = 0x07;
     c_array[C_U_OT1] = 0x0b;
     c_array[C_U_OT2] = 0x00;
 

@@ -344,10 +344,20 @@ void ScanThread::Update_Relay()
     else
         spark_info->c_array[C_U_OT1] &= 0x7f;
 
+    if(spark_info->b_array[B_REVERSE]){
+        spark_info->c_array[C_Z_OT0] |= 0x06;
+        spark_info->c_array[C_Z_OT0] &= 0xfe;
+    }
+    else{
+        spark_info->c_array[C_Z_OT0] |= 0x04;
+        spark_info->c_array[C_Z_OT0] &= 0xfc;
+    }
+
     /*更新IO端口*/
     _WRITE_BYTE_(C_P_IO0);
     _WRITE_BYTE_(C_P_IO1);
     _WRITE_BYTE_(C_U_OT1);
+    _WRITE_BYTE_(C_Z_OT0);
 }
 
 ScanThread::~ScanThread()

@@ -47,10 +47,10 @@ void SparkThread::run()
                 Set_Row(spark_info->uint_array[UINT_CURRENT_ROM]);
             }
             else{
+                spark_info->setBool(B_SELECT ,false);
                 spark_info->setUInt(UINT_CURRENT_ROM ,0x00);
                 spark_info->setUInt(UINT_END_ROW ,0x00);
                 spark_info->setUInt(UINT_START_ROW ,0x00);
-                spark_info->setBool(B_SELECT ,false);
 
                 //spark_info->setLong(L_DEEP_TARGET ,spark_info->l_array[L_Z_CURRENT]);
                 //spark_info->setLong(L_DEEP_CURRENT ,spark_info->l_array[L_Z_CURRENT]);
@@ -76,7 +76,7 @@ void SparkThread::run()
             break;
         case WORK:
             if(timer.elapsed() > spark_info->table.Gongshi[spark_info->uint_array[UINT_CURRENT_ROM]]
-                    && spark_info->table.Shenggao[spark_info->uint_array[UINT_CURRENT_ROM]] != 0){
+                    && spark_info->table.Shenggao[spark_info->uint_array[UINT_CURRENT_ROM]] > 0){
                 Z_Velocity_Control(0x80);
                 state = UP;
                 break;
