@@ -142,8 +142,6 @@ void GPMI_Info(void)
         printf("erasesize:%d\n" ,info.erasesize);
         printf("writesize:%d\n" ,info.writesize);
         printf("oobsize:%d\n" ,info.oobsize);
-        printf("eccsize:%d\n" ,info.eccsize);
-        printf("ecctype:%d\n" ,info.ecctype);
     }
 }
 

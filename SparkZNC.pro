@@ -74,6 +74,7 @@ RESOURCES += \
 
 OTHER_FILES += \
     icon.png \
-    en.qm
+    en.qm \
+    en.ts
 
 TRANSLATIONS+=en.ts
