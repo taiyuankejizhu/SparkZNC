@@ -59,7 +59,6 @@ public:
     QStandardItemModel *model;
     /*标志数据表格的状态，0x00显示态，0x01数据编辑态，0x02段选态,0x03行删除态,0x04行增加态*/
     char table_state;
-    KeyBoard *keyboard;
     MesgBox *mesg;
     QCommand *command;
     /*放电加工线程*/

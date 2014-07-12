@@ -31,7 +31,8 @@ HEADERS += en_keymap.h \
     seconlevel_f4.h \
     seconlevel_f5.h \
     seconlevel_f6.h \
-    toplevel.h
+    toplevel.h \
+    myinputpanelcontext.h
 FORMS += autodialog.ui \
               coordialog.ui \
               groupdialog.ui \
@@ -67,7 +68,8 @@ SOURCES += fm25v02.c \
     seconlevel_f4.cpp \
     seconlevel_f5.cpp \
     seconlevel_f6.cpp \
-    toplevel.cpp
+    toplevel.cpp \
+    myinputpanelcontext.cpp
 
 RESOURCES += \
     resource.qrc

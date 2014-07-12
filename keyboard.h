@@ -12,8 +12,10 @@ public:
 	KeyBoard(QWidget *parent = 0);
 	~KeyBoard();
 
-public Q_SLOTS:
-	void doButtonClicked(int idx);
+signals:
+    void characterGenerated(QChar character);
+public slots:
+    void doButtonClicked(int idx);
 
 private:
 	void setKeyMap(const char **keymap);

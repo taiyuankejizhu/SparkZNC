@@ -93,10 +93,6 @@ MainInterface::MainInterface(QWidget *parent) :
     connect(command ,SIGNAL(finish()) ,this ,SLOT(commandFinish()));
 
     ui->horizontalLayout_3->addWidget(command);
-
-    keyboard = new KeyBoard(this);
-    keyboard ->setHidden(true);
-
 }
 
 void MainInterface::initHardware()
@@ -219,13 +215,6 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
                 Fn->click();
             break;
         case Qt::Key_F7:
-            /*Call the soft keyboard*/
-/*
-            if(keyboard->isHidden())
-                keyboard->setHidden(false);
-            else
-                keyboard->setHidden(true);
-*/
             Fn = barui->findChild<QPushButton *> ("pushButton_F7");
             if(Fn != NULL)
                 Fn->click();

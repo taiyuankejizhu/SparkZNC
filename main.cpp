@@ -5,6 +5,8 @@
 #include <QTranslator>
 #include "maininterface.h"
 #include "sparkinfo.h"
+#include "myinputpanelcontext.h"
+#include "keyboard.h"
 #include "setting.h"
 #include "qdebug.h"
 
@@ -25,8 +27,6 @@ int main(int argc, char *argv[])
     b = translator.load(":/"+QString(argv[1])+".qm");
     if(b)
         a.installTranslator(&translator);
-
-    MainInterface m;
 /*
     a.setStyleSheet(
         "QPushButton{border:3px solid rgb(0,0,0); background:rgb(255,255,255);border-radius: 10px;}"
@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
         "QTableView::item:focus{background-color:rgb(255,206,0);}"
                     );
     QFont font = a.font();
+    a.setFont(font);
+
+    MainInterface m;
 
 #ifdef ARM
     QRect screen_size = QApplication::desktop()->screenGeometry();
@@ -55,7 +58,15 @@ int main(int argc, char *argv[])
     font.setFamily("SparkFont");
 #endif
 
-    a.setFont(font);
+    /*软件盘*/
+    KeyBoard *keyboard;
+    keyboard = new KeyBoard(&m);
+    keyboard->hide();
+
+    /*软键盘输入上下文*/
+    MyInputPanelContext *ic = new MyInputPanelContext(keyboard);
+    a.setInputContext(ic);
+
     m.show();
 
     return a.exec();

@@ -12,6 +12,8 @@ KeyBoard::KeyBoard(QWidget *parent)
 
 	m_ui = new Ui::KeyBoard;
 	m_ui->setupUi(this);
+    setGeometry(0 ,0 ,670 ,290);
+    setWindowFlags(Qt::FramelessWindowHint);
 
 	QSignalMapper* mapper = new QSignalMapper(this);
 	connect(mapper, SIGNAL(mapped(int)), this, SLOT(doButtonClicked(int)));
@@ -22,7 +24,6 @@ KeyBoard::KeyBoard(QWidget *parent)
 			iter != m_allKeys.end(); iter++, i++) {
 		mapper->setMapping((*iter), i);
 		connect(*iter, SIGNAL(clicked()), mapper, SLOT(map()));
-                //qDebug() << (*iter)->text();
 	}
 }
 
@@ -43,7 +44,7 @@ void KeyBoard::setKeyMap(const char **keymap)
 
 void KeyBoard::doButtonClicked(int idx)
 {
-	qDebug() << m_allKeys.at(idx)->text();
+    QChar key;
 
 	if (m_allKeys.at(idx)->text() == "Caps") {
 		m_caps = !m_caps;
@@ -57,4 +58,10 @@ void KeyBoard::doButtonClicked(int idx)
 	} else if (m_allKeys.at(idx)->text() == "en/cn") {
 		setKeyMap(en_lower_keymap);
 	}
+    else{
+        if(m_allKeys.at(idx)->text().length() == 1){
+            key = m_allKeys.at(idx)->text().at(0);
+            emit characterGenerated(key);
+        }
+    }
 }
