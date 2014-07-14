@@ -19,7 +19,6 @@
 #define TARGET_TIME  0x000400 /*放电溢出时间的地址*/
 
 /*根据Qt编译器的版本判断目标机的类型*/
-
 #if(QT_VERSION == 0x040801)
     #define X86
 #else
