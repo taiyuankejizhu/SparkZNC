@@ -5,5 +5,9 @@
         <file>nomal.png</file>
         <file>press.png</file>
         <file>hover.png</file>
+        <file>selected.png</file>
+        <file>unselected.png</file>
+        <file>axis.png</file>
+        <file>table.png</file>
     </qresource>
 </RCC>

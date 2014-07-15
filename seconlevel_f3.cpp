@@ -1,5 +1,6 @@
 #include "seconlevel_f3.h"
 #include "ui_seconlevel_f3.h"
+#include "sparkinfo.h"
 #include "qdebug.h"
 
 seconlevel_f3::seconlevel_f3(QWidget *parent) :
@@ -25,6 +26,7 @@ void seconlevel_f3::F3()
 {
     if(ui->pushButton_F3->isChecked()){
         coor->show();
+        coor->updateContent();
         coor->setFocus();
     }
     else
@@ -45,10 +47,14 @@ void seconlevel_f3::F0()
 
 void seconlevel_f3::f3_Done(int r)
 {
-    if(r == 0)
+    if(r == 0){
+        coor->selected = spark_info->uint_array[UINT_COOR_INDEX];
         qDebug()<<"F3 Cancel!";
-    else
+    }
+    else{
+        spark_info->setUInt(UINT_COOR_INDEX ,coor->selected);
         qDebug()<<"F3 OK!";
+    }
     parentWidget()->setFocus();
     if(ui->pushButton_F3->isChecked())
         ui->pushButton_F3->click();

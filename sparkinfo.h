@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "fpga.h"
+#include "fm25v02.h"
+#include "setting.h"
 
 #define _WRITE_BYTE_(a) FPGA_Write(a ,spark_info->c_array + a ,1)
 #define _READ_BYTE_(a) FPGA_Read(a,spark_info->c_array + a ,1)
@@ -13,7 +15,7 @@
 #define C_SLOT 3            /*字符型数组的槽标记*/
 
 #define B_LENGTH 25         /*布尔数组的长度*/
-#define UINT_LENGTH 10      /*无符号整型数组的长度*/
+#define UINT_LENGTH 15      /*无符号整型数组的长度*/
 #define L_LENGTH 20         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
 
@@ -51,6 +53,8 @@
 #define UINT_CURRENT_ROM 7  /*当前行的索引*/
 #define UINT_START_ROW 8    /*开始行的索引*/
 #define UINT_END_ROW 9      /*结束行的索引*/
+#define UINT_TAB_MAX 10     /*表格的最大索引*/
+#define UINT_COOR_MAX 11    /*坐标的最大索引*/
 
 #define L_DEEP_CURRENT 0    /*当前深度值的索引*/
 #define L_DEEP_TARGET 1     /*目标深度值的索引*/
@@ -210,6 +214,7 @@ const bool bool_init[] = {
 const unsigned int uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
+        99, 5, 0, 0, 0,
 };
 
 const long long_init[] = {
@@ -235,6 +240,7 @@ public:
 private:
     void tableInit();
     void carryInit();
+    void fm25v02Init();
 
 signals:
     /*放电开关信号*/

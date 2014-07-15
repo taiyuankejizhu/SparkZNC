@@ -97,6 +97,7 @@ MainInterface::MainInterface(QWidget *parent) :
 
 void MainInterface::initHardware()
 {
+    /*初始化蜂鸣器*/
     QFile f(BEEP_FILE);
     if (f.exists())
     {
@@ -106,28 +107,6 @@ void MainInterface::initHardware()
                     perror("open device leds fail");
             }
     }
-
-    FM25V02_Init();
-    printf("FM25V02_Init()!\n");
-
-    EightBytes  rd_x;
-    EightBytes  rd_y;
-    EightBytes  rd_z;
-    memset(rd_x.bytes , 0 ,sizeof rd_x);
-    memset(rd_y.bytes , 0 ,sizeof rd_y);
-    memset(rd_z.bytes , 0 ,sizeof rd_z);
-
-    FM25V02_READ(X_AXIS_ADDR , rd_x.bytes ,sizeof rd_x);
-    FM25V02_READ(Y_AXIS_ADDR , rd_y.bytes ,sizeof rd_y);
-    FM25V02_READ(Z_AXIS_ADDR , rd_z.bytes ,sizeof rd_z);
-
-    printf("FM25V02_READ()! X,Y,Z\n");
-
-    spark_info->setLong(L_X_CURRENT , rd_x.longs);
-
-    spark_info->setLong(L_Y_CURRENT , rd_y.longs);
-
-    spark_info->setLong(L_Z_CURRENT , rd_z.longs);
 }
 
 void MainInterface::initFuncBar()
@@ -717,15 +696,6 @@ void MainInterface::XYZ_Update(int i)
 {
     QString s;
     s = toString(spark_info->l_array[i]);
-
-#ifdef ARM
-
-        EightBytes wr;
-        wr.longs = 0;
-        wr.longs = spark_info->l_array[i];
-        FM25V02_WRITE(Z_AXIS_ADDR , wr.bytes, sizeof wr);
-
-#endif
 
     switch(i){
     case L_X_CURRENT:

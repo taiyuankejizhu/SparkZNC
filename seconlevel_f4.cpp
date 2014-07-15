@@ -224,6 +224,9 @@ void seconlevel_f4::F8()
     if(ui->pushButton_F4->isChecked())
         ui->pushButton_F4->click();
 
+    if(ui->pushButton_F6->isChecked())
+        ui->pushButton_F6->click();
+
     emit stateChange(TABLE_SHOW);
     emit enter(28);
 }
