@@ -409,7 +409,6 @@ void MainInterface::tableStateUpdate(char c)
 
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     ui->tableView->horizontalHeader()->setFixedHeight(17);
-    //ui->tableView->setEnabled(false);
 
     ui->tableView->verticalHeader()->setResizeMode(QHeaderView::Fixed);
     ui->tableView->verticalHeader()->setFixedWidth(20);
@@ -670,6 +669,8 @@ void MainInterface::submitTable()
         /*Index字段不为0*/
         spark_info->table.Index[i] = i + 1;
     }
+
+    spark_info->tableSave();
 
     if(table_state == TABLE_DELETE ){
         spark_info->setUInt(UINT_START_ROW , min);

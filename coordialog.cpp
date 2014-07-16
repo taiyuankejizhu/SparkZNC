@@ -16,8 +16,13 @@ CoorDialog::CoorDialog(QWidget *parent) :
     a_icon = QIcon(a_pix);
     QPixmap b_pix = QPixmap(":/unselected.png");
     b_icon = QIcon(b_pix);
+
     QPixmap c_pix = QPixmap(":/axis.png");
-    c_icon = QIcon(c_pix);
+
+    QPixmap ok_pix = QPixmap(":/ok.png");
+    ok_icon = QIcon(ok_pix);
+    QPixmap cancel_pix = QPixmap(":/cancel.png");
+    cancel_icon = QIcon(cancel_pix);
 
     selected = spark_info->uint_array[UINT_COOR_INDEX];
     model = new QStandardItemModel(0 ,1);
@@ -25,7 +30,11 @@ CoorDialog::CoorDialog(QWidget *parent) :
 
     ui->label->setPixmap(c_pix);
     ui->buttonBox->button(ui->buttonBox->Ok)->setText(tr("确定(O)"));
+    ui->buttonBox->button(ui->buttonBox->Ok)->setIcon(ok_icon);
+    ui->buttonBox->button(ui->buttonBox->Ok)->setIconSize(QSize(32,32));
     ui->buttonBox->button(ui->buttonBox->Cancel)->setText(tr("取消(C)"));
+    ui->buttonBox->button(ui->buttonBox->Cancel)->setIcon(cancel_icon);
+    ui->buttonBox->button(ui->buttonBox->Cancel)->setIconSize(QSize(32,32));
 }
 
 void CoorDialog::keyPressEvent(QKeyEvent *k)

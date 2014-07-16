@@ -30,21 +30,9 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>671</width>
+     <width>670</width>
      <height>220</height>
     </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>320</width>
-     <height>220</height>
-    </size>
    </property>
    <property name="palette">
     <palette>
@@ -467,42 +455,92 @@
    <property name="frameShape">
     <enum>QFrame::WinPanel</enum>
    </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>6</y>
       <width>671</width>
-      <height>221</height>
+      <height>211</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>5</number>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>2</number>
      </property>
      <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
       <number>5</number>
      </property>
      <property name="rightMargin">
       <number>5</number>
      </property>
-     <property name="bottomMargin">
-      <number>8</number>
-     </property>
-     <item>
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Icon</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_title">
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>请选择坐标：</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QListView" name="listView"/>
+     <item row="1" column="1">
+      <widget class="QListView" name="listView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>620</width>
+         <height>150</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>630</width>
+         <height>160</height>
+        </size>
+       </property>
+      </widget>
      </item>
-     <item>
+     <item row="2" column="1">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="enabled">
         <bool>true</bool>

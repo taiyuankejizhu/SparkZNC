@@ -10,15 +10,15 @@ SparkInfo::SparkInfo(QObject *parent) :
     memcpy(l_array , long_init ,sizeof l_array);
     memset(c_array ,0x00 ,sizeof c_array);
 
-    carryInit();
-    tableInit();
-
 #ifdef ARM
     fm25v02Init();
 #endif
 
+    carryInit();
+    tableInit();
+
     /*当前表的索引改变时，更新表的数据*/
-    connect(this ,SIGNAL(tableIndexChange()) ,this ,SLOT(updateTable()));
+    connect(this ,SIGNAL(tableIndexChange()) ,this ,SLOT(tableLoad()));
 
 }
 
@@ -33,7 +33,14 @@ void SparkInfo::fm25v02Init()
     memset(c_axis.bytes , 0 ,sizeof c_axis);
     FM25V02_READ(CURRENT_AXIS_ADDR , c_axis.bytes ,sizeof c_axis);
 
-    spark_info->uint_array[UINT_COOR_INDEX] = c_axis.uint;
+    uint_array[UINT_COOR_INDEX] = c_axis.uint;
+
+    /*读取当前组别的索引*/
+    FourBytes t_axis;
+    memset(t_axis.bytes , 0 ,sizeof t_axis);
+    FM25V02_READ(CURRENT_TAB_ADDR , t_axis.bytes ,sizeof t_axis);
+
+    uint_array[UINT_TAB_INDEX] = t_axis.uint;
 
     /*读取当前坐标*/
     EightBytes  c_x;
@@ -43,13 +50,13 @@ void SparkInfo::fm25v02Init()
     memset(c_y.bytes , 0 ,sizeof c_y);
     memset(c_z.bytes , 0 ,sizeof c_z);
 
-    FM25V02_READ(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_x), c_x.bytes ,sizeof c_x);
-    FM25V02_READ(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
-    FM25V02_READ(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
+    FM25V02_READ(X_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_x), c_x.bytes ,sizeof c_x);
+    FM25V02_READ(Y_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
+    FM25V02_READ(Z_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-    spark_info->l_array[L_X_CURRENT] = c_x.longs;
-    spark_info->l_array[L_Y_CURRENT] = c_y.longs;
-    spark_info->l_array[L_Z_CURRENT] = c_z.longs;
+    l_array[L_X_CURRENT] = c_x.longs;
+    l_array[L_Y_CURRENT] = c_y.longs;
+    l_array[L_Z_CURRENT] = c_z.longs;
 }
 
 void SparkInfo::carryInit()
@@ -87,9 +94,10 @@ void SparkInfo::tableInit()
             table.Gaoya[i] = table_init.Gaoya[i];
             table.Index[i] = table_init.Index[i];
         }
+        tableSave();
     }
     else
-        updateTable();
+        tableLoad();
 }
 
 /*自动生成表格*/
@@ -111,6 +119,50 @@ void SparkInfo::tableAuto(long deep ,unsigned int current,unsigned int area,unsi
         table.Gaoya[i] = 0;
         table.Index[i] = i+1;
     }
+    tableSave();
+}
+
+/*保存数据表数据*/
+void SparkInfo::tableSave()
+{
+    bool state =false;
+
+    /*写方式打开数据表文件*/
+    QFile file(QDir::currentPath()+TABLES_DIR+QString::number(uint_array[UINT_TAB_INDEX]));
+    state = file.open(QIODevice::WriteOnly);
+
+    if(state){
+        /*序列化数据表结构体*/
+        QByteArray bytes;
+        bytes.resize(sizeof table);
+        memcpy(bytes.data() ,&table ,sizeof table);
+
+        file.reset();
+        file.write(bytes);
+        file.close();
+    }
+}
+
+/*加载数据表格*/
+void SparkInfo::tableLoad()
+{
+    bool state =false;
+
+    /*读方式打开数据表文件*/
+    QFile file(QDir::currentPath()+TABLES_DIR+QString::number(uint_array[UINT_TAB_INDEX]));
+    state = file.open(QIODevice::ReadOnly);
+
+    if(state){
+        /*序列化数据表结构体*/
+        QByteArray bytes;
+
+        file.reset();
+        bytes = file.read(sizeof table);
+        memcpy(&table ,bytes.data() ,sizeof table);
+        file.close();
+
+        emit tableChange();
+    }
 }
 
 /*清空数据表数据*/
@@ -131,11 +183,6 @@ void SparkInfo::tableClear()
         table.Gaoya[i] = 0;
         table.Index[i] = 0 ;
     }
-}
-
-void SparkInfo::updateTable()
-{
-    emit tableChange();
 }
 
 void SparkInfo::setBool(unsigned int i,bool b)

@@ -2,6 +2,9 @@
 #define SPARKINFO_H
 
 #include <QObject>
+#include <QFile>
+#include <QDir>
+#include <QByteArray>
 #include "fpga.h"
 #include "fm25v02.h"
 #include "setting.h"
@@ -214,7 +217,7 @@ const bool bool_init[] = {
 const unsigned int uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
-        99, 5, 0, 0, 0,
+        50, 5, 0, 0, 0,
 };
 
 const long long_init[] = {
@@ -230,6 +233,7 @@ class SparkInfo : public QObject
 public:
     explicit SparkInfo(QObject *parent = 0);
     void tableClear();
+    void tableSave();
     void tableAuto(long ,unsigned int ,unsigned int ,unsigned int);
     bool b_array[B_LENGTH];
     unsigned int uint_array[UINT_LENGTH];
@@ -259,7 +263,7 @@ public slots:
     void reverseBool(unsigned int);
     void setLong(unsigned int ,long);
     void setUInt(unsigned int , unsigned int);
-    void updateTable();
+    void tableLoad();
 };
 
 extern SparkInfo *spark_info;

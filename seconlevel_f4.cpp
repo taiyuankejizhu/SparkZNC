@@ -58,6 +58,7 @@ void seconlevel_f4::F1()
 {
     if(ui->pushButton_F1->isChecked()){
         group->show();
+        group->updateContent();
         group->setFocus();
     }
     else{
@@ -250,10 +251,16 @@ void seconlevel_f4::F0()
 
 void seconlevel_f4::f1_Done(int r)
 {
-    if(r == 0)
+    if(r == 0){
+        group->selected = spark_info->uint_array[UINT_TAB_INDEX];
         qDebug()<<"F1 Cancel!";
-    else
+    }
+    else{
+        if(!group->checkExists(group->selected))
+            group->createFile(group->selected);
+        spark_info->setUInt(UINT_TAB_INDEX ,group->selected);
         qDebug()<<"F1 OK!";
+    }
     parentWidget()->setFocus();
     emit stateChange(TABLE_EDIT);
     if(ui->pushButton_F1->isChecked())

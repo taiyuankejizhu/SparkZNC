@@ -9,5 +9,7 @@
         <file>unselected.png</file>
         <file>axis.png</file>
         <file>table.png</file>
+        <file>cancel.png</file>
+        <file>ok.png</file>
     </qresource>
 </RCC>
