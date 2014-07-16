@@ -77,6 +77,11 @@ RESOURCES += \
 OTHER_FILES += \
     icon.png \
     en.qm \
-    en.ts
+    en.ts \
+    table.png \
+    selected.png \
+    ok.png \
+    cancel.png \
+    axis.png
 
 TRANSLATIONS+=en.ts
