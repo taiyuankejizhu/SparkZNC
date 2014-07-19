@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QIcon>
 
 namespace Ui {
     class JumpDialog;
@@ -30,6 +31,10 @@ public slots:
 
 private:
     Ui::JumpDialog *ui;
+    QIcon a_icon;
+    QIcon b_icon;
+    QIcon ok_icon;
+    QIcon cancel_icon;
 };
 
 #endif // JUMPDIALOG_H

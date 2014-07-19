@@ -8,6 +8,7 @@ toplevel::toplevel(QWidget *parent) :
     ui(new Ui::toplevel)
 {
     ui->setupUi(this);
+    bit = false;
 
     QPixmap pix = QPixmap(":/icon.png");
     ui->label->setPixmap(pix);

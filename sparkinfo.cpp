@@ -157,8 +157,15 @@ void SparkInfo::tableLoad()
         QByteArray bytes;
 
         file.reset();
-        bytes = file.read(sizeof table);
-        memcpy(&table ,bytes.data() ,sizeof table);
+        if(file.size() < sizeof table){
+            tableClear();
+            tableSave();
+
+        }
+        else{
+            bytes = file.read(sizeof table);
+            memcpy(&table ,bytes.data() ,sizeof table);
+        }
         file.close();
 
         emit tableChange();
@@ -300,10 +307,25 @@ void SparkInfo::setUInt(unsigned int i, unsigned int u)
             uint_array[UINT_CURRENT_ROM] = 0;
             uint_array[UINT_START_ROW] = 0;
             uint_array[UINT_END_ROW] = 0;
+
+#ifdef ARM
+            /*保存当前组别的索引*/
+            FourBytes t_axis;
+            memset(t_axis.bytes , 0 ,sizeof t_axis);
+            t_axis.uint = uint_array[UINT_TAB_INDEX];
+            FM25V02_WRITE(CURRENT_TAB_ADDR , t_axis.bytes ,sizeof t_axis);
+#endif
+
             emit tableIndexChange();
             emit tableRowChange();
         }
         else if(i == UINT_COOR_INDEX){
+
+            /*保存当前坐标的索引*/
+            FourBytes c_axis;
+            memset(c_axis.bytes , 0 ,sizeof c_axis);
+            c_axis.uint = uint_array[UINT_COOR_INDEX];
+
             /*读取当前坐标*/
             EightBytes  c_x;
             EightBytes  c_y;
@@ -313,6 +335,8 @@ void SparkInfo::setUInt(unsigned int i, unsigned int u)
             memset(c_z.bytes , 0 ,sizeof c_z);
 
 #ifdef ARM
+            FM25V02_WRITE(CURRENT_AXIS_ADDR , c_axis.bytes ,sizeof c_axis);
+
             FM25V02_READ(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_x), c_x.bytes ,sizeof c_x);
             FM25V02_READ(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
             FM25V02_READ(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);

@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QIcon>
 
 namespace Ui {
     class AutoDialog;
@@ -30,6 +31,10 @@ public slots:
 
 private:
     Ui::AutoDialog *ui;
+    QIcon a_icon;
+    QIcon b_icon;
+    QIcon ok_icon;
+    QIcon cancel_icon;
 };
 
 #endif // AUTODIALOG_H

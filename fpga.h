@@ -10,6 +10,7 @@ typedef unsigned int uint32;
 typedef long uint64;
 
 //#define PAGE_1 0x00
+#define GPMC_BASE 0x0000
 #define GPMI_BASE 0x0000
 #define ISA_BASE 0x0240
 

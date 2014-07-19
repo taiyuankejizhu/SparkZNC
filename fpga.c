@@ -8,10 +8,34 @@
 #include "mtd/mtd-user.h"
 
 /*根据Qt编译器的版本判断目标机的类型*/
-#define ISA
+#define GPMC
 
 /*存储数据接口的文件描述符*/
 static int fpga_fd;
+
+/*
+********************************************************************************************************
+** Function name:		GPMC_Init
+** Descriptions:		初始化GPMC接口
+** input parameters:    无
+** output parameters:   无
+** Returned value:      无
+********************************************************************************************************
+*/
+uint8 GPMC_Init(void)
+{
+
+    fpga_fd = open(GPMC_FILE, O_RDWR);
+
+    if(fpga_fd < 0){
+        printf("Can't open GPMC device!\n");
+        return 0;
+    }
+    else{
+        printf("GPMC device is openned!\n");
+        return 1;
+    }
+}
 
 /*
 ********************************************************************************************************
@@ -61,6 +85,22 @@ uint8 ISA_Init(void)
     }
 }
 
+/*
+********************************************************************************************************
+** Function name:		GPMC_Info
+** Descriptions:		GPMC读取信息
+** input parameters:    无
+** output parameters:   无
+** Returned value:      无
+********************************************************************************************************
+*/
+void GPMC_Info(void)
+{
+    printf("GPMC is no need info!");
+
+    if(fpga_fd < 0)
+        return;
+}
 
 /*
 ********************************************************************************************************
@@ -140,8 +180,6 @@ void GPMI_Info(void)
 
         printf("size:%d\n" ,info.size);
         printf("erasesize:%d\n" ,info.erasesize);
-        printf("writesize:%d\n" ,info.writesize);
-        printf("oobsize:%d\n" ,info.oobsize);
     }
 }
 
@@ -157,6 +195,36 @@ void GPMI_Info(void)
 void ISA_Info(void)
 {
     printf("ISR is no need info!");
+
+    if(fpga_fd < 0)
+        return;
+}
+
+/*
+********************************************************************************************************
+** Function name:		GPMC_Read
+** Descriptions:		GPMC读取数据
+** input parameters:    pBuf:   读出数据的指针
+**                      num:    要读数据的长度
+**                      addr:   要读数据的地址相对于文件开始位置
+** output parameters:   无
+** Returned value:      uint32  读出的数据长度
+********************************************************************************************************
+*/
+uint32 GPMC_Read(uint32 addr ,uint8 *pBuf ,uint32 num)
+{
+
+    uint32 n;
+    addr += GPMC_BASE;
+
+    if(fpga_fd < 0)
+        return 0;
+
+    lseek(fpga_fd, addr, SEEK_SET);
+
+    n = read(fpga_fd ,pBuf ,num);
+    return n;
+
 }
 
 /*
@@ -216,6 +284,32 @@ uint32 ISA_Read(uint32 addr ,uint8 *pBuf ,uint32 num)
 
     lseek(fpga_fd, addr, SEEK_SET);
     n = read(fpga_fd ,pBuf ,num);
+
+    return n;
+}
+
+/*
+********************************************************************************************************
+** Function name:		GPMC_Write
+** Descriptions:		GPMC读取数据
+** input parameters:    pBuf:   写入数据的指针
+**                      num:    要写数据的长度
+**                      addr:   写入数据的地址相对于文件开始位置
+** output parameters:   无
+** Returned value:      uint32  写入的数据长度
+********************************************************************************************************
+*/
+uint32 GPMC_Write(uint32 addr ,uint8 *pBuf ,uint32 num)
+{
+
+    uint32 n = 0;
+    addr += GPMC_BASE;
+
+    if(fpga_fd < 0)
+        return 0;
+
+    lseek(fpga_fd, addr, SEEK_SET);
+    n = write(fpga_fd ,pBuf ,num);
 
     return n;
 }
@@ -312,6 +406,9 @@ uint32 ISA_Write(uint32 addr ,uint8 *pBuf ,uint32 num)
 uint8 FPGA_Init(void)
 {
     uint8 ret = 0;
+#ifdef GPMC
+    ret = GPMC_Init();
+#endif
 #ifdef GPMI
     ret = GPMI_Init();
 #endif
@@ -333,6 +430,9 @@ uint8 FPGA_Init(void)
 */
 void FPGA_Info(void)
 {
+#ifdef GPMC
+    GPMC_Info();
+#endif
 #ifdef GPMI
     GPMI_Info();
 #endif
@@ -355,6 +455,9 @@ void FPGA_Info(void)
 uint32 FPGA_Read(uint32 addr ,uint8 *pBuf ,uint32 num)
 {
     uint32 ret = 0;
+#ifdef GPMC
+    ret = GPMC_Read(addr ,pBuf ,num);
+#endif
 #ifdef GPMI
     ret = GPMI_Read(addr ,pBuf ,num);
 #endif
@@ -378,6 +481,9 @@ uint32 FPGA_Read(uint32 addr ,uint8 *pBuf ,uint32 num)
 uint32 FPGA_Write(uint32 addr ,uint8 *pBuf ,uint32 num)
 {
     uint32 ret = 0;
+#ifdef GPMC
+    ret = GPMC_Write(addr ,pBuf ,num);
+#endif
 #ifdef GPMI
     ret = GPMI_Write(addr ,pBuf ,num);
 #endif

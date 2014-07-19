@@ -2,6 +2,7 @@
 #define MAININTERFACE_H
 
 #include "mesgbox.h"
+#include "startmenu.h"
 #include "toplevel.h"
 #include "seconlevel_f3.h"
 #include "seconlevel_f4.h"
@@ -60,6 +61,7 @@ public:
     /*标志数据表格的状态，0x00显示态，0x01数据编辑态，0x02段选态,0x03行删除态,0x04行增加态*/
     char table_state;
     MesgBox *mesg;
+    StartMenu *menu;
     QCommand *command;
     /*放电加工线程*/
     SparkThread *spark;

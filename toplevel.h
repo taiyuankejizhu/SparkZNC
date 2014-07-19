@@ -13,6 +13,7 @@ class toplevel : public QWidget
 
 public:
     explicit toplevel(QWidget *parent = 0);
+    bool bit;
     ~toplevel();
 
 private:

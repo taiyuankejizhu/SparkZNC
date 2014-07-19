@@ -83,9 +83,13 @@ MainInterface::MainInterface(QWidget *parent) :
     scan->start();
 
     mesg = new MesgBox(this);
-    mesg ->setHidden(false);
+    mesg ->setHidden(true);
+
+    menu = new StartMenu(this);
+    menu ->setHidden(false);
 
     ui->verticalLayout->addWidget(mesg);
+    ui->verticalLayout->addWidget(menu);
 
     command = new QCommand(this);
     command ->setHidden(false);
@@ -155,6 +159,7 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
     if(!k->isAutoRepeat()){
         k->accept();
         QPushButton *Fn ;
+        QLabel *F8;
 
 #ifdef ARM
         if (beep_fb > 0)
