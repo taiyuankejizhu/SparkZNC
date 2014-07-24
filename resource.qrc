@@ -13,5 +13,15 @@
         <file>ok.png</file>
         <file>jump.png</file>
         <file>auto.png</file>
+        <file>restart.png</file>
+        <file>setting.png</file>
+        <file>shut.png</file>
+        <file>sound.png</file>
+        <file>sleep.png</file>
+        <file>password.png</file>
+        <file>clear.png</file>
+        <file>shut_b.png</file>
+        <file>restart_b.png</file>
+        <file>sleep_b.png</file>
     </qresource>
 </RCC>

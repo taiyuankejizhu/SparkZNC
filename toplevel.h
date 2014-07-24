@@ -2,6 +2,7 @@
 #define TOPLEVEL_H
 
 #include <QWidget>
+#include <QIcon>
 
 namespace Ui {
     class toplevel;
@@ -13,7 +14,6 @@ class toplevel : public QWidget
 
 public:
     explicit toplevel(QWidget *parent = 0);
-    bool bit;
     ~toplevel();
 
 private:
@@ -22,6 +22,7 @@ private:
 signals:
 
     void enter(int i);
+    void menu(bool b);
 
 public slots:
     void F1();

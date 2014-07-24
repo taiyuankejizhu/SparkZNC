@@ -1,6 +1,8 @@
 #include "scanthread.h"
 #include "sparkinfo.h"
 #include "fpga.h"
+#include "unistd.h"
+#include "sys/reboot.h"
 #include "qdebug.h"
 
 ScanThread::ScanThread(QObject *parent) :
@@ -10,6 +12,7 @@ ScanThread::ScanThread(QObject *parent) :
     b_cycle = 0;
     c_cycle = 0;
     d_cycle = 0;
+    e_cycle = 0;
 
     /*初始化IO*/
     _WRITE_BYTE_(C_Z_OT0);
@@ -35,6 +38,8 @@ void ScanThread::run()
         if(a_cycle == A_CYCLE){
             /*to do*/
             a_cycle = 0;
+            sync();
+            //reboot(RB_POWER_OFF);
         }
 
         if(b_cycle == B_CYCLE){
@@ -48,6 +53,14 @@ void ScanThread::run()
             spark_info->setBool(B_FAN ,false);
         }
 
+        if(e_cycle == E_CYCLE){
+            /*to do*/
+            e_cycle = 0;
+            sync();
+            //reboot(RB_AUTOBOOT);
+        }
+
+
         if(spark_info->b_array[B_SHUTDOWN])
             a_cycle++;
         if(spark_info->b_array[B_SLEEP])
@@ -55,6 +68,8 @@ void ScanThread::run()
         if(spark_info->b_array[B_FAN] && !spark_info->b_array[B_START]){
             d_cycle++;
         }
+        if(spark_info->b_array[B_REBOOT])
+            e_cycle++;
 
         /*布尔数组发生更新，重新输出IO*/
         if(spark_info->b_array[B_UPDATE]){

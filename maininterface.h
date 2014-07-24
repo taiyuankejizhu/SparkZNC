@@ -22,6 +22,7 @@
 #include <QFile>
 #include <QAbstractItemView>
 #include <QItemSelectionModel>
+#include <QTimer>
 
 #include "fcntl.h"
 #include "sys/ioctl.h"
@@ -74,6 +75,8 @@ private:
     bool start_or_end;
     /*标志键盘是否已经被按下*/
     bool key_pressed;
+    /*开始菜单的触发定时器*/
+    QTimer *timer;
     Ui::MainInterface *ui;
     void keyPressEvent( QKeyEvent *k );
     void keyReleaseEvent( QKeyEvent *k );
@@ -94,6 +97,7 @@ public slots:
     void tableItemChange(QModelIndex tl ,QModelIndex br);
     void funcbarUpdate(int);
     void XYZ_Update(int);
+    void menuShow();
 };
 
 #endif // MAININTERFACE_H

@@ -622,13 +622,10 @@
        </size>
       </property>
       <property name="text">
-       <string/>
+       <string>Icon</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
-      </property>
-      <property name="margin">
-       <number>2</number>
       </property>
      </widget>
     </item>

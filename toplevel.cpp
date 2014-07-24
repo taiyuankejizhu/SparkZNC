@@ -8,10 +8,8 @@ toplevel::toplevel(QWidget *parent) :
     ui(new Ui::toplevel)
 {
     ui->setupUi(this);
-    bit = false;
 
     QPixmap pix = QPixmap(":/icon.png");
-    ui->label->setPixmap(pix);
 
     connect(ui->pushButton_F1,SIGNAL(clicked()),this ,SLOT(F1()));
     ui->pushButton_F1->setCheckable(true);
@@ -28,6 +26,8 @@ toplevel::toplevel(QWidget *parent) :
 
     connect(ui->pushButton_F7,SIGNAL(clicked()),this ,SLOT(F7()));
     ui->pushButton_F7->setCheckable(true);
+
+    ui->label->setPixmap(pix);
 
     setFocusPolicy(Qt::NoFocus);
 }

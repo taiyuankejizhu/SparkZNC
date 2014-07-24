@@ -32,7 +32,7 @@
 #define B_BOTTOM 7          /*修底的开关索引*/
 #define B_FIRE 8            /*火警的开关索引*/
 #define B_OIL 9             /*油位报警的开关索引*/
-#define B_DEEPHOLE 10        /*深孔报警的开关索引*/
+#define B_DEEPHOLE 10       /*深孔报警的开关索引*/
 #define B_XYLOCK 11         /*XY轴锁定的开关索引*/
 #define B_SLEEP 12          /*屏幕睡眠的开关索引*/
 #define B_SCREEN 13         /*屏幕状态的索引*/
@@ -45,6 +45,7 @@
 #define B_OSCF 20           /*OSCF的开关索引*/
 #define B_POWER_ALL 21      /*总电源的开关索引*/
 #define B_SELECT 22         /*待加工行已选择开关的索引*/
+#define B_REBOOT 23         /*系统重启的开关的索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/

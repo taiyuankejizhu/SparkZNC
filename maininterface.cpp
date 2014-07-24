@@ -83,10 +83,15 @@ MainInterface::MainInterface(QWidget *parent) :
     scan->start();
 
     mesg = new MesgBox(this);
-    mesg ->setHidden(true);
+    mesg ->setHidden(false);
 
     menu = new StartMenu(this);
-    menu ->setHidden(false);
+    menu ->setHidden(true);
+    connect(menu ,SIGNAL(finish()) ,this ,SLOT(menuShow()));
+
+    timer = new QTimer(this);
+    timer->setInterval(500);
+    connect(timer ,SIGNAL(timeout()) ,this ,SLOT(menuShow()));
 
     ui->verticalLayout->addWidget(mesg);
     ui->verticalLayout->addWidget(menu);
@@ -159,7 +164,6 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
     if(!k->isAutoRepeat()){
         k->accept();
         QPushButton *Fn ;
-        QLabel *F8;
 
 #ifdef ARM
         if (beep_fb > 0)
@@ -205,8 +209,13 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
             break;
         case Qt::Key_F8:
             Fn = barui->findChild<QPushButton *> ("pushButton_F8");
-            if(Fn != NULL)
+            if(Fn != NULL){
                 Fn->click();
+            }
+            else{
+                if(!timer->isActive())
+                    timer->start();
+            }
             break;
         /*放电监听D键*/
         case Qt::Key_D:
@@ -288,38 +297,46 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
 
 void MainInterface::keyReleaseEvent(QKeyEvent *k)
 {
-    k->accept();
 
-    if (beep_fb > 0)
-            ioctl(beep_fb, 0, 1);
+    if(!k->isAutoRepeat()){
+        k->accept();
 
-    switch(k->key())
-    {
-    case Qt::Key_F1:
-        break;
-    case Qt::Key_F2:
-//        ui->pushButton_F2->setEnabled(true);
-        break;
-    case Qt::Key_F3:
-//        ui->pushButton_F3->setEnabled(true);
-        break;
-    case Qt::Key_F4:
-//        ui->pushButton_F4->setEnabled(true);
-        break;
-    case Qt::Key_F5:
-//        ui->pushButton_F5->setEnabled(true);
-        break;
-    case Qt::Key_F6:
-//        ui->pushButton_F6->setEnabled(true);
-        break;
-    case Qt::Key_F7:
-//        ui->pushButton_F7->setEnabled(true);
-        break;
-    case Qt::Key_F8:
-        break;
-    default :
-        break;
+        if (beep_fb > 0)
+                ioctl(beep_fb, 0, 1);
+
+        switch(k->key())
+        {
+        case Qt::Key_F1:
+            break;
+        case Qt::Key_F2:
+    //        ui->pushButton_F2->setEnabled(true);
+            break;
+        case Qt::Key_F3:
+    //        ui->pushButton_F3->setEnabled(true);
+            break;
+        case Qt::Key_F4:
+    //        ui->pushButton_F4->setEnabled(true);
+            break;
+        case Qt::Key_F5:
+    //        ui->pushButton_F5->setEnabled(true);
+            break;
+        case Qt::Key_F6:
+    //        ui->pushButton_F6->setEnabled(true);
+            break;
+        case Qt::Key_F7:
+    //        ui->pushButton_F7->setEnabled(true);
+            break;
+        case Qt::Key_F8:
+            if(timer->isActive()){
+                timer->stop();
+            }
+            break;
+        default :
+            break;
+        }
     }
+    else
+        k->ignore();
 }
 
 void MainInterface::commandFinish()
@@ -696,6 +713,22 @@ void MainInterface::funcbarUpdate(int i)
     connect(this ,SIGNAL(barF0()) ,barui ,SLOT(F0()));
     emit barF0();
 
+}
+
+void MainInterface::menuShow()
+{
+    if(menu->isHidden()){
+        menu->setHidden(false);
+        mesg->setHidden(true);
+        menu->setFocus();
+    }
+    else{
+        menu->setHidden(true);
+        mesg->setHidden(false);
+        this->setFocus();
+    }
+    if(timer->isActive())
+        timer->stop();
 }
 
 void MainInterface::XYZ_Update(int i)

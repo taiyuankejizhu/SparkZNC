@@ -3,10 +3,11 @@
 
 #include <QThread>
 
-#define A_CYCLE 5   /*关机的延时计数周期*/
-#define B_CYCLE 10  /*睡眠的延时计数周期*/
+#define A_CYCLE 20   /*关机的延时计数周期*/
+#define B_CYCLE 100  /*睡眠的延时计数周期*/
 #define C_CYCLE 5  /*读取速度的延时计数周期*/
-#define D_CYCLE 128 /*关风扇延时*/
+#define D_CYCLE 100 /*关风扇延时的计数周期*/
+#define E_CYCLE 100 /*重启的延时计数周期*/
 
 class ScanThread : public QThread
 {
@@ -18,6 +19,7 @@ public:
     unsigned int b_cycle;
     unsigned int c_cycle;
     unsigned int d_cycle;
+    unsigned int e_cycle;
 
     void run();
     static long X_Count();
