@@ -16,12 +16,21 @@
         <file>restart.png</file>
         <file>setting.png</file>
         <file>shut.png</file>
-        <file>sound.png</file>
         <file>sleep.png</file>
         <file>password.png</file>
         <file>clear.png</file>
         <file>shut_b.png</file>
         <file>restart_b.png</file>
         <file>sleep_b.png</file>
+        <file>calibration.png</file>
+        <file>brightness_0.png</file>
+        <file>sound_0.png</file>
+        <file>brightness_1.png</file>
+        <file>brightness_2.png</file>
+        <file>brightness_3.png</file>
+        <file>brightness_4.png</file>
+        <file>sound_1.png</file>
+        <file>sound_2.png</file>
+        <file>sound_3.png</file>
     </qresource>
 </RCC>

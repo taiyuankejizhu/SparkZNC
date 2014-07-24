@@ -59,6 +59,8 @@
 #define UINT_END_ROW 9      /*结束行的索引*/
 #define UINT_TAB_MAX 10     /*表格的最大索引*/
 #define UINT_COOR_MAX 11    /*坐标的最大索引*/
+#define UINT_SOUND 12       /*音量的索引*/
+#define UINT_BRIGHTNESS 13  /*屏幕亮度的索引*/
 
 #define L_DEEP_CURRENT 0    /*当前深度值的索引*/
 #define L_DEEP_TARGET 1     /*目标深度值的索引*/

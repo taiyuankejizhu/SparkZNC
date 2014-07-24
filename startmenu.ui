@@ -891,6 +891,41 @@
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
+       <widget class="QWidget" name="horizontalLayoutWidget_8">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>10</y>
+          <width>131</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_brightness">
+           <property name="text">
+            <string>b_icon</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>亮度(F9)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
@@ -1325,6 +1360,41 @@
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>10</y>
+          <width>131</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_sound">
+           <property name="text">
+            <string>d_icon</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>声音(F8)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
@@ -1759,19 +1829,16 @@
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
-       <widget class="QWidget" name="verticalLayoutWidget_2">
+       <widget class="QWidget" name="horizontalLayoutWidget_7">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>10</y>
           <width>131</width>
-          <height>53</height>
+          <height>41</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="spacing">
-          <number>0</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
          <property name="leftMargin">
           <number>5</number>
          </property>
@@ -1779,36 +1846,19 @@
           <number>5</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <property name="leftMargin">
-            <number>5</number>
+          <widget class="QLabel" name="label_calibration">
+           <property name="text">
+            <string>m_icon</string>
            </property>
-           <property name="rightMargin">
-            <number>5</number>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
-           <item>
-            <widget class="QLabel" name="label_sound">
-             <property name="text">
-              <string>d_icon</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>声音</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          </widget>
          </item>
          <item>
-          <widget class="QSlider" name="horizontalSlider">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>校屏(F7)</string>
            </property>
           </widget>
          </item>
@@ -2280,7 +2330,7 @@
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>口令</string>
+            <string>口令(F6)</string>
            </property>
           </widget>
          </item>
@@ -2752,7 +2802,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>清时</string>
+            <string>清时(F5)</string>
            </property>
           </widget>
          </item>
@@ -3221,7 +3271,7 @@
          <item>
           <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>设置</string>
+            <string>设置(F4)</string>
            </property>
           </widget>
          </item>
@@ -3690,7 +3740,7 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>睡眠</string>
+            <string>睡眠(F3)</string>
            </property>
           </widget>
          </item>
@@ -4159,7 +4209,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>重启</string>
+            <string>重启(F2)</string>
            </property>
           </widget>
          </item>
@@ -4631,7 +4681,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>关机</string>
+            <string>关机(F1)</string>
            </property>
           </widget>
          </item>
