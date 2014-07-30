@@ -1,5 +1,6 @@
 #include "qcomboxtime.h"
 #include "setting.h"
+#include "qdebug.h"
 
 QcomboxTime::QcomboxTime(QWidget *parent,QString l,bool b) :
     Qcombox(parent , l )
@@ -7,7 +8,6 @@ QcomboxTime::QcomboxTime(QWidget *parent,QString l,bool b) :
     flag = b;
 
     memset(current.bytes , 0 ,sizeof current);
-    memset(target.bytes , 0 ,sizeof target);
 
     timer = new QTimer(this);
     timer->setInterval(1000);
@@ -30,8 +30,7 @@ void QcomboxTime::initTime()
         current.ushorts[MINUTES] = 0;
         current.ushorts[SECONDS] = 0;
 #ifdef ARM
-        FM25V02_READ(CURRENT_TIME , current.bytes ,sizeof current);
-        FM25V02_READ(TARGET_TIME , target.bytes ,sizeof target);
+        FM25V02_READ(CURRENT_TIME_ADDR , current.bytes ,sizeof current);
 #endif
     }
 }
@@ -47,17 +46,22 @@ void QcomboxTime::valueUpdate()
     else{
         if(++current.ushorts[SECONDS] > 60){
             current.ushorts[SECONDS] = 0;
+
+            spark_info->useup.ushorts[MINUTES]++;
+
             if(++current.ushorts[MINUTES] > 60){
                 current.ushorts[MINUTES] = 0;
+                spark_info->useup.ushorts[MINUTES] = 0;
+
                 current.ushorts[HOURS]++;
-                /*放电时间溢出*/
-                if(current.ushorts[HOURS] > target.ushorts[HOURS]){
-                    spark_info->reverseBool(B_START);
-                }
+                spark_info->useup.ushorts[HOURS]++;
             }
-#ifdef ARM
-        FM25V02_WRITE(CURRENT_TIME , current.bytes, sizeof current);
-#endif
+//#ifdef ARM
+        FM25V02_WRITE(USEDP_TIME_ADDR , spark_info->useup.bytes, sizeof spark_info->useup);
+        FM25V02_WRITE(CURRENT_TIME_ADDR , current.bytes, sizeof current);
+        /*放电时间每个分钟检查一次是否溢出*/
+        emit timerTick();
+//#endif
         }
     }
     timeToString();

@@ -22,14 +22,15 @@ public:
 private:
     void initTime();
     void timeToString();
+    /*标记实例是当前时间还是加工时间*/
     bool flag;
     QTimer *timer ;
     QTime time ;
 
     SixBytes current;
-    SixBytes target;
 
 signals:
+    void timerTick();
 
 public slots:
     void valueUpdate();

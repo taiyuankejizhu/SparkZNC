@@ -220,7 +220,7 @@ const bool bool_init[] = {
 const unsigned int uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
-        50, 5, 0, 0, 0,
+        50, 6, 0, 0, 0,
 };
 
 const long long_init[] = {
@@ -242,6 +242,10 @@ public:
     unsigned int uint_array[UINT_LENGTH];
     long l_array[L_LENGTH];
     char c_array[C_LENGTH];
+    /*放电时间溢出值*/
+    SixBytes target;
+    /*已经放电时间值*/
+    SixBytes useup;
     Table table;
 
 private:
@@ -267,6 +271,8 @@ public slots:
     void setLong(unsigned int ,long);
     void setUInt(unsigned int , unsigned int);
     void tableLoad();
+    /*检查放电时间是否溢出的槽*/
+    void checkTime();
 };
 
 extern SparkInfo *spark_info;

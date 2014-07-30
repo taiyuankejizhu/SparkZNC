@@ -7,7 +7,7 @@
 #define GPMI_FILE "/dev/mtd0"
 #define BEEP_FILE "/dev/beep"
 #define GPMC_FILE "/dev/fpga"
-#define SPI_FILE  "/dev/spidev1.0"
+#define SPI_FILE  "/dev/spidev2.0"
 
 #define TABLES_DIR "/tables/"
 
@@ -23,6 +23,7 @@
 
 #define CURRENT_TIME_ADDR 0x000300 /*当前放电时间的地址*/
 #define TARGET_TIME_ADDR  0x000400 /*放电溢出时间的地址*/
+#define USEDP_TIME_ADDR   0x000500 /*放电时间的和的地址*/
 
 /*根据Qt编译器的版本判断目标机的类型*/
 #if(QT_VERSION == 0x040801)

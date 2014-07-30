@@ -20,9 +20,13 @@ public:
     
 protected:
     void keyPressEvent(QKeyEvent *);
-    void keyReleaseEvent( QKeyEvent *k );
+    void keyReleaseEvent( QKeyEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
     void updateSelect();
     void updateIcon();
+    void doFnPress(int);
+    void doFnRelease(int);
 
 signals:
     void finish();

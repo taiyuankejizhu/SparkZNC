@@ -10,6 +10,9 @@ SparkInfo::SparkInfo(QObject *parent) :
     memcpy(l_array , long_init ,sizeof l_array);
     memset(c_array ,0x00 ,sizeof c_array);
 
+    memset(target.bytes , 0 ,sizeof target);
+    memset(useup.bytes , 0 ,sizeof useup);
+
 #ifdef ARM
     fm25v02Init();
 #endif
@@ -73,6 +76,29 @@ void SparkInfo::carryInit()
     c_array[C_P_IO2] = 0x00;
     c_array[C_P_IO3] = 0x00;
     c_array[C_P_IO4] = 0x00;
+}
+
+void SparkInfo::checkTime()
+{
+    long t = 0;
+    long u = 0;
+    /*读取时间溢出*/
+    FM25V02_READ(TARGET_TIME_ADDR , target.bytes ,sizeof target);
+    /*读取已经放电时间*/
+    FM25V02_READ(USEDP_TIME_ADDR , useup.bytes ,sizeof useup);
+
+    t |= target.ushorts[0];
+    t = t << 16;
+    u = useup.ushorts[0];
+    u = u << 16;
+
+    t |= target.ushorts[1];
+    u |= useup.ushorts[1];
+
+    /*放电时间溢出*/
+    if(u > t){
+        spark_info->setBool(B_START ,false);
+    }
 }
 
 void SparkInfo::tableInit()

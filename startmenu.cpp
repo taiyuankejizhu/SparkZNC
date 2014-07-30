@@ -23,105 +23,9 @@ StartMenu::StartMenu(QWidget *parent) :
 
 void StartMenu::keyPressEvent(QKeyEvent *k)
 {
-    QPixmap pix;
-
     if(!k->isAutoRepeat()){
         k->accept();
-        switch(k->key())
-        {
-        case Qt::Key_Down:
-            if(selected == 0)
-                selected = 9;
-            else
-                selected--;
-            updateSelect();
-            break;
-        case Qt::Key_Up:
-            if(selected > 8)
-                selected = 0;
-            else
-                selected++;
-            updateSelect();
-            break;
-        case Qt::Key_F1:
-            selected = 1;
-            if(spark_info->b_array[B_SHUTDOWN]){
-                pix = QPixmap(":/shut.png");
-                ui->label_shut->setPixmap(pix);
-            }
-            else{
-                pix = QPixmap(":/shut_b.png");
-                ui->label_shut->setPixmap(pix);
-            }
-            if(!timer->isActive()){
-                timer->start();
-            }
-            updateSelect();
-            break;
-        case Qt::Key_F2:
-            selected = 2;
-            if(spark_info->b_array[B_REBOOT]){
-                pix = QPixmap(":/restart.png");
-                ui->label_restart->setPixmap(pix);
-            }
-            else{
-                pix = QPixmap(":/restart_b.png");
-                ui->label_restart->setPixmap(pix);
-            }
-            if(!timer->isActive()){
-                timer->start();
-            }
-            updateSelect();
-            break;
-        case Qt::Key_F3:
-            selected = 3;
-            if(spark_info->b_array[B_SLEEP]){
-                pix = QPixmap(":/sleep.png");
-                ui->label_sleep->setPixmap(pix);
-            }
-            else{
-                pix = QPixmap(":/sleep_b.png");
-                ui->label_sleep->setPixmap(pix);
-            }
-            if(!timer->isActive()){
-                timer->start();
-            }
-            updateSelect();
-            break;
-        case Qt::Key_F4:
-            selected = 4;
-            updateSelect();
-            break;
-        case Qt::Key_F5:
-            selected = 5;
-            updateSelect();
-            break;
-        case Qt::Key_F6:
-            selected = 6;
-            updateSelect();
-            break;
-        case Qt::Key_F7:
-            selected = 7;
-            updateSelect();
-            break;
-        case Qt::Key_F8:
-            selected = 8;
-            selectItem();
-            updateSelect();
-            break;
-        case Qt::Key_F9:
-            selected = 9;
-            selectItem();
-            updateSelect();
-            break;
-        case Qt::Key_Enter:
-            selected = 0;
-            updateSelect();
-            emit finish();
-            break;
-        default:
-            break;
-        }
+        doFnPress(k->key());
     }
     else
         k->ignore();
@@ -129,45 +33,219 @@ void StartMenu::keyPressEvent(QKeyEvent *k)
 
 void StartMenu::keyReleaseEvent(QKeyEvent *k)
 {
-    QPixmap pix;
-
     if(!k->isAutoRepeat()){
         k->accept();
-
-        if(timer->isActive()){
-            timer->stop();
-        }
-        updateIcon();
-
-        switch(k->key())
-        {
-        case Qt::Key_F1:
-            break;
-        case Qt::Key_F2:
-            break;
-        case Qt::Key_F3:
-            break;
-        case Qt::Key_F4:
-            break;
-        case Qt::Key_F5:
-            break;
-        case Qt::Key_F6:
-            break;
-        case Qt::Key_F7:
-            break;
-        case Qt::Key_F8:
-            break;
-        case Qt::Key_F9:
-            break;
-        default :
-            break;
-        }
-
-        selected = 0;
-        updateSelect();
+        doFnRelease(k->key());
     }
     else
         k->ignore();
+}
+
+void StartMenu::mousePressEvent(QMouseEvent *m)
+{
+    int index = 0;
+    int fram = ui->frame_1->height();
+    index = m->y() / fram;
+
+    switch(index){
+    case 0:
+        doFnPress(Qt::Key_F9);
+        break;
+    case 1:
+        doFnPress(Qt::Key_F8);
+        break;
+    case 2:
+        doFnPress(Qt::Key_F7);
+        break;
+    case 3:
+        doFnPress(Qt::Key_F6);
+        break;
+    case 4:
+        doFnPress(Qt::Key_F5);
+        break;
+    case 5:
+        doFnPress(Qt::Key_F4);
+        break;
+    case 6:
+        doFnPress(Qt::Key_F3);
+        break;
+    case 7:
+        doFnPress(Qt::Key_F2);
+        break;
+    case 8:
+        doFnPress(Qt::Key_F1);
+        break;
+    default:
+        break;
+    }
+}
+
+void StartMenu::mouseReleaseEvent(QMouseEvent *m)
+{
+    int index = 0;
+    int fram = ui->frame_1->height();
+    index = m->y() / fram;
+
+    switch(index){
+    case 0:
+        doFnRelease(Qt::Key_F9);
+        break;
+    case 1:
+        doFnRelease(Qt::Key_F8);
+        break;
+    case 2:
+        doFnRelease(Qt::Key_F7);
+        break;
+    case 3:
+        doFnRelease(Qt::Key_F6);
+        break;
+    case 4:
+        doFnRelease(Qt::Key_F5);
+        break;
+    case 5:
+        doFnRelease(Qt::Key_F4);
+        break;
+    case 6:
+        doFnRelease(Qt::Key_F3);
+        break;
+    case 7:
+        doFnRelease(Qt::Key_F2);
+        break;
+    case 8:
+        doFnRelease(Qt::Key_F1);
+        break;
+    default:
+        break;
+    }
+}
+
+void StartMenu::doFnPress(int i)
+{
+    QPixmap pix;
+    switch(i)
+    {
+    case Qt::Key_Down:
+    case Qt::Key_Left:
+        emit finish();
+        break;
+    case Qt::Key_Up:
+    case Qt::Key_Right:
+        emit finish();
+        break;
+    case Qt::Key_F1:
+        selected = 1;
+        if(spark_info->b_array[B_SHUTDOWN]){
+            pix = QPixmap(":/shut.png");
+            ui->label_shut->setPixmap(pix);
+        }
+        else{
+            pix = QPixmap(":/shut_b.png");
+            ui->label_shut->setPixmap(pix);
+        }
+        if(!timer->isActive()){
+            timer->start();
+        }
+        updateSelect();
+        break;
+    case Qt::Key_F2:
+        selected = 2;
+        if(spark_info->b_array[B_REBOOT]){
+            pix = QPixmap(":/restart.png");
+            ui->label_restart->setPixmap(pix);
+        }
+        else{
+            pix = QPixmap(":/restart_b.png");
+            ui->label_restart->setPixmap(pix);
+        }
+        if(!timer->isActive()){
+            timer->start();
+        }
+        updateSelect();
+        break;
+    case Qt::Key_F3:
+        selected = 3;
+        if(spark_info->b_array[B_SLEEP]){
+            pix = QPixmap(":/sleep.png");
+            ui->label_sleep->setPixmap(pix);
+        }
+        else{
+            pix = QPixmap(":/sleep_b.png");
+            ui->label_sleep->setPixmap(pix);
+        }
+        if(!timer->isActive()){
+            timer->start();
+        }
+        updateSelect();
+        break;
+    case Qt::Key_F4:
+        selected = 4;
+        updateSelect();
+        break;
+    case Qt::Key_F5:
+        selected = 5;
+        updateSelect();
+        break;
+    case Qt::Key_F6:
+        selected = 6;
+        updateSelect();
+        break;
+    case Qt::Key_F7:
+        selected = 7;
+        updateSelect();
+        break;
+    case Qt::Key_F8:
+        selected = 8;
+        selectItem();
+        updateSelect();
+        break;
+    case Qt::Key_F9:
+        selected = 9;
+        selectItem();
+        updateSelect();
+        break;
+    case Qt::Key_Enter:
+        selected = 0;
+        updateSelect();
+        emit finish();
+        break;
+    default:
+        break;
+    }
+}
+
+void StartMenu::doFnRelease(int i)
+{
+    if(timer->isActive()){
+        timer->stop();
+    }
+    updateIcon();
+
+    switch(i)
+    {
+    case Qt::Key_F1:
+        break;
+    case Qt::Key_F2:
+        break;
+    case Qt::Key_F3:
+        break;
+    case Qt::Key_F4:
+        break;
+    case Qt::Key_F5:
+        break;
+    case Qt::Key_F6:
+        break;
+    case Qt::Key_F7:
+        break;
+    case Qt::Key_F8:
+        break;
+    case Qt::Key_F9:
+        break;
+    default :
+        break;
+    }
+
+    selected = 0;
+    updateSelect();
 }
 
 void StartMenu::updateSelect()
@@ -275,8 +353,11 @@ void StartMenu::selectItem()
     default:
         break;
     }
-    if(timer->isActive())
+    if(timer->isActive()){
         timer->stop();
+        selected = 0;
+        updateSelect();
+    }
 }
 
 void StartMenu::updateIcon()

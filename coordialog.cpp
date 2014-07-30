@@ -113,6 +113,12 @@ void CoorDialog::updateContent()
 
     ui->listView->setEditTriggers(QListView::NoEditTriggers);
     ui->listView->setModel(model);
+
+    ui->listView->setFixedHeight(154);
+    /*
+    for(i = 0;i < model->rowCount();i++){
+        ui->listView->setFixedHeight();
+    }*/
 }
 
 QString CoorDialog::toString(long l)
