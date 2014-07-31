@@ -21,7 +21,7 @@
 #define 	SNR			0xC3	// Read S/N.
 
 /*铁电存储器的文件描述符*/
-static int spi_fb;
+static int spi_fb = 0;
 static uint8 mode;
 static uint8 bits = 8;
 static uint32 speed = 20000000;
@@ -133,6 +133,9 @@ void FM25V02_Exit(void)
 */
 void MSPISendData(uint8 data)
 {
+    if(spi_fb < 0)
+        return;
+
     printf("MSPISendData()\n");
     uint8 txz[1] = {0};
     uint8 rxz[1] = {0};
@@ -194,6 +197,9 @@ void FM25V02_WRDI(void)
 */
 void FM25V02_WRSR(uint8 Reg_Status)
 {
+    if(spi_fb < 0)
+        return;
+
     FM25V02_WREN();
     printf("FM25V02_WRSR()\n");
     uint8 txz[2] = {0};
@@ -227,6 +233,9 @@ void FM25V02_WRSR(uint8 Reg_Status)
 */
 uint8 FM25V02_RDSR(void)
 {
+    if(spi_fb < 0)
+        return;
+
     printf("FM25V02_RDSR()\n");
     uint8 txz[1] = {0};
     uint8 rxz[1] = {0};
@@ -277,48 +286,50 @@ void FM25V02_PWDN(void)
 */
 void FM25V02_WRITE(uint32 WAddr, uint8 *pBuf, uint32 num)
 {
-        FM25V02_WREN();
-        uint8  WAddrL, WAddrH;
+    if(spi_fb < 0)
+        return;
 
-        // FM25V02 ADDR: 0x000000 ~ 0x007FFF.
-        // FM25V05 ADDR: 0x000000 ~ 0x00FFFF.
-        // FM25V10 ADDR: 0x000000 ~ 0x01FFFF.
-        // FM25H10 ADDR: 0x000000 ~ 0x03FFFF.
-        WAddrL =   WAddr & 0x000000FF;
-        WAddrH = ((WAddr >>  8) & 0x0000007F);
+    FM25V02_WREN();
+    uint8  WAddrL, WAddrH;
 
-        printf("L:%.2X \n" ,WAddrL);
-        printf("H:%.2X \n" ,WAddrH);
+    // FM25V02 ADDR: 0x000000 ~ 0x007FFF.
+    // FM25V05 ADDR: 0x000000 ~ 0x00FFFF.
+    // FM25V10 ADDR: 0x000000 ~ 0x01FFFF.
+    // FM25H10 ADDR: 0x000000 ~ 0x03FFFF.
+    WAddrL =   WAddr & 0x000000FF;
+    WAddrH = ((WAddr >>  8) & 0x0000007F);
 
-        uint8 txz[15] = {0};
-        uint8 rxz[1] = {0};
+    printf("L:%.2X \n" ,WAddrL);
+    printf("H:%.2X \n" ,WAddrH);
 
-        memset(txz , 0 ,sizeof txz);
-        memset(rxz , 0 ,sizeof rxz);
-        memset(xfer , 0 , sizeof xfer);
+    uint8 txz[15] = {0};
+    uint8 rxz[1] = {0};
 
-        txz[0] = WRITE;
-        txz[1] = WAddrH;
-        txz[2] = WAddrL;
+    memset(txz , 0 ,sizeof txz);
+    memset(rxz , 0 ,sizeof rxz);
+    memset(xfer , 0 , sizeof xfer);
 
-        uint32 ret;
-        for(ret = 0;ret < num;ret++)
-                txz[ret+3] = pBuf[ret];
+    txz[0] = WRITE;
+    txz[1] = WAddrH;
+    txz[2] = WAddrL;
 
+    uint32 ret;
+    for(ret = 0;ret < num;ret++)
+        txz[ret+3] = pBuf[ret];
 
-        xfer[0].tx_buf = (unsigned long)txz;
-        xfer[0].len = num+3;
+    xfer[0].tx_buf = (unsigned long)txz;
+    xfer[0].len = num+3;
 
-        ret = ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
+    ret = ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
 
-        printf("write:");
-        for (ret = 0; ret < num+3; ret++) {
-                if (!(ret % num+3))
-                        puts("");
-                printf("%.2X ", txz[ret]);
-        }
-        puts("");
-        FM25V02_WRDI();
+    printf("write:");
+    for (ret = 0; ret < num+3; ret++) {
+        if (!(ret % num+3))
+            puts("");
+        printf("%.2X ", txz[ret]);
+    }
+    puts("");
+    FM25V02_WRDI();
 }
 
 /*
@@ -332,44 +343,46 @@ void FM25V02_WRITE(uint32 WAddr, uint8 *pBuf, uint32 num)
 */
 void FM25V02_READ(uint32 RAddr, uint8 *pBuf, uint32 num)
 {
-        uint8 RAddrL, RAddrH;
+    if(spi_fb < 0)
+        return;
 
-        // FM25V02 ADDR: 0x000000 ~ 0x007FFF.
-        // FM25V05 ADDR: 0x000000 ~ 0x00FFFF.
-        // FM25V10 ADDR: 0x000000 ~ 0x01FFFF.
-        // FM25H10 ADDR: 0x000000 ~ 0x03FFFF.
-        RAddrL =   RAddr & 0x000000FF;
-        RAddrH = ((RAddr >>  8) & 0x0000007F);
+    uint8 RAddrL, RAddrH;
 
-        printf("L:%.2X \n" ,RAddrL);
-        printf("H:%.2X \n" ,RAddrH);
+    // FM25V02 ADDR: 0x000000 ~ 0x007FFF.
+    // FM25V05 ADDR: 0x000000 ~ 0x00FFFF.
+    // FM25V10 ADDR: 0x000000 ~ 0x01FFFF.
+    // FM25H10 ADDR: 0x000000 ~ 0x03FFFF.
+    RAddrL =   RAddr & 0x000000FF;
+    RAddrH = ((RAddr >>  8) & 0x0000007F);
 
-        uint8 txz[3] = {0};
-        uint8 rxz[1] = {0};
+    printf("L:%.2X \n" ,RAddrL);
+    printf("H:%.2X \n" ,RAddrH);
 
-        memset(txz , 0 ,sizeof txz);
-        memset(rxz , 0 ,sizeof rxz);
-        memset(xfer , 0 , sizeof xfer);
+    uint8 txz[3] = {0};
+    uint8 rxz[1] = {0};
 
-        txz[0] = READ;
-        txz[1] = RAddrH;
-        txz[2] = RAddrL;
+    memset(txz , 0 ,sizeof txz);
+    memset(xfer , 0 , sizeof xfer);
 
-        uint32 ret;
+    txz[0] = READ;
+    txz[1] = RAddrH;
+    txz[2] = RAddrL;
 
-        xfer[0].tx_buf = (unsigned long)txz;
-        xfer[0].len = 3;
+    uint32 ret;
 
-        xfer[1].rx_buf = (unsigned long)pBuf;
-        xfer[1].len = num;
+    xfer[0].tx_buf = (unsigned long)txz;
+    xfer[0].len = 3;
 
-        ret = ioctl(spi_fb, SPI_IOC_MESSAGE(2), xfer);
+    xfer[1].rx_buf = (unsigned long)pBuf;
+    xfer[1].len = num;
 
-        printf("read:");
-        for (ret = 0; ret < num; ret++) {
-                if (!(ret % num))
-                        puts("");
-                printf("%.2X ", pBuf[ret]);
-        }
-        puts("");
+    ret = ioctl(spi_fb, SPI_IOC_MESSAGE(2), xfer);
+
+    printf("read:");
+    for (ret = 0; ret < num; ret++) {
+        if (!(ret % num))
+            puts("");
+        printf("%.2X ", pBuf[ret]);
+    }
+    puts("");
 }

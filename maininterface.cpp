@@ -32,7 +32,7 @@ public:
 };
 
 /*蜂鸣器文件描述符*/
-static int beep_fb;
+static int beep_fb = 0;
 
 MainInterface::MainInterface(QWidget *parent) :
     QWidget(parent),
@@ -43,12 +43,8 @@ MainInterface::MainInterface(QWidget *parent) :
     key_pressed = false;
     start_or_end = true;
 
-#ifdef ARM
     initHardware();
-#endif
-
     FPGA_Init();
-    printf("FPGA_Init()!\n");
 
     XYZ_Update(L_X_CURRENT);
     XYZ_Update(L_Y_CURRENT);
@@ -165,10 +161,8 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
         k->accept();
         QPushButton *Fn ;
 
-#ifdef ARM
         if (beep_fb > 0)
-                ioctl(beep_fb, 1, 20);
-#endif
+            ioctl(beep_fb, 1, 20);
 
         switch(k->key())
         {
@@ -302,7 +296,7 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
         k->accept();
 
         if (beep_fb > 0)
-                ioctl(beep_fb, 0, 1);
+            ioctl(beep_fb, 0, 1);
 
         switch(k->key())
         {

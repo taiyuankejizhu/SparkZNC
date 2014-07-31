@@ -29,9 +29,8 @@ void QcomboxTime::initTime()
         current.ushorts[HOURS] = 0;
         current.ushorts[MINUTES] = 0;
         current.ushorts[SECONDS] = 0;
-#ifdef ARM
+
         FM25V02_READ(CURRENT_TIME_ADDR , current.bytes ,sizeof current);
-#endif
     }
 }
 
@@ -56,12 +55,12 @@ void QcomboxTime::valueUpdate()
                 current.ushorts[HOURS]++;
                 spark_info->useup.ushorts[HOURS]++;
             }
-//#ifdef ARM
+
         FM25V02_WRITE(USEDP_TIME_ADDR , spark_info->useup.bytes, sizeof spark_info->useup);
         FM25V02_WRITE(CURRENT_TIME_ADDR , current.bytes, sizeof current);
         /*放电时间每个分钟检查一次是否溢出*/
         emit timerTick();
-//#endif
+
         }
     }
     timeToString();

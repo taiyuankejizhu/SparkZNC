@@ -13,9 +13,7 @@ SparkInfo::SparkInfo(QObject *parent) :
     memset(target.bytes , 0 ,sizeof target);
     memset(useup.bytes , 0 ,sizeof useup);
 
-#ifdef ARM
     fm25v02Init();
-#endif
 
     carryInit();
     tableInit();
@@ -269,25 +267,23 @@ void SparkInfo::setLong(unsigned int i,long l)
 
             /*只有在数据改变时才会写入铁电芯片*/
             if(check){
-#ifdef ARM
-        EightBytes wr;
-        wr.longs = 0;
-        wr.longs = spark_info->l_array[i];
+                EightBytes wr;
+                wr.longs = 0;
+                wr.longs = spark_info->l_array[i];
 
-        switch(i){
-        case L_X_CURRENT:
-            FM25V02_WRITE(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
-            break;
-        case L_Y_CURRENT:
-            FM25V02_WRITE(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
-            break;
-        case L_Z_CURRENT:
-            FM25V02_WRITE(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
-            break;
-        default:
-            break;
-        }
-#endif
+                switch(i){
+                case L_X_CURRENT:
+                    FM25V02_WRITE(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
+                    break;
+                case L_Y_CURRENT:
+                    FM25V02_WRITE(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
+                    break;
+                case L_Z_CURRENT:
+                    FM25V02_WRITE(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
+                    break;
+                default:
+                    break;
+                }
             }
 
             emit xyzChange(i);
@@ -334,13 +330,11 @@ void SparkInfo::setUInt(unsigned int i, unsigned int u)
             uint_array[UINT_START_ROW] = 0;
             uint_array[UINT_END_ROW] = 0;
 
-#ifdef ARM
             /*保存当前组别的索引*/
             FourBytes t_axis;
             memset(t_axis.bytes , 0 ,sizeof t_axis);
             t_axis.uint = uint_array[UINT_TAB_INDEX];
             FM25V02_WRITE(CURRENT_TAB_ADDR , t_axis.bytes ,sizeof t_axis);
-#endif
 
             emit tableIndexChange();
             emit tableRowChange();
@@ -360,13 +354,11 @@ void SparkInfo::setUInt(unsigned int i, unsigned int u)
             memset(c_y.bytes , 0 ,sizeof c_y);
             memset(c_z.bytes , 0 ,sizeof c_z);
 
-#ifdef ARM
             FM25V02_WRITE(CURRENT_AXIS_ADDR , c_axis.bytes ,sizeof c_axis);
 
             FM25V02_READ(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_x), c_x.bytes ,sizeof c_x);
             FM25V02_READ(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
             FM25V02_READ(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
-#endif
 
             spark_info->setLong(L_X_CURRENT ,c_x.longs);
             spark_info->setLong(L_Y_CURRENT ,c_y.longs);
