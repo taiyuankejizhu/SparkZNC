@@ -15,7 +15,7 @@
 #include <QBrush>
 #include <QColor>
 
-#define COLUMN_COUNT 9
+#define COLUMN_COUNT 11
 
 #define EXIST_COLOR QColor(0x00 ,0xFF ,0x00)
 #define UNEXIST_COLOR QColor(0xFF ,0xFF ,0xFF)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
-    <height>220</height>
+    <width>880</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>670</width>
-     <height>220</height>
+     <width>881</width>
+     <height>301</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -475,8 +475,8 @@
      <rect>
       <x>-1</x>
       <y>-1</y>
-      <width>671</width>
-      <height>221</height>
+      <width>881</width>
+      <height>301</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -494,6 +494,9 @@
      </property>
      <item>
       <layout class="QFormLayout" name="formLayout">
+       <property name="verticalSpacing">
+        <number>20</number>
+       </property>
        <item row="2" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">

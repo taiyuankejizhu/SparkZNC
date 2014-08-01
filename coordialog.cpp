@@ -9,7 +9,7 @@ CoorDialog::CoorDialog(QWidget *parent) :
     ui(new Ui::CoorDialog)
 {
     ui->setupUi(this);
-    this->setGeometry(0 ,320 ,670 ,220);
+    this->setGeometry(0 ,390 ,880 ,300);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     QPixmap a_pix = QPixmap(":/selected.png");
@@ -81,7 +81,7 @@ void CoorDialog::updateContent()
         QStandardItem* item = new QStandardItem();
         value.clear();
         value.append(QString::number(i)+":");
-#ifdef ARM
+
         /*读取当前坐标*/
         EightBytes  c_xi;
         EightBytes  c_yi;
@@ -95,10 +95,8 @@ void CoorDialog::updateContent()
         FM25V02_READ(Y_AXIS_ADDR + i*3*(sizeof c_yi), c_yi.bytes ,sizeof c_yi);
         FM25V02_READ(Z_AXIS_ADDR + i*3*(sizeof c_zi), c_zi.bytes ,sizeof c_zi);
 
-        value.append("X:"+toString(c_xi.longs)+"Y:"+toString(c_yi.longs)+"Z:"+toString(c_zi.longs));
-#else
-        value.append("Null");
-#endif
+        value.append("      X:"+toString(c_xi.longs)+"      Y:"+toString(c_yi.longs)+"      Z:"+toString(c_zi.longs));
+
         if(i == selected)
             item->setIcon(a_icon);
         else
@@ -114,7 +112,7 @@ void CoorDialog::updateContent()
     ui->listView->setEditTriggers(QListView::NoEditTriggers);
     ui->listView->setModel(model);
 
-    ui->listView->setFixedHeight(154);
+    ui->listView->setFixedHeight(200);
     /*
     for(i = 0;i < model->rowCount();i++){
         ui->listView->setFixedHeight();

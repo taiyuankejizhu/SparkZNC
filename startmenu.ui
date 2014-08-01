@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>130</width>
-    <height>540</height>
+    <width>144</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="palette">
@@ -433,8 +433,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>130</width>
-     <height>540</height>
+     <width>144</width>
+     <height>690</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -451,12 +451,18 @@
      <rect>
       <x>0</x>
       <y>-1</y>
-      <width>131</width>
-      <height>541</height>
+      <width>141</width>
+      <height>691</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
       <number>0</number>
      </property>
      <item>
@@ -464,7 +470,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -895,8 +901,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -933,7 +939,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -1364,8 +1370,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -1402,7 +1408,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -1833,8 +1839,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -1871,7 +1877,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -2302,8 +2308,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -2343,7 +2349,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -2774,8 +2780,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -2815,7 +2821,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -3246,8 +3252,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -3284,7 +3290,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -3715,8 +3721,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -3753,7 +3759,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -4184,8 +4190,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>
@@ -4222,7 +4228,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>60</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="palette">
@@ -4653,8 +4659,8 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>131</width>
+          <y>20</y>
+          <width>141</width>
           <height>41</height>
          </rect>
         </property>

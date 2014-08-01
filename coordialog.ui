@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
-    <height>220</height>
+    <width>880</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>670</width>
-     <height>220</height>
+     <width>880</width>
+     <height>300</height>
     </rect>
    </property>
    <property name="palette">
@@ -462,9 +462,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>6</y>
-      <width>671</width>
-      <height>211</height>
+      <y>0</y>
+      <width>881</width>
+      <height>1901</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -475,12 +475,18 @@
       <number>6</number>
      </property>
      <property name="verticalSpacing">
-      <number>2</number>
+      <number>10</number>
      </property>
      <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
       <number>5</number>
      </property>
      <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
       <number>5</number>
      </property>
      <item row="0" column="0">
@@ -521,21 +527,21 @@
      <item row="1" column="1">
       <widget class="QListView" name="listView">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>620</width>
-         <height>150</height>
+         <width>800</width>
+         <height>220</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>630</width>
-         <height>160</height>
+         <width>880</width>
+         <height>300</height>
         </size>
        </property>
       </widget>

@@ -378,7 +378,7 @@ void MainInterface::tableAddRow(int i)
     item <<item1<<item2<<item3<<item4<<item5<<item6<<item7<<item8<<item9<<item10<<item11;
     model->appendRow(item);
 
-    int width = 54;
+    int width = 71;
     ui->tableView->setColumnWidth(0,width+width);
     ui->tableView->setColumnWidth(1,width);
     ui->tableView->setColumnWidth(2,width);
@@ -392,7 +392,7 @@ void MainInterface::tableAddRow(int i)
     ui->tableView->setColumnWidth(10,width);
 
     for(int i=0 ;i < TABLE_ROWS;i++)
-        ui->tableView->setRowHeight(i ,20);
+        ui->tableView->setRowHeight(i ,28);
 
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     ui->tableView->horizontalHeader()->setFixedHeight(17);
@@ -407,7 +407,7 @@ void MainInterface::tableStateUpdate(char c)
 {
     tableDataUpdate();
 
-    int width = 54;
+    int width = 71;
     ui->tableView->setColumnWidth(0,width+width);
     ui->tableView->setColumnWidth(1,width);
     ui->tableView->setColumnWidth(2,width);
@@ -421,7 +421,7 @@ void MainInterface::tableStateUpdate(char c)
     ui->tableView->setColumnWidth(10,width);
 
     for(int i=0 ;i < TABLE_ROWS;i++)
-        ui->tableView->setRowHeight(i ,20);
+        ui->tableView->setRowHeight(i ,28);
 
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     ui->tableView->horizontalHeader()->setFixedHeight(17);
