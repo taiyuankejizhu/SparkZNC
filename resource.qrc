@@ -32,5 +32,6 @@
         <file>sound_1.png</file>
         <file>sound_2.png</file>
         <file>sound_3.png</file>
+        <file>unlock.png</file>
     </qresource>
 </RCC>

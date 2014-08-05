@@ -29,9 +29,6 @@ private:
 
     SixBytes current;
 
-signals:
-    void timerTick();
-
 public slots:
     void valueUpdate();
     void updateTimer();

@@ -272,7 +272,7 @@ public slots:
     void setUInt(unsigned int , unsigned int);
     void tableLoad();
     /*检查放电时间是否溢出的槽*/
-    void checkTime();
+    bool checkTime();
 };
 
 extern SparkInfo *spark_info;

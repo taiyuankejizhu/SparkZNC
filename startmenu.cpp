@@ -376,7 +376,10 @@ void StartMenu::updateIcon()
     pix = QPixmap(":/sleep.png");
     ui->label_sleep->setPixmap(pix);
 
-    pix = QPixmap(":/password.png");
+    if(spark_info->checkTime())
+        pix = QPixmap(":/password.png");
+    else
+        pix = QPixmap(":/unlock.png");
     ui->label_password->setPixmap(pix);
 
     pix = QPixmap(":/clear.png");

@@ -58,9 +58,10 @@ void QcomboxTime::valueUpdate()
 
         FM25V02_WRITE(USEDP_TIME_ADDR , spark_info->useup.bytes, sizeof spark_info->useup);
         FM25V02_WRITE(CURRENT_TIME_ADDR , current.bytes, sizeof current);
-        /*放电时间每个分钟检查一次是否溢出*/
-        emit timerTick();
 
+        /*放电时间每个分钟检查一次是否溢出*/
+        if(!spark_info->checkTime())
+            spark_info->setBool(B_START ,false);
         }
     }
     timeToString();

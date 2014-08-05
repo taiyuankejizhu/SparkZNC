@@ -76,7 +76,7 @@ void SparkInfo::carryInit()
     c_array[C_P_IO4] = 0x00;
 }
 
-void SparkInfo::checkTime()
+bool SparkInfo::checkTime()
 {
     long t = 0;
     long u = 0;
@@ -95,7 +95,10 @@ void SparkInfo::checkTime()
 
     /*放电时间溢出*/
     if(u > t){
-        spark_info->setBool(B_START ,false);
+        return false;
+    }
+    else {
+        return true;
     }
 }
 
