@@ -9,7 +9,7 @@ JumpDialog::JumpDialog(QWidget *parent) :
     bool ok = false;
 
     ui->setupUi(this);
-    this->setGeometry(0 ,390 ,880 ,300);
+    this->setGeometry(0 ,390 ,874 ,300);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     QPixmap a_pix = QPixmap(":/selected.png");

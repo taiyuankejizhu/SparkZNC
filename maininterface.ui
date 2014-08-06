@@ -433,7 +433,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>650</width>
+     <width>644</width>
      <height>350</height>
     </rect>
    </property>
@@ -451,8 +451,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>651</width>
-      <height>359</height>
+      <width>641</width>
+      <height>353</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -675,7 +675,7 @@
   <widget class="QFrame" name="frame_2">
    <property name="geometry">
     <rect>
-     <x>650</x>
+     <x>644</x>
      <y>0</y>
      <width>230</width>
      <height>175</height>
@@ -928,7 +928,7 @@
   <widget class="QFrame" name="frame_3">
    <property name="geometry">
     <rect>
-     <x>650</x>
+     <x>644</x>
      <y>175</y>
      <width>230</width>
      <height>175</height>
@@ -1184,7 +1184,7 @@
     <rect>
      <x>0</x>
      <y>350</y>
-     <width>880</width>
+     <width>874</width>
      <height>40</height>
     </rect>
    </property>
@@ -4868,9 +4868,9 @@
   <widget class="QFrame" name="frame_6">
    <property name="geometry">
     <rect>
-     <x>880</x>
+     <x>874</x>
      <y>0</y>
-     <width>144</width>
+     <width>150</width>
      <height>690</height>
     </rect>
    </property>
@@ -4880,31 +4880,31 @@
    <property name="frameShadow">
     <enum>QFrame::Plain</enum>
    </property>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>880</x>
-     <y>0</y>
-     <width>141</width>
-     <height>691</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>0</number>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>151</width>
+      <height>691</height>
+     </rect>
     </property>
-    <property name="margin">
-     <number>0</number>
-    </property>
-   </layout>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame_7">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>390</y>
-     <width>880</width>
+     <width>874</width>
      <height>300</height>
     </rect>
    </property>

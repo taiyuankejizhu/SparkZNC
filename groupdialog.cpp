@@ -9,7 +9,7 @@ GroupDialog::GroupDialog(QWidget *parent) :
     ui(new Ui::GroupDialog)
 {
     ui->setupUi(this);
-    this->setGeometry(0 ,390 ,880 ,300);
+    this->setGeometry(0 ,390 ,874 ,300);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     QPixmap a_pix = QPixmap(":/selected.png");
@@ -112,7 +112,7 @@ void GroupDialog::updateContent()
     ui->tableView->setModel(model);
 
     for(k = 0;k < model->columnCount();k++){
-        ui->tableView->setColumnWidth(k ,72);
+        ui->tableView->setColumnWidth(k ,74);
     }
     for(y = 0;y < model->rowCount();y++){
         ui->tableView->setRowHeight(y ,24);

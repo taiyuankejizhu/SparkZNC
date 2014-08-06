@@ -10,6 +10,7 @@
 #define SPI_FILE  "/dev/spidev2.0"
 
 #define TABLES_DIR "/tables/"
+#define TSLIB_CALIBFILE "/etc/pointercal"
 
 #define SCALE 1     /*光栅尺的刻度，1微米，5微米*/
 

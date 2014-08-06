@@ -3,6 +3,8 @@
 #include <QtGlobal>
 #include <QFont>
 #include <QTranslator>
+#include <QProcess>
+#include <QFile>
 #include "maininterface.h"
 #include "sparkinfo.h"
 #include "myinputpanelcontext.h"
@@ -16,6 +18,26 @@ SparkInfo *spark_info = new SparkInfo();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QFile file;
+    file.setFileName(TSLIB_CALIBFILE);
+    /*屏幕没有校验*/
+    if(!file.exists()){
+        QProcess proc;
+        proc.start("ts_calibrate");
+
+        if (!proc.waitForStarted())
+        {
+            qDebug()<<"fail to start ts_calibrate!\n";
+        }
+        else{
+            proc.closeWriteChannel();
+            QByteArray procOutput;
+            while (false == proc.waitForFinished());
+            procOutput = proc.readAll();
+            qDebug()<<procOutput.data()<<endl;
+        }
+    }
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
