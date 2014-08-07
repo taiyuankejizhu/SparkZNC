@@ -1,6 +1,7 @@
 #ifndef STARTMENU_H
 #define STARTMENU_H
 
+#include "cleardialog.h"
 #include <QWidget>
 #include <QMouseEvent>
 #include <QTimer>
@@ -15,6 +16,7 @@ class StartMenu : public QWidget
     
 public:
     explicit StartMenu(QWidget *parent = 0);
+    ClearDialog *clear;
     unsigned int selected;
     ~StartMenu();
     

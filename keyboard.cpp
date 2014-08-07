@@ -12,7 +12,7 @@ KeyBoard::KeyBoard(QWidget *parent)
 
 	m_ui = new Ui::KeyBoard;
 	m_ui->setupUi(this);
-    setGeometry(0 ,0 ,874 ,350);
+    this->setGeometry(0 ,0 ,width() ,height());
     setWindowFlags(Qt::FramelessWindowHint);
 
 	QSignalMapper* mapper = new QSignalMapper(this);

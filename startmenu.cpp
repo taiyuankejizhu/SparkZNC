@@ -14,6 +14,9 @@ StartMenu::StartMenu(QWidget *parent) :
 
     selected = 0;
 
+    clear = new ClearDialog(parent);
+    clear->setHidden(true);
+
     timer = new QTimer(this);
     timer->setInterval(500);
     connect(timer ,SIGNAL(timeout()) ,this ,SLOT(selectItem()));
@@ -231,6 +234,13 @@ void StartMenu::doFnRelease(int i)
     case Qt::Key_F4:
         break;
     case Qt::Key_F5:
+        if(clear->isHidden()){
+            clear->setHidden(false);
+        }
+        else{
+            clear->setHidden(true);
+        }
+        emit finish();
         break;
     case Qt::Key_F6:
         break;

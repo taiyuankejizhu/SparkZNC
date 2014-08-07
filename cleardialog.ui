@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ClearDialog</class>
+ <widget class="QDialog" name="ClearDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <property name="inputMethodHints">
+   <set>Qt::ImhHiddenText</set>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::WinPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>4</number>
+   </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>381</width>
+      <height>156</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <property name="formAlignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>10</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>icon</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_1">
+       <property name="text">
+        <string>请输入密码：</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="maxLength">
+        <number>6</number>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ClearDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ClearDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

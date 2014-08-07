@@ -25,8 +25,8 @@ private:
     /*标记实例是当前时间还是加工时间*/
     bool flag;
     QTimer *timer ;
-    QTime time ;
 
+    QTime time ;
     SixBytes current;
 
 public slots:

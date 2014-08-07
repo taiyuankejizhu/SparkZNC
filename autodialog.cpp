@@ -7,7 +7,7 @@ AutoDialog::AutoDialog(QWidget *parent) :
     ui(new Ui::AutoDialog)
 {
     ui->setupUi(this);
-    this->setGeometry(0 ,390 ,874 ,300);
+    this->setGeometry(0 ,390 ,width() ,height());
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     QPixmap a_pix = QPixmap(":/selected.png");
