@@ -2,6 +2,8 @@
 #define STARTMENU_H
 
 #include "cleardialog.h"
+#include "keydialog.h"
+#include "settingdialog.h"
 #include <QWidget>
 #include <QMouseEvent>
 #include <QTimer>
@@ -17,6 +19,8 @@ class StartMenu : public QWidget
 public:
     explicit StartMenu(QWidget *parent = 0);
     ClearDialog *clear;
+    KeyDialog *key;
+    SettingDialog *setting;
     unsigned int selected;
     ~StartMenu();
     
@@ -34,6 +38,7 @@ signals:
     void finish();
 public slots:
     void selectItem();
+    void dialogFinish(int);
 
 private:
     Ui::StartMenu *ui;

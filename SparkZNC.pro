@@ -34,7 +34,9 @@ HEADERS += en_keymap.h \
     toplevel.h \
     startmenu.h \
     myinputpanelcontext.h \
-    cleardialog.h
+    cleardialog.h \
+    keydialog.h \
+    settingdialog.h
 FORMS += autodialog.ui \
               coordialog.ui \
               groupdialog.ui \
@@ -48,7 +50,9 @@ FORMS += autodialog.ui \
               seconlevel_f6.ui \
               toplevel.ui \
     startmenu.ui \
-    cleardialog.ui
+    cleardialog.ui \
+    keydialog.ui \
+    settingdialog.ui
 SOURCES += fm25v02.c \
            fpga.c \
            main.cpp \
@@ -75,7 +79,9 @@ SOURCES += fm25v02.c \
     toplevel.cpp \
     startmenu.cpp \
     myinputpanelcontext.cpp \
-    cleardialog.cpp
+    cleardialog.cpp \
+    keydialog.cpp \
+    settingdialog.cpp
 
 RESOURCES += \
     resource.qrc

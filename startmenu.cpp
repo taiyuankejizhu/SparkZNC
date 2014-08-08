@@ -15,11 +15,21 @@ StartMenu::StartMenu(QWidget *parent) :
     selected = 0;
 
     clear = new ClearDialog(parent);
-    clear->setHidden(true);
+    clear->hide();
+
+    key = new KeyDialog(parent);
+    key->hide();
+
+    setting = new SettingDialog(parent);
+    setting->hide();
 
     timer = new QTimer(this);
     timer->setInterval(500);
     connect(timer ,SIGNAL(timeout()) ,this ,SLOT(selectItem()));
+
+    connect(clear ,SIGNAL(finished(int)) ,this ,SLOT(dialogFinish(int)));
+    connect(key ,SIGNAL(finished(int)) ,this ,SLOT(dialogFinish(int)));
+    connect(setting ,SIGNAL(finished(int)) ,this ,SLOT(dialogFinish(int)));
 
     updateIcon();
 }
@@ -232,17 +242,34 @@ void StartMenu::doFnRelease(int i)
     case Qt::Key_F3:
         break;
     case Qt::Key_F4:
+        if(setting->isHidden()){
+            setting->show();
+            setting->setFocus();
+        }
+        else{
+            setting->hide();
+        }
+        emit finish();
         break;
     case Qt::Key_F5:
         if(clear->isHidden()){
-            clear->setHidden(false);
+            clear->show();
+            clear->setFocus();
         }
         else{
-            clear->setHidden(true);
+            clear->hide();
         }
         emit finish();
         break;
     case Qt::Key_F6:
+        if(key->isHidden()){
+            key->show();
+            key->setFocus();
+        }
+        else{
+            key->hide();
+        }
+        emit finish();
         break;
     case Qt::Key_F7:
         break;
@@ -462,6 +489,14 @@ void StartMenu::updateIcon()
         pix = QPixmap(":/brightness_4.png");
         ui->label_brightness->setPixmap(pix);
     }
+}
+
+void StartMenu::dialogFinish(int i)
+{
+    if(i == 0)
+        parentWidget()->setFocus();
+    else
+        parentWidget()->setFocus();
 }
 
 StartMenu::~StartMenu()

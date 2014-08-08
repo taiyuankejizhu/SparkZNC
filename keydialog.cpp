@@ -1,12 +1,13 @@
-#include "cleardialog.h"
-#include "ui_cleardialog.h"
+#include "keydialog.h"
+#include "ui_keydialog.h"
 #include "qdebug.h"
 
-ClearDialog::ClearDialog(QWidget *parent) :
+KeyDialog::KeyDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ClearDialog)
+    ui(new Ui::KeyDialog)
 {
     ui->setupUi(this);
+
     this->setGeometry((parent->width()-width())/2 ,390 ,width() ,height());
     this->setWindowFlags(Qt::FramelessWindowHint);
 
@@ -15,10 +16,14 @@ ClearDialog::ClearDialog(QWidget *parent) :
     QPixmap cancel_pix = QPixmap(":/cancel.png");
     cancel_icon = QIcon(cancel_pix);
 
-    QPixmap c_pix = QPixmap(":/clear.png");
+    QPixmap c_pix = QPixmap(":/password.png");
 
     connect(ui->lineEdit ,SIGNAL(textChanged(QString)) ,this ,SLOT(valueChange(QString)));
+    connect(ui->lineEdit_1 ,SIGNAL(textChanged(QString)) ,this ,SLOT(keyChange(QString)));
     connect(this ,SIGNAL(finished(int)) ,this ,SLOT(commitResult(int)));
+
+    ui->label_2->setText("XXXXXXXXXXX");
+    ui->lineEdit_1->setDisabled(true);
 
     ui->label->setPixmap(c_pix);
     ui->buttonBox->button(ui->buttonBox->Ok)->setText(tr("确定(O)"));
@@ -30,7 +35,7 @@ ClearDialog::ClearDialog(QWidget *parent) :
     ui->buttonBox->button(ui->buttonBox->Cancel)->setIconSize(QSize(32,32));
 }
 
-void ClearDialog::keyPressEvent(QKeyEvent *k)
+void KeyDialog::keyPressEvent(QKeyEvent *k)
 {
     k->accept();
     switch(k->key())
@@ -49,7 +54,7 @@ void ClearDialog::keyPressEvent(QKeyEvent *k)
     case Qt::Key_F6:
     case Qt::Key_F7:
     case Qt::Key_F8:
-        qDebug()<<"clear!";
+        qDebug()<<"key!";
         finished(0);
         break;
     default:
@@ -57,16 +62,19 @@ void ClearDialog::keyPressEvent(QKeyEvent *k)
     }
 }
 
-void ClearDialog::valueChange(QString p)
+void KeyDialog::valueChange(QString p)
 {
     if(p.length() != PASSWD_LENGTH)
         return;
 
     char passwd[PASSWD_LENGTH];
+    char id[ID_LENGTH];
     char tmp = 0;
     int i = 0;
 
     memset(passwd ,0x00 ,sizeof passwd);
+    memset(id ,0x00 ,sizeof id);
+
     /*从铁电芯片中读出密码*/
     FM25V02_READ(PASSWD_ADDR , passwd ,sizeof passwd);
 
@@ -84,25 +92,60 @@ void ClearDialog::valueChange(QString p)
     }
 
     if(i == PASSWD_LENGTH){
+        /*从铁电芯片中读出密码*/
+        FM25V02_READ(ID_ADDR , id ,sizeof id);
+        QString ids;
+        ids.append(id);
+        ui->label_2->setText(ids);
+        ui->lineEdit_1->setDisabled(false);
+    }
+    else{
+        ui->label_2->setText(tr("密码错误！"));
+    }
+}
+
+void KeyDialog::keyChange(QString k)
+{
+    if(k.length() != KEY_LENGTH)
+        return;
+    char key[KEY_LENGTH];
+    char tmp;
+    int i = 0;
+
+    memset(key ,0x00 ,sizeof key);
+
+    for(i = 0;i < k.length();i++){
+        tmp = k.at(i).toAscii();
+        if(tmp != key[i])
+            break;
+    }
+
+    if(i == KEY_LENGTH){
+        ui->label_3->setText(tr("该序列号的有效时间为：")+"200H");
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(false);
     }
     else{
+        ui->label_3->setText(tr("序列号无效！"));
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);
     }
 }
 
-void ClearDialog::commitResult(int i)
+void KeyDialog::commitResult(int i)
 {
     if(i == 0){
     }
     if(i == 1){
     }
+    ui->label_3->clear();
+    ui->lineEdit_1->clear();
+    ui->lineEdit_1->setDisabled(true);
+    ui->label_2->setText("XXXXXXXXXXX");
     ui->lineEdit->clear();
     ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);
     return;
 }
 
-ClearDialog::~ClearDialog()
+KeyDialog::~KeyDialog()
 {
     delete ui;
 }

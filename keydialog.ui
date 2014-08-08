@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ClearDialog</class>
- <widget class="QDialog" name="ClearDialog">
+ <class>KeyDialog</class>
+ <widget class="QDialog" name="KeyDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>150</height>
+    <height>200</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,16 +16,13 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <property name="inputMethodHints">
-   <set>Qt::ImhHiddenText</set>
-  </property>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>150</height>
+     <height>200</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -37,42 +34,36 @@
    <property name="lineWidth">
     <number>4</number>
    </property>
-   <property name="midLineWidth">
-    <number>0</number>
-   </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>0</y>
       <width>381</width>
-      <height>151</height>
+      <height>201</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <property name="formAlignment">
-      <set>Qt::AlignCenter</set>
-     </property>
      <property name="horizontalSpacing">
       <number>10</number>
      </property>
      <property name="verticalSpacing">
-      <number>10</number>
+      <number>6</number>
      </property>
      <property name="leftMargin">
-      <number>5</number>
+      <number>10</number>
      </property>
      <property name="topMargin">
-      <number>10</number>
-     </property>
-     <property name="rightMargin">
       <number>5</number>
      </property>
-     <property name="bottomMargin">
+     <property name="rightMargin">
       <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -105,12 +96,33 @@
       </widget>
      </item>
      <item row="2" column="1">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_1">
+       <property name="maxLength">
+        <number>11</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -123,7 +135,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ClearDialog</receiver>
+   <receiver>KeyDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -139,7 +151,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ClearDialog</receiver>
+   <receiver>KeyDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
