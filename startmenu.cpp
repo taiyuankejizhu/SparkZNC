@@ -139,10 +139,12 @@ void StartMenu::doFnPress(int i)
     {
     case Qt::Key_Down:
     case Qt::Key_Left:
+        parentWidget()->setFocus();
         emit finish();
         break;
     case Qt::Key_Up:
     case Qt::Key_Right:
+        parentWidget()->setFocus();
         emit finish();
         break;
     case Qt::Key_F1:
@@ -219,6 +221,7 @@ void StartMenu::doFnPress(int i)
     case Qt::Key_Enter:
         selected = 0;
         updateSelect();
+        parentWidget()->setFocus();
         emit finish();
         break;
     default:
@@ -232,6 +235,9 @@ void StartMenu::doFnRelease(int i)
         timer->stop();
     }
     updateIcon();
+
+    selected = 0;
+    updateSelect();
 
     switch(i)
     {
@@ -280,9 +286,6 @@ void StartMenu::doFnRelease(int i)
     default :
         break;
     }
-
-    selected = 0;
-    updateSelect();
 }
 
 void StartMenu::updateSelect()
@@ -347,6 +350,7 @@ void StartMenu::selectItem()
         else{
             spark_info->setBool(B_SHUTDOWN ,true);
         }
+        parentWidget()->setFocus();
         emit finish();
         break;
     case 2:
@@ -356,6 +360,7 @@ void StartMenu::selectItem()
         else{
             spark_info->setBool(B_REBOOT ,true);
         }
+        parentWidget()->setFocus();
         emit finish();
         break;
     case 3:
@@ -365,6 +370,7 @@ void StartMenu::selectItem()
         else{
             spark_info->setBool(B_SLEEP ,true);
         }
+        parentWidget()->setFocus();
         emit finish();
         break;
     case 4:
@@ -493,6 +499,12 @@ void StartMenu::updateIcon()
 
 void StartMenu::dialogFinish(int i)
 {
+    if(!clear->isHidden())
+        clear->hide();
+    if(!setting->isHidden())
+        setting->hide();
+    if(!key->isHidden())
+        key->hide();
     if(i == 0)
         parentWidget()->setFocus();
     else

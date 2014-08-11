@@ -54,7 +54,6 @@ void KeyDialog::keyPressEvent(QKeyEvent *k)
     case Qt::Key_F6:
     case Qt::Key_F7:
     case Qt::Key_F8:
-        qDebug()<<"key!";
         finished(0);
         break;
     default:

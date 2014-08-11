@@ -719,7 +719,7 @@ void MainInterface::menuShow()
     else{
         menu->setHidden(true);
         mesg->setHidden(false);
-        this->setFocus();
+        //this->setFocus();
     }
     if(timer->isActive())
         timer->stop();

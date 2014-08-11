@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include "setting.h"
 #include "fm25v02.h"
+#include "sparkinfo.h"
 
 #define PASSWD_LENGTH 6
 

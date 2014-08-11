@@ -549,6 +549,7 @@ void PID_Tune(uint8 p,uint8 i,uint8 d,uint8 s)
 uint8 Serial_Read(void)
 {
     uint8 in[2];
+    uint8 ret;
 
     memset(in ,0x00 ,sizeof in);
 
@@ -556,7 +557,8 @@ uint8 Serial_Read(void)
         return 0;
 
     lseek(fpga_fd, SERIAL_BASE + BUFFER_OFFSET, SEEK_SET);
-    read(fpga_fd ,in ,1);
+    ret = read(fpga_fd ,in ,1);
+    in[1] = ret;
 
     return in[0];
 }

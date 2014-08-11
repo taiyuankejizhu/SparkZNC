@@ -13,11 +13,11 @@ QcomboxTime::QcomboxTime(QWidget *parent,QString l,bool b) :
     timer->setInterval(1000);
     connect(timer ,SIGNAL(timeout()) ,this ,SLOT(valueUpdate()));
 
-    initTime();
+    resetTime();
     timeToString();
 }
 
-void QcomboxTime::initTime()
+void QcomboxTime::resetTime()
 {
     if(flag){
         time = QTime::currentTime();

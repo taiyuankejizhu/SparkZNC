@@ -146,13 +146,11 @@ void MSPISendData(uint8 data)
 
     txz[0] = data;
 
-    int ret;
-
     xfer[0].tx_buf = (unsigned long)txz;
     xfer[0].len = 1;
 
     printf("send:%.2X\n" ,txz[0]);
-    ret = ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
+    ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
     puts("");
 }
 
@@ -212,12 +210,10 @@ void FM25V02_WRSR(uint8 Reg_Status)
     txz[0] = WRSR;
     txz[1] = Reg_Status;
 
-    int ret;
-
     xfer[0].tx_buf = (unsigned long)txz;
     xfer[0].len = 2;
 
-    ret = ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
+    ioctl(spi_fb, SPI_IOC_MESSAGE(1), &xfer[0]);
     printf("send:%.2X ,%.2X\n" ,txz[0],txz[1]);
     FM25V02_WRDI();
 }
@@ -234,7 +230,7 @@ void FM25V02_WRSR(uint8 Reg_Status)
 uint8 FM25V02_RDSR(void)
 {
     if(spi_fb < 0)
-        return;
+        return 0;
 
     printf("FM25V02_RDSR()\n");
     uint8 txz[1] = {0};
@@ -246,15 +242,13 @@ uint8 FM25V02_RDSR(void)
 
     txz[0] = RDSR;
 
-    int ret;
-
     xfer[0].tx_buf = (unsigned long)txz;
     xfer[0].len = 1;
 
     xfer[1].rx_buf = (unsigned long)rxz;
     xfer[1].len = 1;
 
-    ret = ioctl(spi_fb, SPI_IOC_MESSAGE(2), xfer);
+    ioctl(spi_fb, SPI_IOC_MESSAGE(2), xfer);
     printf("send:%.2X\n" ,txz[0]);
     printf("receive:%.2X\n" ,rxz[0]);
     return rxz[0];
@@ -359,7 +353,6 @@ void FM25V02_READ(uint32 RAddr, uint8 *pBuf, uint32 num)
     printf("H:%.2X \n" ,RAddrH);
 
     uint8 txz[3] = {0};
-    uint8 rxz[1] = {0};
 
     memset(txz , 0 ,sizeof txz);
     memset(xfer , 0 , sizeof xfer);

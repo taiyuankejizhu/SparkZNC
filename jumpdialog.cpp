@@ -84,7 +84,7 @@ void JumpDialog::keyPressEvent(QKeyEvent *k)
 
 void JumpDialog::checkChange(int s)
 {
-    s = 0;
+    qDebug()<<s;
 
     if(ui->checkBox->isChecked()){
         check = true;

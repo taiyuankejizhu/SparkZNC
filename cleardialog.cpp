@@ -49,7 +49,6 @@ void ClearDialog::keyPressEvent(QKeyEvent *k)
     case Qt::Key_F6:
     case Qt::Key_F7:
     case Qt::Key_F8:
-        qDebug()<<"clear!";
         finished(0);
         break;
     default:
@@ -93,9 +92,14 @@ void ClearDialog::valueChange(QString p)
 
 void ClearDialog::commitResult(int i)
 {
+    SixBytes current;
+    memset(current.bytes , 0 ,sizeof current);
+
     if(i == 0){
     }
     if(i == 1){
+        /*向铁电芯片中写当前加工时间为零*/
+        FM25V02_WRITE(CURRENT_TIME_ADDR , current.bytes, sizeof current);
     }
     ui->lineEdit->clear();
     ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);

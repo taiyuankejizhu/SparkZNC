@@ -94,6 +94,26 @@ OTHER_FILES += \
     selected.png \
     ok.png \
     cancel.png \
-    axis.png
+    axis.png \
+    unlock.png \
+    sound_3.png \
+    sound_2.png \
+    sound_1.png \
+    sound_0.png \
+    sleep_b.png \
+    sleep.png \
+    shut_b.png \
+    shut.png \
+    restart_b.png \
+    restart.png \
+    password.png \
+    clear.png \
+    calibration.png \
+    brightness_4.png \
+    brightness_3.png \
+    brightness_2.png \
+    brightness_1.png \
+    brightness_0.png \
+    auto.png
 
 TRANSLATIONS+=en.ts

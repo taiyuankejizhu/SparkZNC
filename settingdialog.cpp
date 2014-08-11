@@ -34,6 +34,7 @@ SettingDialog::SettingDialog(QWidget *parent) :
     ui->buttonBox->button(ui->buttonBox->Cancel)->setText(tr("取消(C)"));
     ui->buttonBox->button(ui->buttonBox->Cancel)->setIcon(cancel_icon);
     ui->buttonBox->button(ui->buttonBox->Cancel)->setIconSize(QSize(32,32));
+
 }
 
 void SettingDialog::stateUpdate(bool b)
@@ -55,6 +56,10 @@ void SettingDialog::keyPressEvent(QKeyEvent *k)
     k->accept();
     switch(k->key())
     {
+    case Qt::Key_Left:
+        break;
+    case Qt::Key_Right:
+        break;
     case Qt::Key_Down:
         focusNextChild();
         break;
@@ -69,7 +74,6 @@ void SettingDialog::keyPressEvent(QKeyEvent *k)
     case Qt::Key_F6:
     case Qt::Key_F7:
     case Qt::Key_F8:
-        qDebug()<<"settting!";
         finished(0);
         break;
     default:

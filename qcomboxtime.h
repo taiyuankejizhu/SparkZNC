@@ -20,7 +20,6 @@ public:
     explicit QcomboxTime(QWidget *parent = 0 ,QString l = "",bool b = false);
 
 private:
-    void initTime();
     void timeToString();
     /*标记实例是当前时间还是加工时间*/
     bool flag;
@@ -30,6 +29,7 @@ private:
     SixBytes current;
 
 public slots:
+    void resetTime();
     void valueUpdate();
     void updateTimer();
 };
