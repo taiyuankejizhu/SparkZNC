@@ -114,6 +114,9 @@ OTHER_FILES += \
     brightness_2.png \
     brightness_1.png \
     brightness_0.png \
-    auto.png
+    auto.png \
+    unselected.png \
+    jump.png \
+    setting.png
 
 TRANSLATIONS+=en.ts
