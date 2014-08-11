@@ -12,6 +12,23 @@ SettingDialog::SettingDialog(QWidget *parent) :
 
     flag = false;
 
+    grp1 = new QButtonGroup(this);
+    grp2 = new QButtonGroup(this);
+    grp3 = new QButtonGroup(this);
+    grp4 = new QButtonGroup(this);
+
+    grp1->addButton(ui->radioButton);
+    grp1->addButton(ui->radioButton_2);
+
+    grp2->addButton(ui->radioButton_3);
+    grp2->addButton(ui->radioButton_4);
+
+    grp3->addButton(ui->radioButton_5);
+    grp3->addButton(ui->radioButton_6);
+
+    grp4->addButton(ui->radioButton_7);
+    grp4->addButton(ui->radioButton_8);
+
     QPixmap ok_pix = QPixmap(":/ok.png");
     ok_icon = QIcon(ok_pix);
     QPixmap cancel_pix = QPixmap(":/cancel.png");
@@ -43,10 +60,30 @@ void SettingDialog::stateUpdate(bool b)
     ui->lineEdit_2->clear();
     ui->lineEdit_3->setEnabled(b);
     ui->lineEdit_3->clear();
-    ui->checkBox->setEnabled(b);
-    ui->checkBox_2->setEnabled(b);
-    ui->checkBox_3->setEnabled(b);
-    ui->checkBox_4->setEnabled(b);
+    if(spark_info->uint_array[UINT_SCALE] == SCALE_5)
+        ui->radioButton->setChecked(true);
+    else
+        ui->radioButton_2->setChecked(true);
+    ui->radioButton->setEnabled(b);
+    ui->radioButton_2->setEnabled(b);
+    if(spark_info->b_array[B_X_ORIENT])
+        ui->radioButton_3->setChecked(true);
+    else
+        ui->radioButton_4->setChecked(true);
+    ui->radioButton_3->setEnabled(b);
+    ui->radioButton_4->setEnabled(b);
+    if(spark_info->b_array[B_Y_ORIENT])
+        ui->radioButton_5->setChecked(true);
+    else
+        ui->radioButton_6->setChecked(true);
+    ui->radioButton_5->setEnabled(b);
+    ui->radioButton_6->setEnabled(b);
+    if(spark_info->b_array[B_Z_ORIENT])
+        ui->radioButton_7->setChecked(true);
+    else
+        ui->radioButton_8->setChecked(true);
+    ui->radioButton_7->setEnabled(b);
+    ui->radioButton_8->setEnabled(b);
 
     ui->label_9->clear();
 }
@@ -56,10 +93,6 @@ void SettingDialog::keyPressEvent(QKeyEvent *k)
     k->accept();
     switch(k->key())
     {
-    case Qt::Key_Left:
-        break;
-    case Qt::Key_Right:
-        break;
     case Qt::Key_Down:
         focusNextChild();
         break;
@@ -150,9 +183,50 @@ void SettingDialog::commitResult(int i)
     if(i == 0){
     }
     if(i == 1){
+
         if(flag){
             /*更改系统密码*/
-            FM25V02_WRITE(PASSWD_ADDR , passwd, sizeof passwd);
+            FM25V02_WRITE(PASSWD_ADDR , &tmp, sizeof tmp);
+        }
+
+        char tmp = 0;
+        if(ui->radioButton->isChecked()){
+            tmp = SCALE_5;
+            FM25V02_WRITE(SCALE_ADDR , &tmp, sizeof tmp);
+        }
+        else{
+            tmp = SCALE_1;
+            FM25V02_WRITE(SCALE_ADDR , &tmp, sizeof tmp);
+        }
+
+        tmp = 0;
+        if(ui->radioButton_3->isChecked()){
+            tmp = CFALSE;
+            FM25V02_WRITE(X_ORIENT_ADDR , &tmp, sizeof tmp);
+        }
+        else{
+            tmp = CTRUE;
+            FM25V02_WRITE(X_ORIENT_ADDR , &tmp, sizeof tmp);
+        }
+
+        tmp = 0;
+        if(ui->radioButton_5->isChecked()){
+            tmp = CFALSE;
+            FM25V02_WRITE(Y_ORIENT_ADDR , &tmp, sizeof tmp);
+        }
+        else{
+            tmp = CTRUE;
+            FM25V02_WRITE(Y_ORIENT_ADDR , &tmp, sizeof tmp);
+        }
+
+        tmp = 0;
+        if(ui->radioButton_7->isChecked()){
+            tmp = CFALSE;
+            FM25V02_WRITE(Z_ORIENT_ADDR , &tmp, sizeof tmp);
+        }
+        else{
+            tmp = CTRUE;
+            FM25V02_WRITE(Z_ORIENT_ADDR , &tmp, sizeof tmp);
         }
     }
     stateUpdate(false);

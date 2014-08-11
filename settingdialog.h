@@ -5,8 +5,10 @@
 #include <QIcon>
 #include <QPushButton>
 #include <QKeyEvent>
+#include <QButtonGroup>
 #include "setting.h"
 #include "fm25v02.h"
+#include "sparkinfo.h"
 
 #define PASSWD_LENGTH 6
 
@@ -36,6 +38,10 @@ private:
     Ui::SettingDialog *ui;
     QIcon ok_icon;
     QIcon cancel_icon;
+    QButtonGroup *grp1;
+    QButtonGroup *grp2;
+    QButtonGroup *grp3;
+    QButtonGroup *grp4;
 };
 
 #endif // SETTINGDIALOG_H

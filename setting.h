@@ -12,8 +12,6 @@
 #define TABLES_DIR "/tables/"
 #define TSLIB_CALIBFILE "/etc/pointercal"
 
-#define SCALE 1     /*光栅尺的刻度，1微米，5微米*/
-
 /*FM25V02 ADDR: 0x000000 ~ 0x007FFF*/
 #define X_AXIS_ADDR 0x000000
 #define Y_AXIS_ADDR 0x000008
@@ -27,6 +25,16 @@
 #define USEDP_TIME_ADDR   0x000500 /*放电时间的和的地址*/
 #define PASSWD_ADDR       0x000600 /*系统密码的地址*/
 #define ID_ADDR           0x000700 /*机器ID的地址*/
+#define X_ORIENT_ADDR     0x000800 /*X轴方向的地址*/
+#define Y_ORIENT_ADDR     0x000802 /*Y轴方向的地址*/
+#define Z_ORIENT_ADDR     0x000804 /*Z轴方向的地址*/
+#define SCALE_ADDR        0x000806 /*光栅刻度值的地址*/
+
+/*布尔型数据在铁电芯片中存储*/
+#define CFALSE 0x00
+#define CTRUE  0xff
+#define SCALE_1 0x01
+#define SCALE_5 0x05
 
 /*根据Qt编译器的版本判断目标机的类型*/
 #if(QT_VERSION == 0x040801)

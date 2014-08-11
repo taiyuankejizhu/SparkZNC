@@ -17,7 +17,7 @@
 #define L_SLOT 2            /*长整型数组的槽标记*/
 #define C_SLOT 3            /*字符型数组的槽标记*/
 
-#define B_LENGTH 25         /*布尔数组的长度*/
+#define B_LENGTH 30         /*布尔数组的长度*/
 #define UINT_LENGTH 15      /*无符号整型数组的长度*/
 #define L_LENGTH 20         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
@@ -46,6 +46,9 @@
 #define B_POWER_ALL 21      /*总电源的开关索引*/
 #define B_SELECT 22         /*待加工行已选择开关的索引*/
 #define B_REBOOT 23         /*系统重启的开关的索引*/
+#define B_X_ORIENT 24       /*X轴的方向的索引*/
+#define B_Y_ORIENT 25       /*Y轴的方向的索引*/
+#define B_Z_ORIENT 26       /*Z轴的方向的索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -61,6 +64,7 @@
 #define UINT_COOR_MAX 11    /*坐标的最大索引*/
 #define UINT_SOUND 12       /*音量的索引*/
 #define UINT_BRIGHTNESS 13  /*屏幕亮度的索引*/
+#define UINT_SCALE 14       /*光栅刻度值的索引*/
 
 #define L_DEEP_CURRENT 0    /*当前深度值的索引*/
 #define L_DEEP_TARGET 1     /*目标深度值的索引*/
@@ -215,12 +219,13 @@ const bool bool_init[] = {
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
+        false ,false ,false ,false ,false ,
 };
 
 const unsigned int uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
-        99, 9, 0, 0, 0,
+        99, 9, 0, 0, 5,
 };
 
 const long long_init[] = {

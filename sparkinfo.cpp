@@ -29,6 +29,35 @@ void SparkInfo::fm25v02Init()
     /*铁电芯片初始化*/
     FM25V02_Init();
 
+    /*读取初始化X轴方向*/
+    char tmp = 0;
+    FM25V02_READ(X_ORIENT_ADDR ,&tmp ,sizeof tmp);
+    if(tmp == CFALSE)
+        b_array[B_X_ORIENT] = false;
+    else
+        b_array[B_X_ORIENT] = true;
+
+    /*读取初始化Y轴方向*/
+    tmp = 0;
+    FM25V02_READ(Y_ORIENT_ADDR ,&tmp ,sizeof tmp);
+    if(tmp == CFALSE)
+        b_array[B_Y_ORIENT] = false;
+    else
+        b_array[B_Y_ORIENT] = true;
+
+    /*读取初始化Z轴方向*/
+    tmp = 0;
+    FM25V02_READ(Z_ORIENT_ADDR ,&tmp ,sizeof tmp);
+    if(tmp == CFALSE)
+        b_array[B_Z_ORIENT] = false;
+    else
+        b_array[B_Z_ORIENT] = true;
+
+    /*读取初始化光栅刻度*/
+    tmp = 0;
+    FM25V02_READ(SCALE_ADDR ,&tmp ,sizeof tmp);
+    //uint_array[UINT_SCALE] = tmp;
+
     /*读取当前坐标的索引*/
     FourBytes c_axis;
     memset(c_axis.bytes , 0 ,sizeof c_axis);
