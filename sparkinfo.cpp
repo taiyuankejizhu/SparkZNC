@@ -250,15 +250,26 @@ void SparkInfo::tableClear()
 
 void SparkInfo::setBool(unsigned int i,bool b)
 {
+    /*检查数据是否改变*/
+    bool check = false;
+
     if(i < B_LENGTH){
+        if(b_array[i] == b){
+            check = false;
+            b_array[i] = b;
+        }
+        else{
+            check = true;
+            b_array[i] = b;
+        }
+
         /*布尔数组状态更新*/
         if(i != B_UPDATE && b_array[i] != b)
             b_array[B_UPDATE] = true;
-        b_array[i] = b;
         if(i == B_START|| i == B_TIME){
             emit startChange();
         }
-        else
+        if(check)
             emit boolChange();
     }
 }
@@ -353,9 +364,19 @@ void SparkInfo::setLong(unsigned int i,long l)
 void SparkInfo::setUInt(unsigned int i, unsigned int u)
 {
     unsigned int tmp;
+    /*检查数据是否改变*/
+    bool check = false;
 
     if(i < UINT_LENGTH){
-        uint_array[i] = u;
+        if(uint_array[i] == u){
+            check = false;
+            uint_array[i] = u;
+        }
+        else{
+            check = true;
+            uint_array[i] = u;
+        }
+
         /*组别变化后，当前行、开始行、结束行重置*/
         if(i == UINT_TAB_INDEX){
             uint_array[UINT_CURRENT_ROM] = 0;
@@ -421,7 +442,7 @@ void SparkInfo::setUInt(unsigned int i, unsigned int u)
             uint_array[UINT_CURRENT_ROM] = uint_array[UINT_START_ROW];
             emit tableRowChange();
         }
-        else
+        if(check)
             emit uintChange();
     }
 }

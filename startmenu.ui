@@ -497,6 +497,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_brightness">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>b_icon</string>
            </property>
@@ -966,6 +984,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_sound">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>d_icon</string>
            </property>
@@ -1435,6 +1471,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_calibration">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>m_icon</string>
            </property>
@@ -1907,6 +1961,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_password">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>p_icon</string>
            </property>
@@ -2379,6 +2451,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_clear">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>c_icon</string>
            </property>
@@ -2848,6 +2938,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_setting">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>t_icon</string>
            </property>
@@ -3317,6 +3425,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_sleep">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>l_icon</string>
            </property>
@@ -3786,6 +3912,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_restart">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>r_icon</string>
            </property>
@@ -4258,6 +4402,24 @@
          </property>
          <item>
           <widget class="QLabel" name="label_shut">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>100</height>
+            </size>
+           </property>
            <property name="text">
             <string>s_icon</string>
            </property>

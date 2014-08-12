@@ -67,6 +67,7 @@ signals:
 
 public slots:
     void flashCursor();
+    void alertCheck();
 };
 
 #endif // QCOMMAND_H

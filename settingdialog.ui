@@ -455,7 +455,7 @@
       <x>10</x>
       <y>0</y>
       <width>281</width>
-      <height>303</height>
+      <height>313</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -472,7 +472,7 @@
       <number>10</number>
      </property>
      <property name="topMargin">
-      <number>5</number>
+      <number>10</number>
      </property>
      <property name="rightMargin">
       <number>10</number>

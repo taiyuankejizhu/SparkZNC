@@ -96,6 +96,7 @@ MainInterface::MainInterface(QWidget *parent) :
     command ->setHidden(false);
     /*命令行输入结束时的信号连接*/
     connect(command ,SIGNAL(finish()) ,this ,SLOT(commandFinish()));
+    connect(spark_info ,SIGNAL(boolChange()) ,command ,SLOT(alertCheck()));
 
     ui->horizontalLayout_3->addWidget(command);
 }

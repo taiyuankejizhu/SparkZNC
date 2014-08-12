@@ -22,6 +22,7 @@ QCommand::QCommand(QWidget *parent) :
     setStatus(0x00);
     setType(false ,true ,0x04 ,true ,0x03);
     setTarget(L_SLOT ,L_DEEP_CURRENT);
+
 }
 
 /*输出字符串初始化*/
@@ -37,6 +38,10 @@ void QCommand::initLabel()
     mesg_label[1] = tr("输入正确！");
     mesg_label[2] = tr("输入不能为空！")  ;
     mesg_label[3] = tr("输入格式有误！");
+    mesg_label[4] = tr("火警");
+    mesg_label[5] = tr("Z轴上限位");
+    mesg_label[6] = tr("Z轴下限位");
+    mesg_label[7] = tr("短路");
 }
 
 void QCommand::paintEvent(QPaintEvent *)
@@ -104,6 +109,24 @@ void QCommand::flashCursor()
         flag = true;
     }
     update();
+}
+
+void QCommand::alertCheck()
+{
+    /*火警*/
+    if(spark_info->b_array[B_FIRE]){
+        showMesg(0x30 ,4);
+    }
+    /*Z轴上限*/
+    if(spark_info->b_array[B_Z_UP]){
+        showMesg(0x30 ,5);
+    }
+    /*Z轴下限*/
+    if(spark_info->b_array[B_Z_DOWN]){
+        showMesg(0x30 ,6);
+    }
+
+    emit finish();
 }
 
 void QCommand::keyPressEvent(QKeyEvent *k)
