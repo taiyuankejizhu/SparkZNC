@@ -107,8 +107,8 @@ void SparkInfo::carryInit()
 
 bool SparkInfo::checkTime()
 {
-    long t = 0;
-    long u = 0;
+    LONG64 t = 0;
+    LONG64 u = 0;
     /*读取时间溢出*/
     FM25V02_READ(TARGET_TIME_ADDR , target.bytes ,sizeof target);
     /*读取已经放电时间*/
@@ -157,7 +157,7 @@ void SparkInfo::tableInit()
 }
 
 /*自动生成表格*/
-void SparkInfo::tableAuto(long deep ,unsigned int current,unsigned int area,unsigned int effect)
+void SparkInfo::tableAuto(LONG64 deep ,UNINT32 current,UNINT32 area,UNINT32 effect)
 {
     tableClear();
     unsigned int i = 0;
@@ -248,7 +248,7 @@ void SparkInfo::tableClear()
     }
 }
 
-void SparkInfo::setBool(unsigned int i,bool b)
+void SparkInfo::setBool(UNINT32 i,bool b)
 {
     /*检查数据是否改变*/
     bool check = false;
@@ -274,7 +274,7 @@ void SparkInfo::setBool(unsigned int i,bool b)
     }
 }
 
-void SparkInfo::reverseBool(unsigned int i)
+void SparkInfo::reverseBool(UNINT32 i)
 {
     if(i < B_LENGTH){
         /*布尔数组状态更新*/
@@ -292,7 +292,7 @@ void SparkInfo::reverseBool(unsigned int i)
     }
 }
 
-void SparkInfo::setLong(unsigned int i,long l)
+void SparkInfo::setLong(UNINT32 i,LONG64 l)
 {
     /*检查数据是否改变*/
     bool check = false;
@@ -361,7 +361,7 @@ void SparkInfo::setLong(unsigned int i,long l)
     }
 }
 
-void SparkInfo::setUInt(unsigned int i, unsigned int u)
+void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
 {
     unsigned int tmp;
     /*检查数据是否改变*/

@@ -119,13 +119,13 @@ void CoorDialog::updateContent()
     }*/
 }
 
-QString CoorDialog::toString(long l)
+QString CoorDialog::toString(LONG64 l)
 {
     QString s;
 
     int m = 0;
-    long tmp = 0;
-    long g = 10000000;
+    long long tmp = 0;
+    long long g = 10000000;
     char ch = '0';
     bool first = false;
 

@@ -114,15 +114,15 @@ void QCommand::flashCursor()
 void QCommand::alertCheck()
 {
     /*火警*/
-    if(spark_info->b_array[B_FIRE]){
+    if(spark_info->b_array[B_FIRE_ALERT]){
         showMesg(0x30 ,4);
     }
     /*Z轴上限*/
-    if(spark_info->b_array[B_Z_UP]){
+    if(spark_info->b_array[B_Z_UP_ALERT]){
         showMesg(0x30 ,5);
     }
     /*Z轴下限*/
-    if(spark_info->b_array[B_Z_DOWN]){
+    if(spark_info->b_array[B_Z_DOWN_ALERT]){
         showMesg(0x30 ,6);
     }
 
@@ -281,7 +281,7 @@ void QCommand::finalSubmit(QString s)
     bool ok = false;
     double d = 0;
     unsigned int i = 0;
-    long l = 0;
+    long long l = 0;
     int fcount = type & 0x03;
 
     switch(tmp){
@@ -296,7 +296,7 @@ void QCommand::finalSubmit(QString s)
         d = s.toDouble(&ok);
         for(; fcount > 0;fcount --)
             d = d*10;
-        l = (long)d;
+        l = (long long)d;
         if(ok){
             if((target & 0x0F)==L_X_CURRENT||(target & 0x0F)==L_Y_CURRENT||(target & 0x0F)==L_Z_CURRENT){
                 /*设置当前位置*/

@@ -8,6 +8,7 @@
 #include <QStandardItem>
 #include <QModelIndex>
 #include <QIcon>
+#include "setting.h"
 
 namespace Ui {
     class CoorDialog;
@@ -22,7 +23,7 @@ public:
     unsigned int selected;
     QStandardItemModel *model;
     void updateContent();
-    QString toString(long);
+    QString toString(LONG64);
     ~CoorDialog();
 
 protected:

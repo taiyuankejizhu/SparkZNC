@@ -49,6 +49,9 @@
 #define B_X_ORIENT 24       /*X轴的方向的索引*/
 #define B_Y_ORIENT 25       /*Y轴的方向的索引*/
 #define B_Z_ORIENT 26       /*Z轴的方向的索引*/
+#define B_FIRE_ALERT 27     /*火警发生的索引*/
+#define B_Z_UP_ALERT 28     /*Z轴上限位报警发生的索引*/
+#define B_Z_DOWN_ALERT 29   /*Z轴下限位报警发生的索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -160,42 +163,42 @@
 
 struct Table
 {
-    int           Shendu[10];   /*深度*/
-    unsigned int  Dianliu[10];  /*电流*/
-    unsigned int  Maikuan[10];  /*脉宽*/
-    unsigned int  Xiuzhi[10];   /*休止*/
-    unsigned char Jianxi[10];   /*间隙*/
-    unsigned char Sudu[10];     /*速度*/
-    unsigned char Shenggao[10]; /*升高*/
-    unsigned char Gongshi[10];  /*工时*/
-    unsigned char Mianji[10];   /*面积*/
-    unsigned char Jixing[10];    /*极性*/
-    unsigned char Gaoya[10];    /*高压*/
-    unsigned char Index[10];    /*索引*/
+    INT32    Shendu[10];   /*深度*/
+    UNINT32  Dianliu[10];  /*电流*/
+    UNINT32  Maikuan[10];  /*脉宽*/
+    UNINT32  Xiuzhi[10];   /*休止*/
+    UNCHAR8 Jianxi[10];   /*间隙*/
+    UNCHAR8 Sudu[10];     /*速度*/
+    UNCHAR8 Shenggao[10]; /*升高*/
+    UNCHAR8 Gongshi[10];  /*工时*/
+    UNCHAR8 Mianji[10];   /*面积*/
+    UNCHAR8 Jixing[10];    /*极性*/
+    UNCHAR8 Gaoya[10];    /*高压*/
+    UNCHAR8 Index[10];    /*索引*/
 };
 
 union TwoBytes
 {
-    char bytes[sizeof(unsigned short)];
-    unsigned short ushort;
+    CHAR8 bytes[sizeof(unsigned short)];
+    UNSHORT16 ushort;
 };
 
 union FourBytes
 {
-    char bytes[sizeof(unsigned int)];
-    unsigned int uint;
+    CHAR8 bytes[sizeof(unsigned int)];
+    UNINT32 uint;
 };
 
 union SixBytes
 {
-    char bytes[3*sizeof(unsigned short)];
-    unsigned short ushorts[3];
+    CHAR8 bytes[3*sizeof(unsigned short)];
+    UNSHORT16 ushorts[3];
 };
 
 union EightBytes
 {
-    char bytes[sizeof(long)];
-    long longs;
+    CHAR8 bytes[sizeof(long)];
+    LONG64 longs;
 };
 
 const Table table_init = {
@@ -222,13 +225,13 @@ const bool bool_init[] = {
         false ,false ,false ,false ,false ,
 };
 
-const unsigned int uint_init[] = {
+const UNINT32 uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
         99, 9, 0, 0, 5,
 };
 
-const long long_init[] = {
+const LONG64 long_init[] = {
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
@@ -242,7 +245,7 @@ public:
     explicit SparkInfo(QObject *parent = 0);
     void tableClear();
     void tableSave();
-    void tableAuto(long ,unsigned int ,unsigned int ,unsigned int);
+    void tableAuto(LONG64 ,UNINT32 ,UNINT32 ,UNINT32);
     bool b_array[B_LENGTH];
     unsigned int uint_array[UINT_LENGTH];
     long l_array[L_LENGTH];
@@ -271,10 +274,10 @@ signals:
     void tableRowChange();
 
 public slots:
-    void setBool(unsigned int ,bool);
-    void reverseBool(unsigned int);
-    void setLong(unsigned int ,long);
-    void setUInt(unsigned int , unsigned int);
+    void setBool(UNINT32 ,bool);
+    void reverseBool(UNINT32);
+    void setLong(UNINT32 ,LONG64);
+    void setUInt(UNINT32 , UNINT32);
     void tableLoad();
     /*检查放电时间是否溢出的槽*/
     bool checkTime();

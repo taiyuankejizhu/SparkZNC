@@ -440,6 +440,11 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
      <number>2</number>
@@ -470,6 +475,11 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -491,6 +501,11 @@
         <width>126</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -514,6 +529,11 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -535,6 +555,11 @@
         <width>126</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -558,6 +583,11 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -579,6 +609,11 @@
         <width>126</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -602,6 +637,11 @@
         <height>0</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -623,6 +663,11 @@
         <width>126</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>

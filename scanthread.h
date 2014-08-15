@@ -22,6 +22,7 @@ public:
     unsigned int e_cycle;
 
     void run();
+    static void Check_Alert();
     static long X_Count();
     static long Y_Count();
     static long Z_Count();
@@ -30,7 +31,6 @@ public:
     static long Z_Velocity();
     static long Z_Origin();
     static char Voltage_Read();
-    static void Check_Alert();
     static void Update_Relay();
 
     virtual ~ScanThread();

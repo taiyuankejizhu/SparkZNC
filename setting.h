@@ -36,6 +36,18 @@
 #define SCALE_1 0x01
 #define SCALE_5 0x05
 
+typedef unsigned char UNCHAR8;
+typedef unsigned short UNSHORT16;
+typedef unsigned int UNINT32;
+typedef unsigned long UNLONG32;
+typedef unsigned long long UNLONG64;
+
+typedef char CHAR8;
+typedef short SHORT16;
+typedef int INT32;
+typedef long LONG32;
+typedef long long LONG64;
+
 /*根据Qt编译器的版本判断目标机的类型*/
 #if(QT_VERSION == 0x040801)
     #define X86

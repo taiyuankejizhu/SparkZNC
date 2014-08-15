@@ -38,7 +38,6 @@ protected:
     void checkString(QString);
     void recordAppend(QString);
     void initLabel();
-    void showMesg(char , int);
     void finalSubmit(QString);
 
     /*标志光标闪烁*/
@@ -68,6 +67,7 @@ signals:
 public slots:
     void flashCursor();
     void alertCheck();
+    void showMesg(char ,int);
 };
 
 #endif // QCOMMAND_H

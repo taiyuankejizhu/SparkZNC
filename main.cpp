@@ -69,16 +69,12 @@ int main(int argc, char *argv[])
         "QTableView::item:selected{background-color:rgb(255,206,0);}"
         "QTableView::item:focus{background-color:rgb(255,206,0);}"
                     );
-    QFont font = a.font();
-    a.setFont(font);
+    a.setFont(QFont("wenquanyi"));
 
     MainInterface m;
 
-#ifdef ARM
-    QRect screen_size = QApplication::desktop()->screenGeometry();
-    m.setGeometry(0, 0, screen_size.width(), screen_size.height());
-    font.setFamily("SparkFont");
-#endif
+    //QRect screen_size = QApplication::desktop()->screenGeometry();
+    //m.setGeometry(0, 0, screen_size.width(), screen_size.height());
 
     /*软件盘*/
     KeyBoard *keyboard;

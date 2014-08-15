@@ -765,13 +765,13 @@ void MainInterface::XYZ_Update(int i)
 
 }
 
-QString MainInterface::toString(long l)
+QString MainInterface::toString(LONG64 l)
 {
     QString s;
 
     int m = 0;
-    long tmp = 0;
-    long g = 10000000;
+    long long tmp = 0;
+    long long g = 10000000;
     char ch = '0';
     bool first = false;
 

@@ -293,27 +293,33 @@ void ScanThread::Check_Alert()
     _READ_BYTE_(C_Z_IN0);
 
     /*火警*/
-    if(spark_info->c_array[C_U_IN0] & 0x80){
-        spark_info->setBool(B_FIRE ,true);
-    }
-    else{
-        spark_info->setBool(B_FIRE ,false);
+    if(spark_info->b_array[B_FIRE]){
+        if(spark_info->c_array[C_U_IN0] & 0x80){
+            spark_info->setBool(B_FIRE_ALERT ,true);
+        }
+        else{
+            spark_info->setBool(B_FIRE_ALERT ,false);
+        }
     }
 
     /*Z上限*/
-    if(spark_info->c_array[C_Z_IN0] & 0x08){
-        spark_info->setBool(B_Z_UP ,true);
-    }
-    else{
-        spark_info->setBool(B_Z_UP ,false);
+    if(spark_info->b_array[B_Z_UP]){
+        if(spark_info->c_array[C_Z_IN0] & 0x80){
+            spark_info->setBool(B_Z_UP_ALERT ,true);
+        }
+        else{
+            spark_info->setBool(B_Z_UP_ALERT ,false);
+        }
     }
 
     /*Z下限*/
-    if(spark_info->c_array[C_Z_IN0] & 0x04){
-        spark_info->setBool(B_Z_DOWN ,true);
-    }
-    else{
-        spark_info->setBool(B_Z_DOWN ,false);
+    if(spark_info->b_array[B_Z_DOWN]){
+        if(spark_info->c_array[C_Z_IN0] & 0x04){
+            spark_info->setBool(B_Z_DOWN_ALERT ,true);
+        }
+        else{
+            spark_info->setBool(B_Z_DOWN_ALERT ,false);
+        }
     }
 }
 
