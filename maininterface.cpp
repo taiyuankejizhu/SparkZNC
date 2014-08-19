@@ -93,12 +93,16 @@ MainInterface::MainInterface(QWidget *parent) :
     ui->verticalLayout->addWidget(menu);
 
     command = new QCommand(this);
-    command ->setHidden(false);
+    command->setHidden(false);
     /*命令行输入结束时的信号连接*/
     connect(command ,SIGNAL(finish()) ,this ,SLOT(commandFinish()));
-    connect(spark_info ,SIGNAL(boolChange()) ,command ,SLOT(alertCheck()));
+
+    alerts = new QAlerts(this);
+    alerts->setHidden(false);
+    connect(spark_info ,SIGNAL(boolChange()) ,alerts ,SLOT(alertCheck()));
 
     ui->horizontalLayout_3->addWidget(command);
+    ui->horizontalLayout_3->addWidget(alerts);
 }
 
 void MainInterface::initHardware()

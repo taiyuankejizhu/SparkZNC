@@ -38,10 +38,6 @@ void QCommand::initLabel()
     mesg_label[1] = tr("输入正确！");
     mesg_label[2] = tr("输入不能为空！")  ;
     mesg_label[3] = tr("输入格式有误！");
-    mesg_label[4] = tr("火警");
-    mesg_label[5] = tr("Z轴上限位");
-    mesg_label[6] = tr("Z轴下限位");
-    mesg_label[7] = tr("短路");
 }
 
 void QCommand::paintEvent(QPaintEvent *)
@@ -62,10 +58,6 @@ void QCommand::paintEvent(QPaintEvent *)
     case 0x20:
         painter.setPen(WARNING_COLOR);
         painter.setBrush(WARNING_COLOR);
-        break;
-    case 0x30:
-        painter.setPen(ALTER_COLOR);
-        painter.setBrush(ALTER_COLOR);
         break;
     default:
         break;
@@ -109,24 +101,6 @@ void QCommand::flashCursor()
         flag = true;
     }
     update();
-}
-
-void QCommand::alertCheck()
-{
-    /*火警*/
-    if(spark_info->b_array[B_FIRE_ALERT]){
-        showMesg(0x30 ,4);
-    }
-    /*Z轴上限*/
-    if(spark_info->b_array[B_Z_UP_ALERT]){
-        showMesg(0x30 ,5);
-    }
-    /*Z轴下限*/
-    if(spark_info->b_array[B_Z_DOWN_ALERT]){
-        showMesg(0x30 ,6);
-    }
-
-    emit finish();
 }
 
 void QCommand::keyPressEvent(QKeyEvent *k)
@@ -356,11 +330,6 @@ void QCommand::setStatus(char c)
         break;
     case 0x20:
         label = status_label[3];
-        if(timer->isActive())
-            timer->stop();
-        break;
-    case 0x30:
-        label = status_label[4];
         if(timer->isActive())
             timer->stop();
         break;

@@ -28,6 +28,7 @@ CoorDialog::CoorDialog(QWidget *parent) :
     model = new QStandardItemModel(0 ,1);
     updateContent();
 
+    connect(ui->listView ,SIGNAL(doubleClicked(QModelIndex)) ,this ,SLOT(itemChange(QModelIndex)));
     ui->label->setPixmap(c_pix);
     ui->buttonBox->button(ui->buttonBox->Ok)->setText(tr("确定(O)"));
     ui->buttonBox->button(ui->buttonBox->Ok)->setIcon(ok_icon);
@@ -67,6 +68,13 @@ void CoorDialog::keyPressEvent(QKeyEvent *k)
     default:
         break;
     }
+}
+
+void CoorDialog::itemChange(QModelIndex i)
+{
+    selected = i.row();
+    updateContent();
+    finished(1);
 }
 
 void CoorDialog::updateContent()

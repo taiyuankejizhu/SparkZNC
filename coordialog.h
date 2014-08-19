@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QModelIndex>
@@ -35,6 +36,9 @@ private:
     QIcon b_icon;
     QIcon ok_icon;
     QIcon cancel_icon;
+
+public slots:
+    void itemChange(QModelIndex);
 };
 
 #endif // COORDIALOG_H

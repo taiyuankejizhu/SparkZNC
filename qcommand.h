@@ -13,7 +13,6 @@
 #define MESG_COLOR Qt::blue
 #define INPUT_COLOR Qt::black
 #define WARNING_COLOR Qt::darkMagenta
-#define ALTER_COLOR Qt::red
 
 class QCommand : public QWidget
 {
@@ -66,7 +65,6 @@ signals:
 
 public slots:
     void flashCursor();
-    void alertCheck();
     void showMesg(char ,int);
 };
 

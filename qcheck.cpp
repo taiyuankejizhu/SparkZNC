@@ -87,7 +87,7 @@ void Qcheck::drawWidget(QPainter *painter)
     painter->setBrush(l_color);
 
     QFont font = qApp->font();
-    font.setPointSize(12);
+    font.setPointSize(14);
     painter->setFont(font);
 
     QFontMetricsF fm(font);

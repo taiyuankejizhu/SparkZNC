@@ -46,6 +46,9 @@ private:
     QIcon b_icon;
     QIcon ok_icon;
     QIcon cancel_icon;
+
+public slots:
+    void itemChange(QModelIndex);
 };
 
 #endif // GROUPDIALOG_H

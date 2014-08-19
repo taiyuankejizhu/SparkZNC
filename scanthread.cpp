@@ -301,6 +301,9 @@ void ScanThread::Check_Alert()
             spark_info->setBool(B_FIRE_ALERT ,false);
         }
     }
+    else{
+        spark_info->setBool(B_FIRE_ALERT ,false);
+    }
 
     /*Z上限*/
     if(spark_info->b_array[B_Z_UP]){
@@ -310,6 +313,9 @@ void ScanThread::Check_Alert()
         else{
             spark_info->setBool(B_Z_UP_ALERT ,false);
         }
+    }
+    else{
+        spark_info->setBool(B_Z_UP_ALERT ,false);
     }
 
     /*Z下限*/
@@ -321,6 +327,10 @@ void ScanThread::Check_Alert()
             spark_info->setBool(B_Z_DOWN_ALERT ,false);
         }
     }
+    else{
+        spark_info->setBool(B_Z_DOWN_ALERT ,false);
+    }
+
 }
 
 void ScanThread::Update_Relay()

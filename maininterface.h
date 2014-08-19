@@ -10,6 +10,7 @@
 #include "seconlevel_f6.h"
 #include "keyboard.h"
 #include "qcommand.h"
+#include "qalerts.h"
 #include "sparkthread.h"
 #include "scanthread.h"
 #include <QWidget>
@@ -64,6 +65,7 @@ public:
     MesgBox *mesg;
     StartMenu *menu;
     QCommand *command;
+    QAlerts *alerts;
     /*放电加工线程*/
     SparkThread *spark;
     /*数据扫描和运行时线程*/

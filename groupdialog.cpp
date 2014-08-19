@@ -28,6 +28,7 @@ GroupDialog::GroupDialog(QWidget *parent) :
     model = new QStandardItemModel(0 ,1);
     updateContent();
 
+    connect(ui->tableView ,SIGNAL(doubleClicked(QModelIndex)) ,this ,SLOT(itemChange(QModelIndex)));
     ui->label->setPixmap(c_pix);
     ui->buttonBox->button(ui->buttonBox->Ok)->setText(tr("确定(O)"));
     ui->buttonBox->button(ui->buttonBox->Ok)->setIcon(ok_icon);
@@ -68,6 +69,13 @@ void GroupDialog::keyPressEvent(QKeyEvent *k)
     default:
         break;
     }
+}
+
+void GroupDialog::itemChange(QModelIndex i)
+{
+    selected = i.row()*COLUMN_COUNT + i.column();
+    updateContent();
+    finished(1);
 }
 
 void GroupDialog::updateContent()

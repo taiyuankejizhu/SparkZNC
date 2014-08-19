@@ -69,7 +69,10 @@ int main(int argc, char *argv[])
         "QTableView::item:selected{background-color:rgb(255,206,0);}"
         "QTableView::item:focus{background-color:rgb(255,206,0);}"
                     );
-    a.setFont(QFont("wenquanyi"));
+
+    QFont font;
+    font.setFamily("SparkFont");
+    a.setFont(font);
 
     MainInterface m;
 
