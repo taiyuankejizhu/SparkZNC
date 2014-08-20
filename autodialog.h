@@ -27,7 +27,7 @@ protected:
     void keyPressEvent(QKeyEvent *);
 
 public slots:
-    void valueChange();
+    void valueChange(QString);
 
 private:
     Ui::AutoDialog *ui;

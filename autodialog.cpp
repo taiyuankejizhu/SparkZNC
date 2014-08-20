@@ -22,17 +22,15 @@ AutoDialog::AutoDialog(QWidget *parent) :
     QPixmap cancel_pix = QPixmap(":/cancel.png");
     cancel_icon = QIcon(cancel_pix);
 
-    connect(ui->lineEdit ,SIGNAL(editingFinished()) ,this ,SLOT(valueChange()));
-    connect(ui->lineEdit_2 ,SIGNAL(editingFinished()) ,this ,SLOT(valueChange()));
-    connect(ui->lineEdit_3 ,SIGNAL(editingFinished()) ,this ,SLOT(valueChange()));
-    connect(ui->lineEdit_4 ,SIGNAL(editingFinished()) ,this ,SLOT(valueChange()));
+    connect(ui->lineEdit ,SIGNAL(textChanged(QString)) ,this ,SLOT(valueChange(QString)));
+    connect(ui->lineEdit_2 ,SIGNAL(textChanged(QString)) ,this ,SLOT(valueChange(QString)));
+    connect(ui->lineEdit_3 ,SIGNAL(textChanged(QString)) ,this ,SLOT(valueChange(QString)));
+    connect(ui->lineEdit_4 ,SIGNAL(textChanged(QString)) ,this ,SLOT(valueChange(QString)));
 
-    ui->lineEdit->setText("1000");
-    ui->lineEdit_2->setText("45");
-    ui->lineEdit_3->setText("20");
-    ui->lineEdit_4->setText("5");
-
-    valueChange();
+    ui->lineEdit->clear();
+    ui->lineEdit_2->clear();
+    ui->lineEdit_3->clear();
+    ui->lineEdit_4->clear();
 
     ui->label->setPixmap(c_pix);
     ui->buttonBox->button(ui->buttonBox->Ok)->setText(tr("确定(O)"));
@@ -71,44 +69,53 @@ void AutoDialog::keyPressEvent(QKeyEvent *k)
     }
 }
 
-void AutoDialog::valueChange()
+void AutoDialog::valueChange(QString s)
 {
     bool ok = false;
+    s = "";
     deep = ui->lineEdit->text().toLong(&ok ,10);
-    if(deep > 9999999 && ok){
-        deep = 9999999;
-        ui->lineEdit->setText("9999999");
+    if(!ui->lineEdit->text().isEmpty()){
+        if(deep > 9999999 && ok){
+            deep = 9999999;
+            ui->lineEdit->setText("9999999");
+        }
+        if(deep < -9999999 && ok){
+            deep = -9999999;
+            ui->lineEdit->setText("-9999999");
+        }
+        current = ui->lineEdit_2->text().toUInt(&ok ,10);
     }
-    if(deep < -9999999 && ok){
-        deep = -9999999;
-        ui->lineEdit->setText("-9999999");
+    if(!ui->lineEdit_2->text().isEmpty()){
+        if(current > 75 && ok){
+            current = 75;
+            ui->lineEdit_2->setText("75");
+        }
+        if(current < 1){
+            current = 1;
+            ui->lineEdit_2->setText("1");
+        }
+        area = ui->lineEdit_3->text().toUInt(&ok ,10);
     }
-    current = ui->lineEdit_2->text().toUInt(&ok ,10);
-    if(current > 75 && ok){
-        current = 75;
-        ui->lineEdit_2->setText("75");
+    if(!ui->lineEdit_3->text().isEmpty()){
+        if(area > 60 && ok){
+            area = 60;
+            ui->lineEdit_3->setText("60");
+        }
+        if(area < 1){
+            area = 1;
+            ui->lineEdit_3->setText("1");
+        }
+        effect= ui->lineEdit_4->text().toUInt(&ok ,10);
     }
-    if(current < 1){
-        current = 1;
-        ui->lineEdit_2->setText("1");
-    }
-    area = ui->lineEdit_3->text().toUInt(&ok ,10);
-    if(area > 60 && ok){
-        area = 60;
-        ui->lineEdit_3->setText("60");
-    }
-    if(area < 1){
-        area = 1;
-        ui->lineEdit_3->setText("1");
-    }
-    effect= ui->lineEdit_4->text().toUInt(&ok ,10);
-    if(effect > 10 && ok){
-        effect = 10;
-        ui->lineEdit_4->setText("10");
-    }
-    if(effect < 1){
-        effect = 1;
-        ui->lineEdit_4->setText("1");
+    if(!ui->lineEdit_4->text().isEmpty()){
+        if(effect > 10 && ok){
+            effect = 10;
+            ui->lineEdit_4->setText("10");
+        }
+        if(effect < 1){
+            effect = 1;
+            ui->lineEdit_4->setText("1");
+        }
     }
 }
 
