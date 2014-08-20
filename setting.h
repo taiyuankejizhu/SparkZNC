@@ -45,6 +45,7 @@ typedef unsigned long long UNLONG64;
 typedef char CHAR8;
 typedef short SHORT16;
 typedef int INT32;
+typedef float FLOAT32;
 typedef long LONG32;
 typedef long long LONG64;
 

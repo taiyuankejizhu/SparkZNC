@@ -160,21 +160,117 @@ void SparkInfo::tableInit()
 void SparkInfo::tableAuto(LONG64 deep ,UNINT32 current,UNINT32 area,UNINT32 effect)
 {
     tableClear();
+
     unsigned int i = 0;
-    for(i = 0;i < effect;i++){
-        table.Shendu[i] = deep-(effect-1-i)*100;
-        table.Dianliu[i] = current;
-        table.Maikuan[i] = 0;
-        table.Xiuzhi[i] = 0;
-        table.Jianxi[i] = 0;
-        table.Sudu[i] = 0;
-        table.Shenggao[i] = 0;
-        table.Gongshi[i] = 0;
+    unsigned int group;       /*根据电流选组别*/
+    unsigned int lines;       /*确定要显示的行数*/
+    switch(current / 2)
+    {
+        case 0:
+        case 1:group = 0;break;
+        case 2:group = 1;break;
+        case 3:group = 2;break;
+        case 4:
+        case 5:group = 3;break;
+        case 6:
+        case 7:group = 4;break;
+        case 8:
+        case 9:group = 5;break;
+        case 10:
+        case 11:
+        case 12:group = 6;break;
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:group = 7;break;
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+        case 24:
+        case 25:group = 8;break;
+        case 26:
+        case 27:
+        case 28:
+        case 29:
+        case 30:
+        case 31:
+        case 32:
+        case 33:
+        case 34:
+        case 35:group = 9;break;
+        case 36:
+        case 37:
+        case 38:
+        case 39:
+        case 40:
+        case 41:
+        case 42:
+        case 43:
+        case 44:
+        case 45:
+        case 46:
+        case 47:
+        case 48:
+        case 49:
+        case 50:group = 10;break;
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+        case 55:
+        case 56:
+        case 57:
+        case 58:
+        case 59:
+        case 60:
+        case 61:
+        case 62:
+        case 63:
+        case 64:
+        case 65:
+        case 66:
+        case 67:
+        case 68:
+        case 69:
+        case 70:
+        case 71:
+        case 72:
+        case 73:
+        case 74:
+        case 75:
+        default:group = 11;break;
+    }
+
+    lines = search[group].Index[effect % 4];
+
+    for(i = 0;i < lines;i++)
+    {
+        table.Shendu[i] = (deep - (search[group].Shendu[i] - search[group].Shendu[lines - 1]));
+        table.Dianliu[i] = current * search[group].Dianliu[i];
+        if(effect > 4)
+            table.Maikuan[i] = search[group].Maikuan[i] * 0.8;
+        else
+            table.Maikuan[i] = search[group].Maikuan[i];
+        table.Xiuzhi[i] = search[group].Xiuzhi[i];
+        table.Jianxi[i] = search[group].Jianxi[i];
+        table.Sudu[i] = 5;
+        table.Shenggao[i] = 8;
+        table.Gongshi[i] = search[group].Gongshi[i];
         table.Mianji[i] = area;
         table.Jixing[i] = 0;
-        table.Gaoya[i] = 0;
-        table.Index[i] = i+1;
+        if(!table.Dianliu[i])
+            table.Dianliu[i]++;
+        if(effect > 4)
+            table.Gaoya[i] = 4;
+        else
+            table.Gaoya[i] = 5;
+        table.Index[i] = i + 1;
     }
+
     tableSave();
 }
 
@@ -416,6 +512,8 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             spark_info->setLong(L_X_CURRENT ,c_x.longs);
             spark_info->setLong(L_Y_CURRENT ,c_y.longs);
             spark_info->setLong(L_Z_CURRENT ,c_z.longs);
+
+            emit coorIndexChange();
         }
         /*保证当前行号在开始行和结束行之间*/
         else if(i==UINT_CURRENT_ROM){

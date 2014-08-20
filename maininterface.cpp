@@ -59,6 +59,7 @@ MainInterface::MainInterface(QWidget *parent) :
     XYZ_Update(L_Z_REMAIN);
 
     connect(spark_info ,SIGNAL(xyzChange(int)) ,this ,SLOT(XYZ_Update(int)));
+    connect(spark_info ,SIGNAL(coorIndexChange()) ,this ,SLOT(axisIndexUpdate()));
 
     model = new QStandardItemModel;
     /*数据表索引发生改变*/
@@ -810,6 +811,16 @@ QString MainInterface::toString(LONG64 l)
     }
 
     return s;
+}
+
+void MainInterface::axisIndexUpdate()
+{
+    QString s;
+    s = QString::number(spark_info->uint_array[UINT_COOR_INDEX],10);
+
+    ui->label_cuix->setText(s);
+    ui->label_cuiy->setText(s);
+    ui->label_cuiz->setText(s);
 }
 
 MainInterface::~MainInterface()

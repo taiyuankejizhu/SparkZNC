@@ -99,6 +99,7 @@ public slots:
     void tableItemChange(QModelIndex tl ,QModelIndex br);
     void funcbarUpdate(int);
     void XYZ_Update(int);
+    void axisIndexUpdate();
     void menuShow();
 };
 
