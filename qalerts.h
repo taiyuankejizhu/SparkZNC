@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QTimer>
 #include <QApplication>
 #include "sparkinfo.h"
 
@@ -32,6 +33,8 @@ class QAlerts : public QWidget
     Q_OBJECT
 public:
     explicit QAlerts(QWidget *parent = 0);
+    QTimer *timer ;
+    bool flag;
 
 private:
     QString mesg_label[10];
@@ -47,6 +50,7 @@ protected:
 signals:
     
 public slots:
+    void flashLamp();
     void alertCheck();
 };
 
