@@ -49,7 +49,6 @@
 #include "calibration.h"
 
 #ifndef Q_WS_X11
-
 Calibration::Calibration()
 {
     QRect desktop = QApplication::desktop()->geometry();
@@ -90,13 +89,19 @@ int Calibration::exec()
 void Calibration::paintEvent(QPaintEvent*)
 {
     QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(rect(), Qt::white);
     QPoint point = data.screenPoints[pressCount];
     // Map to logical coordinates in case the screen is transformed
     QSize screenSize(qt_screen->deviceWidth(), qt_screen->deviceHeight());
     point = qt_screen->mapFromDevice(point, screenSize);
-    p.fillRect(point.x() - 6, point.y() - 1, 13, 3, Qt::black);
-    p.fillRect(point.x() - 1, point.y() - 6, 3, 13, Qt::black);
+
+    QPen pen(Qt::black);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.drawEllipse(QPointF(point.x(),point.y()),10,10);
+    p.drawLine(point.x() - 20, point.y(), point.x() + 20, point.y());
+    p.drawLine(point.x(), point.y() - 20, point.x(), point.y() + 20);
 }
 
 void Calibration::mouseReleaseEvent(QMouseEvent *event)
@@ -117,5 +122,4 @@ void Calibration::accept()
     QWSServer::mouseHandler()->calibrate(&data);
     QDialog::accept();
 }
-
 #endif
