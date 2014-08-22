@@ -17,10 +17,11 @@ class AutoDialog : public QDialog
 
 public:
     explicit AutoDialog(QWidget *parent = 0);
-    long deep;
+    long long deep;
     unsigned int current;
     unsigned int area;
     unsigned int effect;
+    char flag;
     ~AutoDialog();
 
 protected:

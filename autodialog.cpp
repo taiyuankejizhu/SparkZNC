@@ -10,6 +10,12 @@ AutoDialog::AutoDialog(QWidget *parent) :
     this->setGeometry(0 ,390 ,width() ,height());
     this->setWindowFlags(Qt::FramelessWindowHint);
 
+    flag = 0x00;
+    deep = 0x00;
+    current = 0x00;
+    area = 0x00;
+    effect = 0x00;
+
     QPixmap a_pix = QPixmap(":/selected.png");
     a_icon = QIcon(a_pix);
     QPixmap b_pix = QPixmap(":/unselected.png");
@@ -73,19 +79,24 @@ void AutoDialog::valueChange(QString s)
 {
     bool ok = false;
     s = "";
-    deep = ui->lineEdit->text().toLong(&ok ,10);
     if(!ui->lineEdit->text().isEmpty()){
-        if(deep > 9999999 && ok){
-            deep = 9999999;
-            ui->lineEdit->setText("9999999");
+        double t = ui->lineEdit->text().toDouble(&ok);
+        deep = t * 1000;
+        if(t > 9999.999 && ok){
+            t = 9999.999;
+            ui->lineEdit->setText("9999.999");
         }
-        if(deep < -9999999 && ok){
-            deep = -9999999;
-            ui->lineEdit->setText("-9999999");
+        if(t < -9999.999 && ok){
+            t = -9999.999;
+            ui->lineEdit->setText("-9999.999");
         }
-        current = ui->lineEdit_2->text().toUInt(&ok ,10);
+        flag |= 0x01;
+    }
+    else{
+        flag &= 0xfe;
     }
     if(!ui->lineEdit_2->text().isEmpty()){
+        current = ui->lineEdit_2->text().toUInt(&ok ,10);
         if(current > 75 && ok){
             current = 75;
             ui->lineEdit_2->setText("75");
@@ -94,9 +105,13 @@ void AutoDialog::valueChange(QString s)
             current = 1;
             ui->lineEdit_2->setText("1");
         }
-        area = ui->lineEdit_3->text().toUInt(&ok ,10);
+        flag |= 0x02;
+    }
+    else{
+        flag &= 0xfd;
     }
     if(!ui->lineEdit_3->text().isEmpty()){
+        area = ui->lineEdit_3->text().toUInt(&ok ,10);
         if(area > 60 && ok){
             area = 60;
             ui->lineEdit_3->setText("60");
@@ -105,9 +120,13 @@ void AutoDialog::valueChange(QString s)
             area = 1;
             ui->lineEdit_3->setText("1");
         }
-        effect= ui->lineEdit_4->text().toUInt(&ok ,10);
+        flag |= 0x04;
+    }
+    else{
+        flag &= 0xfb;
     }
     if(!ui->lineEdit_4->text().isEmpty()){
+        effect= ui->lineEdit_4->text().toUInt(&ok ,10);
         if(effect > 10 && ok){
             effect = 10;
             ui->lineEdit_4->setText("10");
@@ -116,6 +135,10 @@ void AutoDialog::valueChange(QString s)
             effect = 1;
             ui->lineEdit_4->setText("1");
         }
+        flag |= 0x08;
+    }
+    else{
+        flag &= 0xf7;
     }
 }
 

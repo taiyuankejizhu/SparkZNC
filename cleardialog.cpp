@@ -9,6 +9,8 @@ ClearDialog::ClearDialog(QWidget *parent) :
     ui->setupUi(this);
     this->setGeometry((parent->width()-width())/2 ,390 ,width() ,height());
     this->setWindowFlags(Qt::FramelessWindowHint);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+    //this->setWindowModality(Qt::ApplicationModal);
 
     QPixmap ok_pix = QPixmap(":/ok.png");
     ok_icon = QIcon(ok_pix);

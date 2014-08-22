@@ -4,6 +4,7 @@
 #include "cleardialog.h"
 #include "keydialog.h"
 #include "settingdialog.h"
+#include "calibration.h"
 #include <QWidget>
 #include <QMouseEvent>
 #include <QTimer>

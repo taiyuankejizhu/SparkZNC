@@ -274,7 +274,8 @@ void seconlevel_f4::f2_Done(int r)
     }
     else{
         qDebug()<<"F2 OK!";
-        spark_info->tableAuto(autotab->deep ,autotab->current,autotab->area,autotab->effect);
+        if((autotab->flag & 0x0f) == 0x0f)
+            spark_info->tableAuto(autotab->deep ,autotab->current,autotab->area,autotab->effect);
     }
     parentWidget()->setFocus();
     emit stateChange(TABLE_EDIT);

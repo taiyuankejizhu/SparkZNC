@@ -10,6 +10,7 @@
 #include "myinputpanelcontext.h"
 #include "keyboard.h"
 #include "setting.h"
+#include "calibration.h"
 #include "qdebug.h"
 
 /*定义全局变量SparkInfo，保存运行参数*/
@@ -19,25 +20,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+#ifndef Q_WS_X11
     QFile file;
     file.setFileName(TSLIB_CALIBFILE);
     /*屏幕没有校验*/
     if(!file.exists()){
-        QProcess proc;
-        proc.start("ts_calibrate");
-
-        if (!proc.waitForStarted())
-        {
-            qDebug()<<"fail to start ts_calibrate!\n";
-        }
-        else{
-            proc.closeWriteChannel();
-            QByteArray procOutput;
-            while (false == proc.waitForFinished());
-            procOutput = proc.readAll();
-            qDebug()<<procOutput.data()<<endl;
-        }
+        Calibration cal;
+        cal.exec();
     }
+#endif
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

@@ -50,7 +50,7 @@ typedef long LONG32;
 typedef long long LONG64;
 
 /*根据Qt编译器的版本判断目标机的类型*/
-#if(QT_VERSION == 0x040801)
+#ifdef Q_WS_X11
     #define X86
 #else
     #define ARM

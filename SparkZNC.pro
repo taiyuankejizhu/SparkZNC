@@ -38,7 +38,8 @@ HEADERS += autodialog.h \
            sparkthread.h \
            startmenu.h \
            toplevel.h \
-    qalerts.h
+    qalerts.h \
+    calibration.h
 FORMS += autodialog.ui \
          cleardialog.ui \
          coordialog.ui \
@@ -84,6 +85,7 @@ SOURCES += autodialog.cpp \
            sparkthread.cpp \
            startmenu.cpp \
            toplevel.cpp \
-    qalerts.cpp
+    qalerts.cpp \
+    calibration.cpp
 RESOURCES += resource.qrc
 TRANSLATIONS += en.ts

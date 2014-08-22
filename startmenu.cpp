@@ -18,9 +18,11 @@ StartMenu::StartMenu(QWidget *parent) :
     clear->hide();
 
     key = new KeyDialog(parent);
+    key->setModal(true);
     key->hide();
 
     setting = new SettingDialog(parent);
+    setting->setModal(true);
     setting->hide();
 
     timer = new QTimer(this);
@@ -278,6 +280,12 @@ void StartMenu::doFnRelease(int i)
         emit finish();
         break;
     case Qt::Key_F7:
+        parentWidget()->setFocus();
+        emit finish();
+#ifndef Q_WS_X11
+        Calibration cal;
+        cal.exec();
+#endif
         break;
     case Qt::Key_F8:
         break;
