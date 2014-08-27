@@ -87,6 +87,8 @@ private:
 
 signals:
     void barF0();
+    void keyPress(int);
+    void keyRelease(int);
 
 public slots:
     void commandFinish();

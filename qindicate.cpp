@@ -1,5 +1,6 @@
 #include "qindicate.h"
 #include "sparkinfo.h"
+#include "qdebug.h"
 
 Qindicate::Qindicate(QWidget *parent) :
     QWidget(parent)
@@ -114,10 +115,14 @@ void Qindicate::mouseReleaseEvent(QMouseEvent *ev)
 void Qindicate::updateValue()
 {
     value = spark_info->uint_array[index];
-    if(value > max_value)
-        value = max_value;
-    if(value < min_value)
+    if(value > max_value){
         value = min_value;
+        spark_info->setUInt(index ,min_value);
+    }
+    if(value < min_value){
+        value = max_value;
+        spark_info->setUInt(index ,max_value);
+    }
     update();
 }
 

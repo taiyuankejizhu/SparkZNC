@@ -17,7 +17,7 @@
 #define L_SLOT 2            /*长整型数组的槽标记*/
 #define C_SLOT 3            /*字符型数组的槽标记*/
 
-#define B_LENGTH 30         /*布尔数组的长度*/
+#define B_LENGTH 40         /*布尔数组的长度*/
 #define UINT_LENGTH 15      /*无符号整型数组的长度*/
 #define L_LENGTH 20         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
@@ -50,8 +50,14 @@
 #define B_Y_ORIENT 25       /*Y轴的方向的索引*/
 #define B_Z_ORIENT 26       /*Z轴的方向的索引*/
 #define B_FIRE_ALERT 27     /*火警发生的索引*/
-#define B_Z_UP_ALERT 28     /*Z轴上限位报警发生的索引*/
-#define B_Z_DOWN_ALERT 29   /*Z轴下限位报警发生的索引*/
+#define B_OIL_ALERT 28      /*油位低发生的索引*/
+#define B_Z_UP_ALERT 29     /*Z轴上限位发生的索引*/
+#define B_Z_DOWN_ALERT 30   /*Z轴下限位发生的索引*/
+#define B_SHORT_ALERT 31    /*短路发生的索引*/
+#define B_CABERN_ALERT 32   /*积碳发生的索引*/
+#define B_Y_UP_ALERT 33     /*Y轴上限位发生的索引*/
+#define B_Y_DOWN_ALERT 34   /*Y轴下限位发生的索引*/
+#define B_ZERO 35           /*自动归零开关的索引*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -343,6 +349,8 @@ const SearchTable search[12]=
 const bool bool_init[] = {
         false ,false ,false ,false ,false ,
         false ,true ,false ,false ,false ,
+        false ,false ,false ,false ,false ,
+        false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,

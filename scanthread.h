@@ -9,6 +9,11 @@
 #define D_CYCLE 100 /*关风扇延时的计数周期*/
 #define E_CYCLE 100 /*重启的延时计数周期*/
 
+/*边缘变化三态*/
+#define FALL 0x7f
+#define NONE 0x00
+#define RISE 0xff
+
 class ScanThread : public QThread
 {
     Q_OBJECT
@@ -20,8 +25,15 @@ public:
     unsigned int c_cycle;
     unsigned int d_cycle;
     unsigned int e_cycle;
+    bool a_last;
+    unsigned char a_edge;
+    bool b_last;
+    unsigned char b_edge;
+    bool c_last;
+    unsigned char c_edge;
 
     void run();
+    void Move();
     static void Check_Alert();
     static long X_Count();
     static long Y_Count();
@@ -37,6 +49,8 @@ public:
 signals:
 
 public slots:
+    void keyPress(int);
+    void keyRelease(int);
 
 };
 

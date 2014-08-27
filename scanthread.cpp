@@ -1,5 +1,6 @@
 #include "scanthread.h"
 #include "sparkinfo.h"
+#include "sparkthread.h"
 #include "fpga.h"
 #include "unistd.h"
 #include "sys/reboot.h"
@@ -13,6 +14,13 @@ ScanThread::ScanThread(QObject *parent) :
     c_cycle = 0;
     d_cycle = 0;
     e_cycle = 0;
+
+    a_last = false;
+    a_edge = NONE;
+    b_last = false;
+    b_edge = NONE;
+    c_last = false;
+    c_edge = NONE;
 
     /*初始化IO*/
     _WRITE_BYTE_(C_Z_OT0);
@@ -91,6 +99,9 @@ void ScanThread::run()
         }
         c_cycle++;
 
+        /*移动位置*/
+        Move();
+
         /*读取电压值*/
         spark_info->setUInt(UINT_VOLTAGE ,Voltage_Read());
 
@@ -101,6 +112,52 @@ void ScanThread::run()
     }
 
     /*to do something*/
+}
+
+/*键盘按下信号处理函数，处理方向键和模式切换键*/
+void ScanThread::keyPress(int k)
+{
+    switch(k)
+    {
+    case Qt::Key_Up:
+        spark_info->c_array[C_Z_IN0] |= 0x10;
+        break;
+    case Qt::Key_Down:
+        spark_info->c_array[C_Z_IN0] |= 0x20;
+        break;
+    case Qt::Key_Left:
+        spark_info->c_array[C_U_IN0] |= 0x04;
+        spark_info->setUInt(UINT_SPEED ,spark_info->uint_array[UINT_SPEED]+10);
+        break;
+    case Qt::Key_Right:
+        spark_info->setUInt(UINT_SPEED ,spark_info->uint_array[UINT_SPEED]+10);
+        spark_info->c_array[C_U_IN0] |= 0x04;
+        break;
+    default:
+        break;
+    }
+}
+
+/*键盘松开信号处理函数*/
+void ScanThread::keyRelease(int k)
+{
+    switch(k)
+    {
+    case Qt::Key_Up:
+        spark_info->c_array[C_Z_IN0] |= 0xef;
+        break;
+    case Qt::Key_Down:
+        spark_info->c_array[C_Z_IN0] |= 0xdf;
+        break;
+    case Qt::Key_Left:
+        spark_info->c_array[C_U_IN0] &= 0xfb;
+        break;
+    case Qt::Key_Right:
+        spark_info->c_array[C_U_IN0] &= 0xfb;
+        break;
+    default:
+        break;
+    }
 }
 
 long ScanThread::X_Count()
@@ -278,6 +335,188 @@ long ScanThread::Z_Origin()
     return ret;
 }
 
+/*移动位置，包括手动操作和归零操作*/
+void ScanThread::Move()
+{
+    /*检测上升按键的边缘*/
+    if(a_last){
+        if(!(spark_info->c_array[C_Z_IN0] & 0x10))
+            a_edge = RISE;
+        else
+            a_edge = NONE;
+    }
+    else{
+        if((spark_info->c_array[C_Z_IN0] & 0x10))
+            a_edge = FALL;
+        else
+            a_edge = NONE;
+    }
+    /*检测上升按键的边缘*/
+    if(b_last){
+        if(!(spark_info->c_array[C_Z_IN0] & 0x20))
+            b_edge = RISE;
+        else
+            b_edge = NONE;
+    }
+    else{
+        if((spark_info->c_array[C_Z_IN0] & 0x20))
+            b_edge = FALL;
+        else
+            b_edge = NONE;
+    }
+    /*检测自动归零的边缘*/
+    if(c_last){
+        if(!spark_info->b_array[B_ZERO])
+            c_edge = RISE;
+        else
+            c_edge = NONE;
+    }
+    else{
+        if(spark_info->b_array[B_ZERO])
+            c_edge = FALL;
+        else
+            c_edge = NONE;
+    }
+    /*上升按键*/
+    if((spark_info->c_array[C_Z_IN0] & 0x10))
+    {
+        if(a_edge == FALL){
+            switch(spark_info->uint_array[UINT_SPEED]){
+            case 10:
+                SparkThread::Z_Position_Control(Z_Count() + 10);
+                break;
+            case 20:
+                SparkThread::Z_Velocity_Control(0x20);
+                break;
+            case 30:
+                SparkThread::Z_Position_Control(Z_Count() + 30);
+                break;
+            case 40:
+                SparkThread::Z_Velocity_Control(0x400);
+                break;
+            case 50:
+                SparkThread::Z_Position_Control(Z_Count() + 50);
+                break;
+            default:
+                break;
+            }
+            a_edge = NONE;
+        }
+        a_last = true;
+        return;
+    }
+    else{
+        if(a_edge == RISE){
+            switch(spark_info->uint_array[UINT_SPEED]){
+            case 10:
+                break;
+            case 20:
+                SparkThread::Z_Position_Control(Z_Count());
+                break;
+            case 30:
+                break;
+            case 40:
+                SparkThread::Z_Position_Control(Z_Count());
+                break;
+            case 50:
+                break;
+            default:
+                break;
+            }
+            a_edge = NONE;
+        }
+        a_last = false;
+    }
+    /*下降按键*/
+    if((spark_info->c_array[C_Z_IN0] & 0x20))
+    {
+        if(b_edge == FALL){
+            switch(spark_info->uint_array[UINT_SPEED]){
+            case 10:
+                SparkThread::Z_Position_Control(Z_Count() - 10);
+                break;
+            case 20:
+                SparkThread::Z_Velocity_Control(0xffe0);
+                break;
+            case 30:
+                SparkThread::Z_Position_Control(Z_Count() - 30);
+                break;
+            case 40:
+                SparkThread::Z_Velocity_Control(0xfc00);
+                break;
+            case 50:
+                SparkThread::Z_Position_Control(Z_Count() - 50);
+                break;
+            default:
+                break;
+            }
+            b_edge = NONE;
+        }
+        b_last = true;
+        return;
+    }
+    else{
+        if(b_edge == RISE){
+            switch(spark_info->uint_array[UINT_SPEED]){
+            case 10:
+                break;
+            case 20:
+                SparkThread::Z_Position_Control(Z_Count());
+                break;
+            case 30:
+                break;
+            case 40:
+                SparkThread::Z_Position_Control(Z_Count());
+                break;
+            case 50:
+                break;
+            default:
+                break;
+            }
+            b_edge = NONE;
+        }
+        b_last = false;
+    }
+
+    /*自动归零*/
+    if(spark_info->b_array[B_ZERO]){
+        if(c_edge == FALL){
+            if(spark_info->b_array[B_REVERSE]){
+                if(spark_info->uint_array[UINT_VOLTAGE] < 10){
+                    SparkThread::Z_Velocity_Control(0xffeb);
+                }else{
+                    SparkThread::Z_Velocity_Control(0xffd0);
+                }
+            }else{
+                if(spark_info->uint_array[UINT_VOLTAGE] < 10){
+                    SparkThread::Z_Velocity_Control(0x15);
+                }else{
+                    SparkThread::Z_Velocity_Control(0x30);
+                }
+            }
+            qDebug()<<"fall";
+        }else{
+            if(spark_info->uint_array[UINT_VOLTAGE] < 2){
+                 SparkThread::Z_Position_Control(Z_Count());
+            }else{
+                if(spark_info->b_array[B_REVERSE]){
+                    SparkThread::Z_Velocity_Control(0xffeb);
+                }else{
+                    SparkThread::Z_Velocity_Control(0x15);
+                }
+            }
+            qDebug()<<"none";
+        }
+        c_last = true;
+    }
+    else{
+        if(c_edge == RISE){
+            qDebug()<<"rise";
+        }
+        c_last = false;
+    }
+}
+
 char ScanThread::Voltage_Read()
 {
     char ret = 0;
@@ -303,6 +542,19 @@ void ScanThread::Check_Alert()
     }
     else{
         spark_info->setBool(B_FIRE_ALERT ,false);
+    }
+
+    /*油位*/
+    if(spark_info->b_array[B_OIL]){
+        if(spark_info->c_array[C_U_IN0] & 0x02){
+            spark_info->setBool(B_OIL_ALERT ,true);
+        }
+        else{
+            spark_info->setBool(B_OIL_ALERT ,false);
+        }
+    }
+    else{
+        spark_info->setBool(B_OIL_ALERT ,false);
     }
 
     /*Z上限*/

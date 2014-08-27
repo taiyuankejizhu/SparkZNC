@@ -489,7 +489,6 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             emit tableRowChange();
         }
         else if(i == UINT_COOR_INDEX){
-
             /*保存当前坐标的索引*/
             FourBytes c_axis;
             memset(c_axis.bytes , 0 ,sizeof c_axis);

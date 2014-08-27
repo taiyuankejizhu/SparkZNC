@@ -9,6 +9,9 @@ seconlevel_f3::seconlevel_f3(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->pushButton_F1 ,SIGNAL(clicked()) ,this ,SLOT(F1()));
+    ui->pushButton_F1->setCheckable(true);
+
     coor = new CoorDialog(parent);
     coor->hide();
     connect(coor ,SIGNAL(finished(int)) ,this ,SLOT(f3_Done(int)));
@@ -20,6 +23,11 @@ seconlevel_f3::seconlevel_f3(QWidget *parent) :
     connect(ui->pushButton_F8,SIGNAL(clicked()),this ,SLOT(F8()));
 
     setFocusPolicy(Qt::NoFocus);
+}
+
+void seconlevel_f3::F1()
+{
+    spark_info->reverseBool(B_ZERO);
 }
 
 void seconlevel_f3::F3()

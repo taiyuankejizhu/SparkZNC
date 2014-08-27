@@ -58,6 +58,8 @@ MainInterface::MainInterface(QWidget *parent) :
     XYZ_Update(L_Y_REMAIN);
     XYZ_Update(L_Z_REMAIN);
 
+    axisIndexUpdate();
+
     connect(spark_info ,SIGNAL(xyzChange(int)) ,this ,SLOT(XYZ_Update(int)));
     connect(spark_info ,SIGNAL(coorIndexChange()) ,this ,SLOT(axisIndexUpdate()));
 
@@ -78,6 +80,8 @@ MainInterface::MainInterface(QWidget *parent) :
 
     scan = new ScanThread();
     scan->start();
+    connect(this ,SIGNAL(keyPress(int)) ,scan ,SLOT(keyPress(int)));
+    connect(this ,SIGNAL(keyRelease(int)) ,scan ,SLOT(keyRelease(int)));
 
     mesg = new MesgBox(this);
     mesg ->setHidden(false);
@@ -245,7 +249,12 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
             break;
         case Qt::Key_F9:
         case Qt::Key_F10:
-            FPGA_Info();
+            break;
+        case Qt::Key_Up:
+        case Qt::Key_Down:
+        case Qt::Key_Left:
+        case Qt::Key_Right:
+            emit keyPress(k->key());
             break;
         /*这里的Enter键用来响应放电数据表的段选和删除行*/
         case Qt::Key_Enter:
@@ -330,6 +339,12 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
             if(timer->isActive()){
                 timer->stop();
             }
+            break;
+        case Qt::Key_Up:
+        case Qt::Key_Down:
+        case Qt::Key_Left:
+        case Qt::Key_Right:
+            emit keyRelease(k->key());
             break;
         default :
             break;

@@ -3,7 +3,7 @@
 #define COUNT 18
 #define GAP 17
 #define OFFSET 15
-#define PAD 2
+#define PAD 4
 QAlerts::QAlerts(QWidget *parent) :
     QWidget(parent)
 {
@@ -129,7 +129,7 @@ void QAlerts::paintEvent(QPaintEvent *)
     else{
         QPen pen(BACK_COLOR);
         painter.setPen(pen);
-        painter.drawRect(PAD ,PAD ,width() - PAD ,height() -PAD);
+        painter.drawRect(PAD ,PAD ,width() - 4*PAD ,height() -4*PAD);
     }
 
     painter.restore();
