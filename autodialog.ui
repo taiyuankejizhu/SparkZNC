@@ -503,7 +503,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>深度(-9999999~9999999)：</string>
+          <string>深度(-9999.999~9999.999)：</string>
          </property>
         </widget>
        </item>

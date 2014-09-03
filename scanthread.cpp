@@ -21,6 +21,10 @@ ScanThread::ScanThread(QObject *parent) :
     b_edge = NONE;
     c_last = false;
     c_edge = NONE;
+    d_last = false;
+    d_edge = NONE;
+
+    a_lock = false;
 
     /*初始化IO*/
     _WRITE_BYTE_(C_Z_OT0);
@@ -99,6 +103,11 @@ void ScanThread::run()
         }
         c_cycle++;
 
+        /*a_lock为false时开始扫描遥控板*/
+        if(!a_lock){
+            Scan_Panel();
+        }
+
         /*移动位置*/
         Move();
 
@@ -117,6 +126,9 @@ void ScanThread::run()
 /*键盘按下信号处理函数，处理方向键和模式切换键*/
 void ScanThread::keyPress(int k)
 {
+    /*键盘按键按下时获得互斥锁*/
+    a_lock = true;
+
     switch(k)
     {
     case Qt::Key_Up:
@@ -158,181 +170,45 @@ void ScanThread::keyRelease(int k)
     default:
         break;
     }
+
+    /*键盘按键松开时释放互斥锁*/
+    a_lock = false;
 }
 
-long ScanThread::X_Count()
+/*遥控板扫描*/
+void ScanThread::Scan_Panel()
 {
-    long ret = 0;
-    _READ_BYTE_(C_X_CP0);
-    _READ_BYTE_(C_X_CP1);
-    _READ_BYTE_(C_X_CP2);
-
-    if(spark_info->c_array[C_X_CP2] & 0x80)
-        ret = 0xff;
-    else
-        ret = 0x00;
-    ret <<= 8;
-    ret += spark_info->c_array[C_X_CP2];
-    ret <<= 8;
-    ret += spark_info->c_array[C_X_CP1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_X_CP0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::Y_Count()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_Y_CP0);
-    _READ_BYTE_(C_Y_CP1);
-    _READ_BYTE_(C_Y_CP2);
-
-    if(spark_info->c_array[C_Y_CP0] & 0x80)
-        ret = 0xff;
-    else
-        ret = 0x00;
-    ret <<= 8;
-    ret += spark_info->c_array[C_Y_CP2];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Y_CP1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Y_CP0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::Z_Count()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_Z_CP0);
-    _READ_BYTE_(C_Z_CP1);
-    _READ_BYTE_(C_Z_CP2);
-
-    if(spark_info->c_array[C_Z_CP2] & 0x80)
-        ret = 0xff;
-    else
-        ret = 0x00;
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_CP2];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_CP1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_CP0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::X_Velocity()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_X_CS0);
-    _READ_BYTE_(C_X_CS1);
-
-    if(_READ_BYTE_(C_X_CS1) & 0x80)
-        ret = 0xffff;
-    else
-        ret = 0x0000;
-    ret <<= 8;
-    ret += spark_info->c_array[C_X_CS1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_X_CS0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::Y_Velocity()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_Y_CS0);
-    _READ_BYTE_(C_Y_CS1);
-
-    if(_READ_BYTE_(C_Y_CS1) & 0x80)
-        ret = 0xffff;
-    else
-        ret = 0x0000;
-    ret <<= 8;
-    ret += spark_info->c_array[C_Y_CS1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Y_CS0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::Z_Velocity()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_Z_CS0);
-    _READ_BYTE_(C_Z_CS1);
-
-    if(_READ_BYTE_(C_Z_CS1) & 0x80)
-        ret = 0xffff;
-    else
-        ret = 0x0000;
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_CS1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_CS0];
-
-    if(ret > 9999999)
-        ret = 9999999;
-    if(ret < -9999999)
-        ret = -9999999;
-
-    return ret;
-}
-
-long ScanThread::Z_Origin()
-{
-    long ret = 0;
-
-    _READ_BYTE_(C_Z_OP0);
-    _READ_BYTE_(C_Z_OP1);
-    _READ_BYTE_(C_Z_OP2);
-
-    if(_READ_BYTE_(C_Z_OP2) & 0x80)
-        ret = 0xff;
-    else
-        ret = 0x00;
-
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_OP2];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_OP1];
-    ret <<= 8;
-    ret += spark_info->c_array[C_Z_OP0];
-
-    return ret;
+    _READ_BYTE_(C_Z_IN0);
+    _READ_BYTE_(C_U_IN0);
+    /*检测模式按键的边缘*/
+    if(d_last){
+        if(!(spark_info->c_array[C_U_IN0] & 0x04))
+            d_edge = RISE;
+        else
+            d_edge = NONE;
+    }
+    else{
+        if((spark_info->c_array[C_U_IN0] & 0x04))
+            d_edge = FALL;
+        else
+            d_edge = NONE;
+    }
+    /*模式按键*/
+    if((spark_info->c_array[C_U_IN0] & 0x04))
+    {
+        if(d_edge == FALL){
+            spark_info->setUInt(UINT_SPEED ,spark_info->uint_array[UINT_SPEED]+10);
+            d_edge = NONE;
+        }
+        d_last = true;
+        return;
+    }
+    else{
+        if(d_edge == RISE){
+            d_edge = NONE;
+        }
+        d_last = false;
+    }
 }
 
 /*移动位置，包括手动操作和归零操作*/
@@ -519,6 +395,181 @@ void ScanThread::Move()
         }
         c_last = false;
     }
+}
+
+long ScanThread::X_Count()
+{
+    long ret = 0;
+    _READ_BYTE_(C_X_CP0);
+    _READ_BYTE_(C_X_CP1);
+    _READ_BYTE_(C_X_CP2);
+
+    if(spark_info->c_array[C_X_CP2] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CP0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Y_Count()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Y_CP0);
+    _READ_BYTE_(C_Y_CP1);
+    _READ_BYTE_(C_Y_CP2);
+
+    if(spark_info->c_array[C_Y_CP0] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CP0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Z_Count()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_CP0);
+    _READ_BYTE_(C_Z_CP1);
+    _READ_BYTE_(C_Z_CP2);
+
+    if(spark_info->c_array[C_Z_CP2] & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CP0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::X_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_X_CS0);
+    _READ_BYTE_(C_X_CS1);
+
+    if(_READ_BYTE_(C_X_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_X_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Y_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Y_CS0);
+    _READ_BYTE_(C_Y_CS1);
+
+    if(_READ_BYTE_(C_Y_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Y_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Z_Velocity()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_CS0);
+    _READ_BYTE_(C_Z_CS1);
+
+    if(_READ_BYTE_(C_Z_CS1) & 0x80)
+        ret = 0xffff;
+    else
+        ret = 0x0000;
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CS1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_CS0];
+
+    if(ret > 9999999)
+        ret = 9999999;
+    if(ret < -9999999)
+        ret = -9999999;
+
+    return ret;
+}
+
+long ScanThread::Z_Origin()
+{
+    long ret = 0;
+
+    _READ_BYTE_(C_Z_OP0);
+    _READ_BYTE_(C_Z_OP1);
+    _READ_BYTE_(C_Z_OP2);
+
+    if(_READ_BYTE_(C_Z_OP2) & 0x80)
+        ret = 0xff;
+    else
+        ret = 0x00;
+
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP2];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP1];
+    ret <<= 8;
+    ret += spark_info->c_array[C_Z_OP0];
+
+    return ret;
 }
 
 char ScanThread::Voltage_Read()

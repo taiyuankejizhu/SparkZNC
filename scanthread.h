@@ -25,15 +25,21 @@ public:
     unsigned int c_cycle;
     unsigned int d_cycle;
     unsigned int e_cycle;
+
     bool a_last;
     unsigned char a_edge;
     bool b_last;
     unsigned char b_edge;
     bool c_last;
     unsigned char c_edge;
+    bool d_last;
+    unsigned char d_edge;
+    /*键盘与遥控操作的互斥锁，保证在键盘操作方向和模式时遥控板不起作用*/
+    bool a_lock;
 
     void run();
     void Move();
+    void Scan_Panel();
     static void Check_Alert();
     static long X_Count();
     static long Y_Count();
