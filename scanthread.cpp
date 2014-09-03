@@ -144,10 +144,10 @@ void ScanThread::keyRelease(int k)
     switch(k)
     {
     case Qt::Key_Up:
-        spark_info->c_array[C_Z_IN0] |= 0xef;
+        spark_info->c_array[C_Z_IN0] &= 0xef;
         break;
     case Qt::Key_Down:
-        spark_info->c_array[C_Z_IN0] |= 0xdf;
+        spark_info->c_array[C_Z_IN0] &= 0xdf;
         break;
     case Qt::Key_Left:
         spark_info->c_array[C_U_IN0] &= 0xfb;
@@ -481,6 +481,7 @@ void ScanThread::Move()
     /*自动归零*/
     if(spark_info->b_array[B_ZERO]){
         if(c_edge == FALL){
+            /*归零操作时控制放电头为速度模式*/
             if(spark_info->b_array[B_REVERSE]){
                 if(spark_info->uint_array[UINT_VOLTAGE] < 10){
                     SparkThread::Z_Velocity_Control(0xffeb);
@@ -496,7 +497,8 @@ void ScanThread::Move()
             }
             qDebug()<<"fall";
         }else{
-            if(spark_info->uint_array[UINT_VOLTAGE] < 2){
+            /*电压过低时表示已经接触到工件*/
+            if(spark_info->uint_array[UINT_VOLTAGE] < 1){
                  SparkThread::Z_Position_Control(Z_Count());
             }else{
                 if(spark_info->b_array[B_REVERSE]){
@@ -510,8 +512,10 @@ void ScanThread::Move()
         c_last = true;
     }
     else{
+        /*手动停止归零操作*/
         if(c_edge == RISE){
             qDebug()<<"rise";
+            SparkThread::Z_Position_Control(Z_Count());
         }
         c_last = false;
     }
