@@ -8,6 +8,8 @@ SparkThread::SparkThread(QObject *parent) :
 {
     /*状态机初始状态为SEARCH*/
     state = SEARCH;
+    l_state = state;
+    d_state = false;
 
     x_start = 0;
     y_start = 0;
@@ -32,21 +34,24 @@ void SparkThread::run()
     z_start = spark_info->l_array[L_Z_CURRENT];
 
     state = SEARCH;
+    l_state = state;
+    d_state = true;
 
     while(spark_info->b_array[B_START]){
+        /*保存当前状态*/
+        l_state = state;
+
         if(spark_info->l_array[L_Z_CURRENT] > spark_info->l_array[L_DEEP_CURRENT])
             spark_info->setLong(L_DEEP_CURRENT ,spark_info->l_array[L_Z_CURRENT]);
 
         z_diff = spark_info->l_array[L_Z_CURRENT] - spark_info->l_array[L_DEEP_CURRENT];
 
-        if(spark_info->l_array[L_Z_CURRENT] >= spark_info->table.Shendu[spark_info->uint_array[UINT_CURRENT_ROM]]){
-
-            if(spark_info->uint_array[UINT_CURRENT_ROM] < spark_info->uint_array[UINT_END_ROW]){
-                spark_info->setUInt(UINT_CURRENT_ROM ,++spark_info->uint_array[UINT_CURRENT_ROM]);
-                spark_info->setLong(L_DEEP_TARGET ,spark_info->table.Shendu[spark_info->uint_array[UINT_CURRENT_ROM]]);
-                Set_Row(spark_info->uint_array[UINT_CURRENT_ROM]);
-            }
-            else{
+        if(spark_info->l_array[L_Z_CURRENT] >= spark_info->table.Shendu[CURRENT_ROW]){
+            if(CURRENT_ROW < spark_info->uint_array[UINT_END_ROW]){
+                spark_info->setUInt(UINT_CURRENT_ROM ,++CURRENT_ROW);
+                spark_info->setLong(L_DEEP_TARGET ,spark_info->table.Shendu[CURRENT_ROW]);
+                Set_Row(CURRENT_ROW);
+            }else{
                 spark_info->setBool(B_SELECT ,false);
                 spark_info->setUInt(UINT_CURRENT_ROM ,0x00);
                 spark_info->setUInt(UINT_END_ROW ,0x00);
@@ -57,43 +62,61 @@ void SparkThread::run()
                 spark_info->setLong(L_DEEP_TARGET ,0x00);
                 spark_info->setLong(L_DEEP_CURRENT ,0x00);
 
-
                 spark_info->reverseBool(B_START);
                 break;
             }
-
         }
 
         switch(state){
         case SEARCH:
-            if(spark_info->uint_array[UINT_VOLTAGE] < 10){
+            qDebug()<<"search";
+            if(d_state){
+                /*放电开始时就已经短路接触时，速度控制抬升一段距离*/
+                if(spark_info->uint_array[UINT_VOLTAGE] < 10){
+                    Z_Velocity_Control(0x40);
+                    msleep(500);
+                }
+                Z_Position_Control(spark_info->l_array[L_Z_COUNTER]);
+                spark_info->setBool(B_TRANS_A ,true);
+                msleep(100);
+                spark_info->setBool(B_OSCF ,true);
+            }
+            if(spark_info->uint_array[UINT_VOLTAGE] < spark_info->table.Jianxi[CURRENT_ROW]){
                 Z_Position_Control(spark_info->l_array[L_Z_COUNTER]);
                 state = WORK;
-                timer.restart();
                 break;
             }
-            Z_Velocity_Control(0x40);
             break;
         case WORK:
-            if(timer.elapsed() > spark_info->table.Gongshi[spark_info->uint_array[UINT_CURRENT_ROM]]
-                    && spark_info->table.Shenggao[spark_info->uint_array[UINT_CURRENT_ROM]] > 0){
-                Z_Velocity_Control(0x80);
+            qDebug()<<"work";
+            if(d_state){
+                timer.restart();
+            }
+            if(timer.elapsed() > spark_info->table.Gongshi[CURRENT_ROW]&&
+                    spark_info->table.Shenggao[CURRENT_ROW] > 0){
+                spark_info->setBool(B_OSCF ,false);
                 state = UP;
                 break;
             }
             break;
         case UP:
-            if(z_diff < spark_info->table.Shenggao[spark_info->uint_array[UINT_CURRENT_ROM]]){
-                Z_Position_Control(spark_info->table.Shenggao[spark_info->uint_array[UINT_CURRENT_ROM]]);
+            qDebug()<<"up";
+            if(d_state){
+                Z_Velocity_Control(0x80);
+            }
+            if(z_diff < spark_info->table.Shenggao[CURRENT_ROW]){
                 state = DOWN;
                 break;
             }
             break;
         case DOWN:
+            qDebug()<<"down";
+            if(d_state){
+                Z_Position_Control(spark_info->table.Shenggao[CURRENT_ROW]);
+            }
             if(spark_info->uint_array[UINT_VOLTAGE] < 10){
                 Z_Position_Control(spark_info->l_array[L_Z_COUNTER]);
                 state = WORK;
-                timer.restart();
                 break;
             }
             break;
@@ -103,10 +126,27 @@ void SparkThread::run()
             break;
         }
 
+        /*上一个状态与现在状态不同时，开始这个状态的初始化*/
+        if(l_state != state){
+            d_state = true;
+        }else{
+            d_state = false;
+        }
+
         spark_info->setLong(L_Z_CURRENT ,++spark_info->l_array[L_Z_CURRENT]);
         msleep(200);
     }
     /*todo some thing*/
+}
+
+/*放电进程监听spark_info全局变量的开始结束信号*/
+void SparkThread::sparkChange()
+{
+    if(spark_info->b_array[B_START]&&!isRunning()){
+        start();
+    }
+    else if(!spark_info->b_array[B_START]&&isRunning()){
+    }
 }
 
 /*Z轴位置控制模式*/
@@ -240,16 +280,6 @@ void SparkThread::Set_Row(unsigned int r)
 
     }else{
         return;
-    }
-}
-
-/*放电进程监听spark_info全局变量的开始结束信号*/
-void SparkThread::sparkChange()
-{
-    if(spark_info->b_array[B_START]&&!isRunning()){
-        start();
-    }
-    else if(!spark_info->b_array[B_START]&&isRunning()){
     }
 }
 

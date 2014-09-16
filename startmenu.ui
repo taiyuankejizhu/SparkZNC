@@ -25,9 +25,6 @@
    <property name="frameShape">
     <enum>QFrame::WinPanel</enum>
    </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
