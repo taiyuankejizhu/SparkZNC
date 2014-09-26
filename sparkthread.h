@@ -24,6 +24,11 @@ public:
     long z_start;
     long z_diff;
 
+    /*跳升计数*/
+    unsigned int jump_c;
+    /*跳升高度*/
+    unsigned int jump_h;
+
     QTime timer;
 
     char state;

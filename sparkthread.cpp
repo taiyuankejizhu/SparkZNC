@@ -11,6 +11,9 @@ SparkThread::SparkThread(QObject *parent) :
     l_state = state;
     d_state = false;
 
+    jump_c = 0;
+    jump_h = 0;
+
     x_start = 0;
     y_start = 0;
     z_start = 0;
@@ -33,6 +36,9 @@ void SparkThread::run()
     y_start = spark_info->l_array[L_Y_CURRENT];
     z_start = spark_info->l_array[L_Z_CURRENT];
 
+    jump_c = 0;
+    jump_h = 0;
+
     state = SEARCH;
     l_state = state;
     d_state = true;
@@ -41,10 +47,10 @@ void SparkThread::run()
         /*保存当前状态*/
         l_state = state;
 
+        z_diff = spark_info->l_array[L_Z_CURRENT] - spark_info->l_array[L_DEEP_CURRENT];
+        /*当前深度为所达到的最大深度*/
         if(spark_info->l_array[L_Z_CURRENT] > spark_info->l_array[L_DEEP_CURRENT])
             spark_info->setLong(L_DEEP_CURRENT ,spark_info->l_array[L_Z_CURRENT]);
-
-        z_diff = spark_info->l_array[L_Z_CURRENT] - spark_info->l_array[L_DEEP_CURRENT];
 
         if(spark_info->l_array[L_Z_CURRENT] >= spark_info->table.Shendu[CURRENT_ROW]){
             if(CURRENT_ROW < spark_info->uint_array[UINT_END_ROW]){
@@ -103,8 +109,16 @@ void SparkThread::run()
             qDebug()<<"up";
             if(d_state){
                 Z_Velocity_Control(0x80);
+                jump_c++;
+                if(jump_c > spark_info->uint_array[UINT_JUMP_T]&& spark_info->uint_array[UINT_JUMP_T] != 0){
+                    jump_h = spark_info->uint_array[UINT_JUMP_H];
+                    jump_c = 0;
+                }else{
+                    jump_h = 0;
+                    jump_c = 0;
+                }
             }
-            if(z_diff < spark_info->table.Shenggao[CURRENT_ROW]){
+            if(z_diff < spark_info->table.Shenggao[CURRENT_ROW] + jump_h){
                 state = DOWN;
                 break;
             }
