@@ -22,7 +22,7 @@ public:
     long x_start;
     long y_start;
     long z_start;
-    long z_diff;
+    unsigned long z_diff;
 
     /*跳升计数*/
     unsigned int jump_c;
@@ -31,12 +31,16 @@ public:
 
     QTime timer;
 
+    /*当前的运行状态*/
     char state;
+    /*上一个运行状态*/
     char l_state;
+    /*状态是否变化*/
     bool d_state;
     void run();
     static void Z_Position_Control(long);
     static void Z_Velocity_Control(long);
+    static void Z_Voltage_Control(bool);
     static void Z_PID_Tune(char ,char ,char ,char);
     static void Set_Row(unsigned int);
     virtual ~SparkThread();

@@ -33,5 +33,7 @@
         <file>sound_2.png</file>
         <file>sound_3.png</file>
         <file>unlock.png</file>
+        <file>icon_p.png</file>
+        <file>icon_h.png</file>
     </qresource>
 </RCC>

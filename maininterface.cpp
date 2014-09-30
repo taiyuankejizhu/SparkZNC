@@ -88,11 +88,11 @@ MainInterface::MainInterface(QWidget *parent) :
 
     menu = new StartMenu(this);
     menu ->setHidden(true);
-    connect(menu ,SIGNAL(finish()) ,this ,SLOT(menuShow()));
+    connect(menu ,SIGNAL(finish(bool)) ,this ,SLOT(menuShow(bool)));
 
     timer = new QTimer(this);
-    timer->setInterval(500);
-    connect(timer ,SIGNAL(timeout()) ,this ,SLOT(menuShow()));
+    timer->setInterval(300);
+    connect(timer ,SIGNAL(timeout()) ,this ,SLOT(menuTimeout()));
 
     ui->verticalLayout->addWidget(mesg);
     ui->verticalLayout->addWidget(menu);
@@ -134,6 +134,7 @@ void MainInterface::initFuncBar()
 
     top = new toplevel(this);
     top->setHidden(true);
+    connect(top ,SIGNAL(menu(bool)) ,this ,SLOT(menuShow(bool)));
 
     sec_f3 = new seconlevel_f3(this);
     sec_f3 ->setHidden(true);
@@ -214,11 +215,12 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
         case Qt::Key_F8:
             Fn = barui->findChild<QPushButton *> ("pushButton_F8");
             if(Fn != NULL){
-                Fn->click();
-            }
-            else{
-                if(!timer->isActive())
-                    timer->start();
+                if(barmap.key(barui) != 28){
+                    Fn->click();
+                }else{
+                    if(!timer->isActive())
+                        timer->start();
+                }
             }
             break;
         /*放电监听D键*/
@@ -730,20 +732,39 @@ void MainInterface::funcbarUpdate(int i)
 
 }
 
-void MainInterface::menuShow()
+void MainInterface::menuTimeout()
 {
-    if(menu->isHidden()){
-        menu->setHidden(false);
-        mesg->setHidden(true);
-        menu->setFocus();
+    QPushButton *Fn ;
+    Fn = barui->findChild<QPushButton *> ("pushButton_F8");
+    if(Fn != NULL){
+        Fn->click();
     }
-    else{
-        menu->setHidden(true);
-        mesg->setHidden(false);
-        //this->setFocus();
-    }
+
     if(timer->isActive())
         timer->stop();
+}
+
+void MainInterface::menuShow(bool b)
+{
+    QPushButton *Fn ;
+    Fn = barui->findChild<QPushButton *> ("pushButton_F8");
+    if(Fn != NULL){
+        if(menu->isHidden()){
+            menu->setHidden(false);
+            mesg->setHidden(true);
+            menu->setFocus();
+        }else{
+            menu->setHidden(true);
+            mesg->setHidden(false);
+            //this->setFocus();
+        }
+        if(b){
+            if(menu->isHidden())
+                Fn->setChecked(false);
+            else
+                Fn->setChecked(true);
+        }
+    }
 }
 
 void MainInterface::XYZ_Update(int i)

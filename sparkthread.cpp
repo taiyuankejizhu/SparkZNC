@@ -52,7 +52,7 @@ void SparkThread::run()
         if(spark_info->l_array[L_Z_CURRENT] > spark_info->l_array[L_DEEP_CURRENT])
             spark_info->setLong(L_DEEP_CURRENT ,spark_info->l_array[L_Z_CURRENT]);
 
-        if(spark_info->l_array[L_Z_CURRENT] >= spark_info->table.Shendu[CURRENT_ROW]){
+        if(spark_info->l_array[L_DEEP_CURRENT] >= spark_info->table.Shendu[CURRENT_ROW]){
             if(CURRENT_ROW < spark_info->uint_array[UINT_END_ROW]){
                 spark_info->setUInt(UINT_CURRENT_ROM ,++CURRENT_ROW);
                 spark_info->setLong(L_DEEP_TARGET ,spark_info->table.Shendu[CURRENT_ROW]);
@@ -86,9 +86,10 @@ void SparkThread::run()
                 spark_info->setBool(B_TRANS_A ,true);
                 msleep(100);
                 spark_info->setBool(B_OSCF ,true);
+                /*开电压控制模式*/
+                Z_Voltage_Control(spark_info->b_array[B_REVERSE]);
             }
             if(spark_info->uint_array[UINT_VOLTAGE] < spark_info->table.Jianxi[CURRENT_ROW]){
-                Z_Position_Control(spark_info->l_array[L_Z_COUNTER]);
                 state = WORK;
                 break;
             }
@@ -96,40 +97,56 @@ void SparkThread::run()
         case WORK:
             qDebug()<<"work";
             if(d_state){
-                timer.restart();
+                spark_info->setBool(B_OSCF ,true);
+                /*开电压控制模式*/
+                Z_Voltage_Control(spark_info->b_array[B_REVERSE]);
             }
-            if(timer.elapsed() > spark_info->table.Gongshi[CURRENT_ROW]&&
-                    spark_info->table.Shenggao[CURRENT_ROW] > 0){
-                spark_info->setBool(B_OSCF ,false);
-                state = UP;
-                break;
+            if(spark_info->uint_array[UINT_VOLTAGE] >
+                    spark_info->table.Jianxi[CURRENT_ROW] + spark_info->table.Gaoya[CURRENT_ROW]){
+                timer.restart();
+            }else{
+                if(timer.elapsed() > spark_info->table.Gongshi[CURRENT_ROW] &&
+                        spark_info->table.Shenggao[CURRENT_ROW] > 0){
+                    state = UP;
+                    break;
+                }
             }
             break;
         case UP:
             qDebug()<<"up";
             if(d_state){
+                spark_info->setBool(B_OSCF ,false);
                 Z_Velocity_Control(0x80);
                 jump_c++;
-                if(jump_c > spark_info->uint_array[UINT_JUMP_T]&& spark_info->uint_array[UINT_JUMP_T] != 0){
+                if(jump_c > spark_info->uint_array[UINT_JUMP_T] &&
+                        spark_info->uint_array[UINT_JUMP_T] != 0){
                     jump_h = spark_info->uint_array[UINT_JUMP_H];
                     jump_c = 0;
                 }else{
                     jump_h = 0;
                     jump_c = 0;
                 }
+                timer.restart();
             }
-            if(z_diff < spark_info->table.Shenggao[CURRENT_ROW] + jump_h){
-                state = DOWN;
-                break;
+            /*固定速度上升一段时间*/
+            if(timer.elapsed() < spark_info->table.Mianji[CURRENT_ROW] * 2){
+                /*to do something*/
+            }else{
+                /*位置控制上升到高点*/
+                Z_Position_Control(spark_info->l_array[L_Z_COUNTER] - z_diff + spark_info->table.Shenggao[CURRENT_ROW] + jump_h);
+                if(z_diff < spark_info->table.Shenggao[CURRENT_ROW] + jump_h){
+                    state = DOWN;
+                    break;
+                }
             }
             break;
         case DOWN:
             qDebug()<<"down";
             if(d_state){
-                Z_Position_Control(spark_info->table.Shenggao[CURRENT_ROW]);
+                /*位置控制下降到低点*/
+                Z_Position_Control(spark_info->l_array[L_Z_COUNTER] - z_diff);
             }
-            if(spark_info->uint_array[UINT_VOLTAGE] < 10){
-                Z_Position_Control(spark_info->l_array[L_Z_COUNTER]);
+            if(z_diff < 10){
                 state = WORK;
                 break;
             }
@@ -156,10 +173,10 @@ void SparkThread::run()
 /*放电进程监听spark_info全局变量的开始结束信号*/
 void SparkThread::sparkChange()
 {
-    if(spark_info->b_array[B_START]&&!isRunning()){
+    if(spark_info->b_array[B_START] && !isRunning()){
         start();
     }
-    else if(!spark_info->b_array[B_START]&&isRunning()){
+    else if(!spark_info->b_array[B_START] && isRunning()){
     }
 }
 
@@ -195,6 +212,20 @@ void SparkThread::Z_Velocity_Control(long v)
 
     spark_info->c_array[C_Z_OT1] &= 0x18;
     spark_info->c_array[C_Z_OT1] |= 0x01;
+    _WRITE_BYTE_(C_Z_OT1);
+}
+
+/*Z轴电压控制模式*/
+void SparkThread::Z_Voltage_Control(bool b)
+{
+    /*正反加工区别电压控制方向*/
+    if(!b){
+        spark_info->c_array[C_Z_OT1] |= 0x06;
+        spark_info->c_array[C_Z_OT1] &= 0xfe;
+    }else{
+        spark_info->c_array[C_Z_OT1] |= 0x04;
+        spark_info->c_array[C_Z_OT1] &= 0xfc;
+    }
     _WRITE_BYTE_(C_Z_OT1);
 }
 

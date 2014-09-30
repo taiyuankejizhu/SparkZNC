@@ -36,7 +36,7 @@ protected:
     void doFnRelease(int);
 
 signals:
-    void finish();
+    void finish(bool);
 public slots:
     void selectItem();
     void dialogFinish(int);

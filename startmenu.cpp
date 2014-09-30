@@ -142,12 +142,12 @@ void StartMenu::doFnPress(int i)
     case Qt::Key_Down:
     case Qt::Key_Left:
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     case Qt::Key_Up:
     case Qt::Key_Right:
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     case Qt::Key_F1:
         selected = 1;
@@ -224,7 +224,7 @@ void StartMenu::doFnPress(int i)
         selected = 0;
         updateSelect();
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     default:
         break;
@@ -257,7 +257,7 @@ void StartMenu::doFnRelease(int i)
         else{
             setting->hide();
         }
-        emit finish();
+        emit finish(true);
         break;
     case Qt::Key_F5:
         if(clear->isHidden()){
@@ -267,7 +267,7 @@ void StartMenu::doFnRelease(int i)
         else{
             clear->hide();
         }
-        emit finish();
+        emit finish(true);
         break;
     case Qt::Key_F6:
         if(key->isHidden()){
@@ -277,11 +277,11 @@ void StartMenu::doFnRelease(int i)
         else{
             key->hide();
         }
-        emit finish();
+        emit finish(true);
         break;
     case Qt::Key_F7:{
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
 #ifndef Q_WS_X11
         Calibration cal;
         cal.exec();
@@ -360,7 +360,7 @@ void StartMenu::selectItem()
             spark_info->setBool(B_SHUTDOWN ,true);
         }
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     case 2:
         if(spark_info->b_array[B_REBOOT]){
@@ -370,7 +370,7 @@ void StartMenu::selectItem()
             spark_info->setBool(B_REBOOT ,true);
         }
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     case 3:
         if(spark_info->b_array[B_SLEEP]){
@@ -380,7 +380,7 @@ void StartMenu::selectItem()
             spark_info->setBool(B_SLEEP ,true);
         }
         parentWidget()->setFocus();
-        emit finish();
+        emit finish(true);
         break;
     case 4:
         break;

@@ -102,7 +102,8 @@ public slots:
     void funcbarUpdate(int);
     void XYZ_Update(int);
     void axisIndexUpdate();
-    void menuShow();
+    void menuShow(bool);
+    void menuTimeout();
 };
 
 #endif // MAININTERFACE_H

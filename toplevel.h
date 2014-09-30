@@ -20,9 +20,8 @@ private:
     Ui::toplevel *ui;
 
 signals:
-
     void enter(int i);
-    void menu(bool b);
+    void menu(bool);
 
 public slots:
     void F1();
@@ -32,6 +31,7 @@ public slots:
     void F5();
     void F6();
     void F7();
+    void F8();
     void F0();
 };
 

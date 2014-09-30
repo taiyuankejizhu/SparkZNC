@@ -9,8 +9,6 @@ toplevel::toplevel(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPixmap pix = QPixmap(":/icon.png");
-
     connect(ui->pushButton_F1,SIGNAL(clicked()),this ,SLOT(F1()));
     ui->pushButton_F1->setCheckable(true);
 
@@ -27,7 +25,13 @@ toplevel::toplevel(QWidget *parent) :
     connect(ui->pushButton_F7,SIGNAL(clicked()),this ,SLOT(F7()));
     ui->pushButton_F7->setCheckable(true);
 
-    ui->label->setPixmap(pix);
+    connect(ui->pushButton_F8,SIGNAL(clicked()),this ,SLOT(F8()));
+    ui->pushButton_F8->setCheckable(true);
+    ui->pushButton_F8->setStyleSheet(
+        "QPushButton{border-image:url(:/icon.png); color: black;}"
+        "QPushButton:checked{border-image:url(:/icon_p.png); color: black;}"
+        "QPushButton:hover{border-image:url(:/icon_h.png); color: black;}"
+        "QPushButton:pressed{border-image:url(:/icon_p.png); color: black;}");
 
     setFocusPolicy(Qt::NoFocus);
 }
@@ -65,6 +69,15 @@ void toplevel::F6()
 void toplevel::F7()
 {
     spark_info->reverseBool(B_REVERSE);
+}
+
+void toplevel::F8()
+{
+    if(ui->pushButton_F8->isChecked()){
+        emit menu(false);
+    }else{
+        emit menu(false);
+    }
 }
 
 void toplevel::F0()
