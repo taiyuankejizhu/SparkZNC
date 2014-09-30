@@ -89,3 +89,8 @@ SOURCES += autodialog.cpp \
     calibration.cpp
 RESOURCES += resource.qrc
 TRANSLATIONS += en.ts
+
+OTHER_FILES += \
+    icon_p.png \
+    icon_h.png \
+    brightness_3.png
