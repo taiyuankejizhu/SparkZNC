@@ -105,6 +105,7 @@ void GroupDialog::updateContent()
                 brush = QBrush(UNEXIST_COLOR);
             item->setBackground(brush);
             item->setText(value);
+            item->setTextAlignment(Qt::AlignCenter);
             items<<item;
         }
         model->appendRow(items);

@@ -102,6 +102,17 @@
 #define U_OFFSET 0xC0       /*放电地址偏移*/
 #define P_OFFSET 0xE0       /*IO地址偏移*/
 
+#define C_X_TST0 0x00+X_OFFSET       /*X_TST通信测试的索引*/
+#define C_X_TST1 0x01+X_OFFSET
+#define C_X_TST2 0x02+X_OFFSET
+#define C_X_TST3 0x03+X_OFFSET
+#define C_X_TST4 0x04+X_OFFSET
+#define C_X_TST5 0x05+X_OFFSET
+#define C_X_TST6 0x06+X_OFFSET
+#define C_X_TST7 0x07+X_OFFSET
+#define C_X_TST8 0x08+X_OFFSET
+#define C_X_TSTC 0x0C+X_OFFSET
+
 #define C_X_IN0 0x10+X_OFFSET       /*X_IN0的值的索引*/
 #define C_X_IN1 0x11+X_OFFSET       /*X_IN1的值的索引*/
 #define C_X_OT0 0x13+X_OFFSET       /*X_OT0的值的索引*/

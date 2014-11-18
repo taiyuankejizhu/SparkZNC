@@ -330,5 +330,4 @@ void SparkThread::Set_Row(unsigned int r)
 
 SparkThread::~SparkThread()
 {
-
 }

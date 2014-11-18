@@ -27,11 +27,34 @@ toplevel::toplevel(QWidget *parent) :
 
     connect(ui->pushButton_F8,SIGNAL(clicked()),this ,SLOT(F8()));
     ui->pushButton_F8->setCheckable(true);
-    ui->pushButton_F8->setStyleSheet(
-        "QPushButton{border-image:url(:/icon.png); color: black;}"
-        "QPushButton:checked{border-image:url(:/icon_p.png); color: black;}"
-        "QPushButton:hover{border-image:url(:/icon_h.png); color: black;}"
-        "QPushButton:pressed{border-image:url(:/icon_p.png); color: black;}");
+
+    /*根据命令行参数字符串，切换开始按钮的图片*/
+    QString tmp(QApplication::argv()[1]);
+    if(!tmp.compare("en")){
+/*
+        ui->pushButton_F8->setStyleSheet(
+            "QPushButton{border-image:url(:/icon_e.png); color: black;}"
+            "QPushButton:checked{border-image:url(:/icon_p_e.png); color: black;}"
+            "QPushButton:hover{border-image:url(:/icon_h_e.png); color: black;}"
+            "QPushButton:pressed{border-image:url(:/icon_p_e.png); color: black;}");
+*/
+        ui->pushButton_F8->setStyleSheet(
+            "QPushButton{border-image:url(:/icon_e.png); color: black;}"
+            "QPushButton:checked{border-image:url(:/icon_p_e.png); color: black;}"
+            "QPushButton:pressed{border-image:url(:/icon_p_e.png); color: black;}");
+    }else{
+ /*
+        ui->pushButton_F8->setStyleSheet(
+            "QPushButton{border-image:url(:/icon.png); color: black;}"
+            "QPushButton:checked{border-image:url(:/icon_p.png); color: black;}"
+            "QPushButton:hover{border-image:url(:/icon_h.png); color: black;}"
+            "QPushButton:pressed{border-image:url(:/icon_p.png); color: black;}");
+ */
+        ui->pushButton_F8->setStyleSheet(
+            "QPushButton{border-image:url(:/icon.png); color: black;}"
+            "QPushButton:checked{border-image:url(:/icon_p.png); color: black;}"
+            "QPushButton:pressed{border-image:url(:/icon_p.png); color: black;}");
+    }
 
     setFocusPolicy(Qt::NoFocus);
 }

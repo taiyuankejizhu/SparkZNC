@@ -35,5 +35,8 @@
         <file>unlock.png</file>
         <file>icon_p.png</file>
         <file>icon_h.png</file>
+        <file>icon_e.png</file>
+        <file>icon_h_e.png</file>
+        <file>icon_p_e.png</file>
     </qresource>
 </RCC>

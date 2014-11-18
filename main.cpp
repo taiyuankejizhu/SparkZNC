@@ -19,6 +19,7 @@ SparkInfo *spark_info = new SparkInfo();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setCursorFlashTime(1);
 
 #ifndef Q_WS_X11
     QFile file;
@@ -51,10 +52,21 @@ int main(int argc, char *argv[])
         "QTableView::item:focus{background-color:rgb(255,206,0);}"
                     );
 */
+/*
     a.setStyleSheet(
         "QPushButton{border-image:url(:/nomal.png); color: black;}"
         "QPushButton:checked{border-image:url(:/press.png); color: black;}"
         "QPushButton:hover{border-image:url(:/hover.png); color: black;}"
+        "QPushButton:pressed{border-image:url(:/press.png); color: black;}"
+        "QHeaderView::section{background-color:rgb(128,128,128);color:white;border:1px solid #6c6c6c;}"
+        "QTableView::item:selected{background-color:rgb(255,206,0);}"
+        "QTableView::item:focus{background-color:rgb(255,206,0);}"
+                    );
+*/
+
+    a.setStyleSheet(
+        "QPushButton{border-image:url(:/nomal.png); color: black;}"
+        "QPushButton:checked{border-image:url(:/press.png); color: black;}"
         "QPushButton:pressed{border-image:url(:/press.png); color: black;}"
         "QHeaderView::section{background-color:rgb(128,128,128);color:white;border:1px solid #6c6c6c;}"
         "QTableView::item:selected{background-color:rgb(255,206,0);}"
@@ -67,8 +79,11 @@ int main(int argc, char *argv[])
 
     MainInterface m;
 
-    //QRect screen_size = QApplication::desktop()->screenGeometry();
-    //m.setGeometry(0, 0, screen_size.width(), screen_size.height());
+ #ifndef Q_WS_X11
+    QRect screen_size = QApplication::desktop()->screenGeometry();
+    m.setGeometry(0, 0, screen_size.width(), screen_size.height());
+    m.setCursor(QCursor(Qt::BlankCursor));
+#endif
 
     /*软件盘*/
     KeyBoard *keyboard;

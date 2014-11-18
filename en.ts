@@ -10,7 +10,8 @@
     </message>
     <message utf8="true">
         <location filename="autodialog.ui" line="506"/>
-        <source>深度(-9999999~9999999)：</source>
+        <source>深度(-9999.999~9999.999)：</source>
+        <oldsource>深度(-9999999~9999999)：</oldsource>
         <translation type="unfinished">Depth(-9999999~9999999):</translation>
     </message>
     <message utf8="true">
@@ -34,12 +35,12 @@
         <translation type="unfinished">Icon</translation>
     </message>
     <message>
-        <location filename="autodialog.cpp" line="38"/>
+        <location filename="autodialog.cpp" line="42"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="autodialog.cpp" line="41"/>
+        <location filename="autodialog.cpp" line="45"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
@@ -52,22 +53,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cleardialog.ui" line="498"/>
+        <location filename="cleardialog.ui" line="489"/>
         <source>icon</source>
         <translation type="unfinished">icon</translation>
     </message>
     <message utf8="true">
-        <location filename="cleardialog.ui" line="505"/>
+        <location filename="cleardialog.ui" line="496"/>
         <source>请输入密码：</source>
         <translation type="unfinished">Please input password:</translation>
     </message>
     <message>
-        <location filename="cleardialog.cpp" line="24"/>
+        <location filename="cleardialog.cpp" line="26"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="cleardialog.cpp" line="28"/>
+        <location filename="cleardialog.cpp" line="30"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
@@ -77,7 +78,7 @@
     <message>
         <location filename="coordialog.ui" line="513"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon</translation>
     </message>
     <message utf8="true">
         <location filename="coordialog.ui" line="523"/>
@@ -85,17 +86,17 @@
         <translation type="unfinished">Please select coordinate:</translation>
     </message>
     <message>
-        <location filename="coordialog.cpp" line="32"/>
+        <location filename="coordialog.cpp" line="33"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="coordialog.cpp" line="35"/>
+        <location filename="coordialog.cpp" line="36"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
     <message>
-        <location filename="coordialog.cpp" line="75"/>
+        <location filename="coordialog.cpp" line="83"/>
         <source>åæ  </source>
         <translation type="unfinished">Axis </translation>
     </message>
@@ -113,17 +114,17 @@
         <translation type="unfinished">Icon</translation>
     </message>
     <message utf8="true">
-        <location filename="groupdialog.ui" line="543"/>
+        <location filename="groupdialog.ui" line="546"/>
         <source>请选择表格：</source>
         <translation type="unfinished">Please select table:</translation>
     </message>
     <message>
-        <location filename="groupdialog.cpp" line="32"/>
+        <location filename="groupdialog.cpp" line="33"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="groupdialog.cpp" line="35"/>
+        <location filename="groupdialog.cpp" line="36"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
@@ -381,27 +382,27 @@
         <translation type="unfinished">Please input password:</translation>
     </message>
     <message>
-        <location filename="keydialog.cpp" line="29"/>
+        <location filename="keydialog.cpp" line="31"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="keydialog.cpp" line="33"/>
+        <location filename="keydialog.cpp" line="35"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
     <message>
-        <location filename="keydialog.cpp" line="102"/>
+        <location filename="keydialog.cpp" line="104"/>
         <source>å¯ç éè¯¯ï¼</source>
         <translation type="unfinished">Password is wrong!</translation>
     </message>
     <message>
-        <location filename="keydialog.cpp" line="123"/>
+        <location filename="keydialog.cpp" line="125"/>
         <source>è¯¥åºåå·çæææ¶é´ä¸ºï¼</source>
         <translation type="unfinished">Lisence number can be use for:</translation>
     </message>
     <message>
-        <location filename="keydialog.cpp" line="127"/>
+        <location filename="keydialog.cpp" line="129"/>
         <source>åºåå·æ æï¼</source>
         <translation type="unfinished">Lisence number is invalid!</translation>
     </message>
@@ -415,153 +416,173 @@
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="maininterface.ui" line="732"/>
         <source>      机器坐标</source>
-        <translation type="unfinished">Mechine Axis</translation>
+        <translation type="obsolete">Mechine Axis</translation>
     </message>
     <message utf8="true">
-        <location filename="maininterface.ui" line="1010"/>
         <source>    剩余坐标</source>
-        <translation type="unfinished">Remain Axis</translation>
+        <translation type="obsolete">Remain Axis</translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="1713"/>
+        <location filename="maininterface.ui" line="2057"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="2164"/>
+        <location filename="maininterface.ui" line="2508"/>
         <source>F2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="2612"/>
+        <location filename="maininterface.ui" line="2956"/>
         <source>F3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="3060"/>
+        <location filename="maininterface.ui" line="3404"/>
         <source>F4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="3514"/>
+        <location filename="maininterface.ui" line="3858"/>
         <source>F5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="3962"/>
+        <location filename="maininterface.ui" line="4306"/>
         <source>F6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="4410"/>
+        <location filename="maininterface.ui" line="4754"/>
         <source>F7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="4858"/>
+        <location filename="maininterface.ui" line="5202"/>
         <source>F8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="479"/>
-        <location filename="maininterface.ui" line="720"/>
-        <location filename="maininterface.ui" line="973"/>
+        <location filename="maininterface.ui" line="473"/>
+        <location filename="maininterface.ui" line="1022"/>
+        <location filename="maininterface.ui" line="1245"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="maininterface.ui" line="494"/>
-        <location filename="maininterface.ui" line="744"/>
-        <location filename="maininterface.ui" line="985"/>
+        <location filename="maininterface.ui" line="1007"/>
+        <location filename="maininterface.ui" line="1425"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="509"/>
-        <location filename="maininterface.ui" line="756"/>
-        <location filename="maininterface.ui" line="997"/>
+        <location filename="maininterface.ui" line="515"/>
+        <location filename="maininterface.ui" line="992"/>
+        <location filename="maininterface.ui" line="1440"/>
         <source>Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="561"/>
-        <location filename="maininterface.ui" line="613"/>
-        <location filename="maininterface.ui" line="665"/>
+        <location filename="maininterface.ui" line="579"/>
+        <location filename="maininterface.ui" line="643"/>
+        <location filename="maininterface.ui" line="707"/>
         <source>-7777.500</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <source>机器坐标</source>
-        <translation type="obsolete">Mechine Axis</translation>
+    <message>
+        <location filename="maininterface.ui" line="734"/>
+        <location filename="maininterface.ui" line="761"/>
+        <location filename="maininterface.ui" line="788"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maininterface.ui" line="805"/>
-        <location filename="maininterface.ui" line="860"/>
-        <location filename="maininterface.ui" line="915"/>
-        <location filename="maininterface.ui" line="1059"/>
-        <location filename="maininterface.ui" line="1114"/>
-        <location filename="maininterface.ui" line="1169"/>
+        <location filename="maininterface.ui" line="815"/>
+        <location filename="maininterface.ui" line="842"/>
+        <location filename="maininterface.ui" line="869"/>
+        <location filename="maininterface.ui" line="922"/>
+        <location filename="maininterface.ui" line="1177"/>
+        <location filename="maininterface.ui" line="1193"/>
+        <location filename="maininterface.ui" line="1484"/>
+        <location filename="maininterface.ui" line="1500"/>
+        <location filename="maininterface.ui" line="1516"/>
+        <source>mm</source>
+        <translation type="unfinished">mm</translation>
+    </message>
+    <message utf8="true">
+        <location filename="maininterface.ui" line="1161"/>
+        <source>机器坐标</source>
+        <translation type="unfinished">Mechine Axis</translation>
+    </message>
+    <message>
+        <location filename="maininterface.ui" line="974"/>
+        <location filename="maininterface.ui" line="1074"/>
+        <location filename="maininterface.ui" line="1129"/>
+        <location filename="maininterface.ui" line="1297"/>
+        <location filename="maininterface.ui" line="1352"/>
+        <location filename="maininterface.ui" line="1407"/>
         <source>-1111.000</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
+        <location filename="maininterface.ui" line="1468"/>
         <source>剩余坐标</source>
-        <translation type="obsolete">Remain Axis</translation>
+        <translation type="unfinished">Remain Axis</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="510"/>
+        <location filename="maininterface.cpp" line="533"/>
         <source>è®¾å®æ·±åº¦</source>
         <translation type="unfinished">Step Depth</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="511"/>
+        <location filename="maininterface.cpp" line="534"/>
         <source>çµæµ</source>
         <translation type="unfinished">Current</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="512"/>
+        <location filename="maininterface.cpp" line="535"/>
         <source>èå®½</source>
         <translation type="unfinished">Pulse Width</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="513"/>
+        <location filename="maininterface.cpp" line="536"/>
         <source>ä¼æ­¢</source>
         <translation type="unfinished">Sleep</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="514"/>
+        <location filename="maininterface.cpp" line="537"/>
         <source>é´é</source>
         <translation type="unfinished">Gap</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="515"/>
+        <location filename="maininterface.cpp" line="538"/>
         <source>ä¼ºæ</source>
         <translation type="unfinished">Sever</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="516"/>
+        <location filename="maininterface.cpp" line="539"/>
         <source>ææ¸£</source>
         <translation type="unfinished">Jump</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="517"/>
+        <location filename="maininterface.cpp" line="540"/>
         <source>å·¥æ¶</source>
         <translation type="unfinished">Times</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="518"/>
+        <location filename="maininterface.cpp" line="541"/>
         <source>é¢ç§¯</source>
         <translation type="unfinished">Area</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="519"/>
+        <location filename="maininterface.cpp" line="542"/>
         <source>ææ§</source>
         <translation type="unfinished">Pole</translation>
     </message>
     <message>
-        <location filename="maininterface.cpp" line="520"/>
+        <location filename="maininterface.cpp" line="543"/>
         <source>é«å</source>
         <translation type="unfinished">Voltage</translation>
     </message>
@@ -625,45 +646,93 @@
     </message>
 </context>
 <context>
-    <name>QCommand</name>
+    <name>QAlerts</name>
     <message>
-        <location filename="qcommand.cpp" line="30"/>
-        <location filename="qcommand.cpp" line="36"/>
+        <location filename="qalerts.cpp" line="25"/>
         <source>ç©º</source>
         <translation type="unfinished">Null</translation>
     </message>
     <message>
+        <location filename="qalerts.cpp" line="26"/>
+        <source>ç«è­¦</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="27"/>
+        <source>Zä¸</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="28"/>
+        <source>Zä¸</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="29"/>
+        <source>ç­è·¯</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="30"/>
+        <source>æ²¹ä½</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="31"/>
+        <source>ç§¯ç¢³</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="32"/>
+        <source>Yä¸</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qalerts.cpp" line="33"/>
+        <source>Yä¸</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QCommand</name>
+    <message>
         <location filename="qcommand.cpp" line="31"/>
+        <location filename="qcommand.cpp" line="37"/>
+        <source>ç©º</source>
+        <translation type="unfinished">Null</translation>
+    </message>
+    <message>
+        <location filename="qcommand.cpp" line="32"/>
         <source>æç¤ºï¼</source>
         <translation type="unfinished">Message:</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="32"/>
+        <location filename="qcommand.cpp" line="33"/>
         <source>è¯·è¾å¥ï¼</source>
         <translation type="unfinished">Input:</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="33"/>
+        <location filename="qcommand.cpp" line="34"/>
         <source>è­¦åï¼</source>
         <translation type="unfinished">Warnning:</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="34"/>
+        <location filename="qcommand.cpp" line="35"/>
         <source>æ¥è­¦ï¼</source>
         <translation type="unfinished">Alert:</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="37"/>
+        <location filename="qcommand.cpp" line="38"/>
         <source>è¾å¥æ­£ç¡®ï¼</source>
         <translation type="unfinished">Input is correct!</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="38"/>
+        <location filename="qcommand.cpp" line="39"/>
         <source>è¾å¥ä¸è½ä¸ºç©ºï¼</source>
         <translation type="unfinished">Input can&apos;t be empty!</translation>
     </message>
     <message>
-        <location filename="qcommand.cpp" line="39"/>
+        <location filename="qcommand.cpp" line="40"/>
         <source>è¾å¥æ ¼å¼æè¯¯ï¼</source>
         <translation type="unfinished">Input is wrong!</translation>
     </message>
@@ -757,22 +826,22 @@
         <translation type="unfinished">R</translation>
     </message>
     <message>
-        <location filename="settingdialog.cpp" line="47"/>
+        <location filename="settingdialog.cpp" line="49"/>
         <source>ç¡®å®(O)</source>
         <translation type="unfinished">Ok(O)</translation>
     </message>
     <message>
-        <location filename="settingdialog.cpp" line="51"/>
+        <location filename="settingdialog.cpp" line="53"/>
         <source>åæ¶(C)</source>
         <translation type="unfinished">Cancel(C)</translation>
     </message>
     <message>
-        <location filename="settingdialog.cpp" line="162"/>
+        <location filename="settingdialog.cpp" line="164"/>
         <source>ä¸¤æ¬¡è¾å¥ä¸è´ï¼</source>
         <translation type="unfinished">Twice input is same!</translation>
     </message>
     <message>
-        <location filename="settingdialog.cpp" line="166"/>
+        <location filename="settingdialog.cpp" line="168"/>
         <source>ä¸¤æ¬¡è¾å¥ä¸ä¸è´ï¼</source>
         <translation type="unfinished">Twice input is different!</translation>
     </message>
@@ -785,92 +854,92 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="501"/>
+        <location filename="startmenu.ui" line="513"/>
         <source>b_icon</source>
         <translation type="unfinished">i_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="511"/>
+        <location filename="startmenu.ui" line="523"/>
         <source>亮度(F9)</source>
         <translation type="unfinished">Lightness(F9)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="970"/>
+        <location filename="startmenu.ui" line="1000"/>
         <source>d_icon</source>
         <translation type="unfinished">d_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="980"/>
+        <location filename="startmenu.ui" line="1010"/>
         <source>声音(F8)</source>
         <translation type="unfinished">Sound(F8)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="1439"/>
+        <location filename="startmenu.ui" line="1487"/>
         <source>m_icon</source>
         <translation type="unfinished">m_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="1449"/>
+        <location filename="startmenu.ui" line="1497"/>
         <source>校屏(F7)</source>
         <translation type="unfinished">Calibrate(F7)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="1911"/>
+        <location filename="startmenu.ui" line="1977"/>
         <source>p_icon</source>
         <translation type="unfinished">p_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="1921"/>
+        <location filename="startmenu.ui" line="1987"/>
         <source>口令(F6)</source>
         <translation type="unfinished">Password(F6)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="2383"/>
+        <location filename="startmenu.ui" line="2467"/>
         <source>c_icon</source>
         <translation type="unfinished">c_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="2393"/>
+        <location filename="startmenu.ui" line="2477"/>
         <source>清时(F5)</source>
         <translation type="unfinished">Clear(F5)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="2852"/>
+        <location filename="startmenu.ui" line="2954"/>
         <source>t_icon</source>
         <translation type="unfinished">t_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="2862"/>
+        <location filename="startmenu.ui" line="2964"/>
         <source>设置(F4)</source>
         <translation type="unfinished">Setting(F4)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="3321"/>
+        <location filename="startmenu.ui" line="3441"/>
         <source>l_icon</source>
         <translation type="unfinished">l_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="3331"/>
+        <location filename="startmenu.ui" line="3451"/>
         <source>睡眠(F3)</source>
         <translation type="unfinished">Sleep(F3)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="3790"/>
+        <location filename="startmenu.ui" line="3928"/>
         <source>r_icon</source>
         <translation type="unfinished">r_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="3800"/>
+        <location filename="startmenu.ui" line="3938"/>
         <source>重启(F2)</source>
         <translation type="unfinished">Restart(F2)</translation>
     </message>
     <message>
-        <location filename="startmenu.ui" line="4262"/>
+        <location filename="startmenu.ui" line="4418"/>
         <source>s_icon</source>
         <translation type="unfinished">s_icon</translation>
     </message>
     <message utf8="true">
-        <location filename="startmenu.ui" line="4272"/>
+        <location filename="startmenu.ui" line="4428"/>
         <source>关机(F1)</source>
         <translation type="unfinished">Shut(F1)</translation>
     </message>
@@ -883,38 +952,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="477"/>
+        <location filename="seconlevel_f3.ui" line="487"/>
         <source>归零</source>
         <translation type="unfinished">Zero</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="499"/>
+        <location filename="seconlevel_f3.ui" line="514"/>
         <source>移动</source>
         <translation type="unfinished">Move</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="521"/>
+        <location filename="seconlevel_f3.ui" line="541"/>
         <source>^坐标^</source>
         <oldsource>坐标</oldsource>
         <translation type="unfinished">^Group^</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="543"/>
+        <location filename="seconlevel_f3.ui" line="568"/>
         <source>中心</source>
         <translation type="unfinished">Center</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="565"/>
+        <location filename="seconlevel_f3.ui" line="595"/>
         <source>校模</source>
         <translation type="unfinished">Moudle</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="587"/>
+        <location filename="seconlevel_f3.ui" line="622"/>
         <source>归原点</source>
         <translation type="unfinished">Origin</translation>
     </message>
     <message utf8="true">
-        <location filename="seconlevel_f3.ui" line="631"/>
+        <location filename="seconlevel_f3.ui" line="676"/>
         <source>返回</source>
         <translation type="unfinished">Return</translation>
     </message>
@@ -1108,9 +1177,8 @@
         <translation type="unfinished">Reverse</translation>
     </message>
     <message>
-        <location filename="toplevel.ui" line="631"/>
         <source>Icon</source>
-        <translation type="unfinished">Icon</translation>
+        <translation type="obsolete">Icon</translation>
     </message>
 </context>
 </TS>

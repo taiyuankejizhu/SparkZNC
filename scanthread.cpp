@@ -3,8 +3,18 @@
 #include "sparkthread.h"
 #include "fpga.h"
 #include "unistd.h"
+#include "sys/time.h"
 #include "sys/reboot.h"
 #include "qdebug.h"
+
+//#define TEST
+
+#ifdef TEST
+struct timeval tv_last, tv_current;
+struct timeval tv_diff;
+float diff_ms = 0;
+#endif
+
 
 ScanThread::ScanThread(QObject *parent) :
     QThread(parent)
@@ -47,11 +57,48 @@ void ScanThread::run()
 
     while(1){
 
+#ifdef TEST
+        gettimeofday(&tv_current, NULL);
+        tv_diff.tv_sec = tv_current.tv_sec - tv_last.tv_sec;
+        tv_diff.tv_usec = tv_current.tv_usec - tv_last.tv_usec;
+        diff_ms = tv_diff.tv_sec * 1000 + tv_diff.tv_usec / 1000;
+        if(diff_ms > 1){
+            printf("tv_sec; %ld\n", tv_diff.tv_sec);
+            printf("tv_usec; %ld\n", tv_diff.tv_usec);
+        }
+
+        tv_last = tv_current;
+
+        spark_info->c_array[C_X_TST0] = 'A';
+        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST0];
+        _WRITE_BYTE_(C_X_TST0);
+        spark_info->c_array[C_X_TST0] = 0x00;
+        _READ_BYTE_(C_X_TST0);
+        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST0];
+
+        spark_info->c_array[C_X_TST1] = 'B';
+        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST1];
+        _WRITE_BYTE_(C_X_TST1);
+        spark_info->c_array[C_X_TST1] = 0x00;
+        _READ_BYTE_(C_X_TST1);
+        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST1];
+
+        spark_info->c_array[C_X_TST2] = 'C';
+        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST2];
+        _WRITE_BYTE_(C_X_TST2);
+        spark_info->c_array[C_X_TST2] = 0x00;
+        _READ_BYTE_(C_X_TST2);
+        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST2];
+#endif
+
         if(a_cycle == A_CYCLE){
             /*to do*/
             a_cycle = 0;
+#ifndef Q_WS_X11
             sync();
+            reboot(RB_AUTOBOOT);
             //reboot(RB_POWER_OFF);
+#endif
         }
 
         if(b_cycle == B_CYCLE){
@@ -68,8 +115,10 @@ void ScanThread::run()
         if(e_cycle == E_CYCLE){
             /*to do*/
             e_cycle = 0;
+#ifndef Q_WS_X11
             sync();
-            //reboot(RB_AUTOBOOT);
+            reboot(RB_AUTOBOOT);
+#endif
         }
 
 
@@ -117,7 +166,7 @@ void ScanThread::run()
         /*检查报警信息*/
         Check_Alert();
 
-        msleep(200);
+        msleep(1);
     }
 
     /*to do something*/
@@ -220,8 +269,7 @@ void ScanThread::Move()
             a_edge = RISE;
         else
             a_edge = NONE;
-    }
-    else{
+    }else{
         if((spark_info->c_array[C_Z_IN0] & 0x10))
             a_edge = FALL;
         else
@@ -233,8 +281,7 @@ void ScanThread::Move()
             b_edge = RISE;
         else
             b_edge = NONE;
-    }
-    else{
+    }else{
         if((spark_info->c_array[C_Z_IN0] & 0x20))
             b_edge = FALL;
         else
@@ -246,8 +293,7 @@ void ScanThread::Move()
             c_edge = RISE;
         else
             c_edge = NONE;
-    }
-    else{
+    }else{
         if(spark_info->b_array[B_ZERO])
             c_edge = FALL;
         else
@@ -280,8 +326,7 @@ void ScanThread::Move()
         }
         a_last = true;
         return;
-    }
-    else{
+    }else{
         if(a_edge == RISE){
             switch(spark_info->uint_array[UINT_SPEED]){
             case 10:
@@ -330,8 +375,7 @@ void ScanThread::Move()
         }
         b_last = true;
         return;
-    }
-    else{
+    }else{
         if(b_edge == RISE){
             switch(spark_info->uint_array[UINT_SPEED]){
             case 10:
@@ -575,8 +619,15 @@ long ScanThread::Z_Origin()
 char ScanThread::Voltage_Read()
 {
     char ret = 0;
-    _READ_BYTE_(C_U_DVT);
-    ret = spark_info->c_array[C_U_DVT];
+//    _READ_BYTE_(C_U_DVT);
+//    ret = spark_info->c_array[C_U_DVT];
+    spark_info->c_array[C_X_TST1] = 0x04;
+    _WRITE_BYTE_(C_X_TST1);
+    spark_info->c_array[C_X_TST0] = 0x1b;
+    _WRITE_BYTE_(C_X_TST0);
+
+    _READ_BYTE_(C_X_TSTC);
+    ret = spark_info->c_array[C_X_TSTC];
     return ret;
 }
 
