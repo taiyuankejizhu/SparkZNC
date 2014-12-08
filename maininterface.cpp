@@ -165,8 +165,6 @@ void MainInterface::initFuncBar()
 
 void MainInterface::keyPressEvent( QKeyEvent *k )
 {
-    int current;
-
     /*去除按键重复事件*/
     if(!k->isAutoRepeat()){
         k->accept();
@@ -223,11 +221,6 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
                 }
             }
             break;
-        /*放电监听D键*/
-        case Qt::Key_D:
-            if(spark_info->b_array[B_SELECT])
-                spark_info->reverseBool(B_START);
-            break;
         case Qt::Key_X:
             command ->setFocus();
             command ->setStatus(0x10);
@@ -252,6 +245,13 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
         case Qt::Key_F9:
         case Qt::Key_F10:
             break;
+        /*放电监听F11键*/
+        case Qt::Key_F11:
+            spark_info->setBool(B_START ,false);
+            break;
+        case Qt::Key_F12:
+            spark_info->setBool(B_START ,true);
+            break;
         case Qt::Key_Up:
         case Qt::Key_Down:
         case Qt::Key_Left:
@@ -260,43 +260,7 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
             break;
         /*这里的Enter键用来响应放电数据表的段选和删除行*/
         case Qt::Key_Enter:
-            if(table_state == TABLE_EDIT){
-                qDebug()<<"1";
-            }
-            else if(table_state == TABLE_SELECT){
-                if(start_or_end){
-                    spark_info->setUInt(UINT_START_ROW ,ui->tableView->currentIndex().row());
-                    start_or_end = false;
-                }
-                else{
-                    spark_info->setUInt(UINT_END_ROW ,ui->tableView->currentIndex().row());
-                    start_or_end = true;
-                }
-                spark_info->setBool(B_SELECT ,true);
-            }
-            else if(table_state == TABLE_DELETE){
-                if(model->rowCount() > 0){
-                    current = ui->tableView->currentIndex().row();
-                    model->removeRow(current);
-                    submitTable();
-                }
-                else{
-                    qDebug()<<"Null"<<endl;
-                }
-            }
-            else if (table_state == TABLE_ADD) {
-                if(model->rowCount() < 10){
-                    current = ui->tableView->currentIndex().row();
-                    tableAddRow(current);
-                    submitTable();
-                }
-                else{
-                    qDebug()<<"Full"<<endl;
-                }
-            }
-            else{
-                qDebug()<<"0";
-            }
+            tableRowClick(ui->tableView->currentIndex());
             break;
         default :
             break;
@@ -359,7 +323,7 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
 void MainInterface::commandFinish()
 {
     /*恢复输入之前的屏幕焦点*/
-    tableStateUpdate(table_state);
+    /*tableStateUpdate(table_state);*/
 }
 
 void MainInterface::commandSwitch(char status ,char type ,char slot,char index)
@@ -479,6 +443,7 @@ void MainInterface::tableStateUpdate(char c)
     }
     else if(table_state == TABLE_SELECT){
         disconnect(model,0,this ,0);
+        disconnect(ui->tableView,0,this ,0);
 
         ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -488,9 +453,11 @@ void MainInterface::tableStateUpdate(char c)
         ui->tableView->setFocus();
 
         tableRollUpdate();
+        connect(ui->tableView ,SIGNAL(clicked(QModelIndex)) ,this ,SLOT(tableRowClick(QModelIndex)));
     }
     else if(table_state == TABLE_DELETE){
         disconnect(model,0,this ,0);
+        disconnect(ui->tableView,0,this ,0);
 
         ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -500,9 +467,11 @@ void MainInterface::tableStateUpdate(char c)
         ui->tableView->setFocus();
 
         tableRollUpdate();
+        connect(ui->tableView ,SIGNAL(clicked(QModelIndex)) ,this ,SLOT(tableRowClick(QModelIndex)));
     }
     else if(table_state == TABLE_ADD){
         disconnect(model,0,this ,0);
+        disconnect(ui->tableView,0,this ,0);
 
         ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -512,9 +481,11 @@ void MainInterface::tableStateUpdate(char c)
         ui->tableView->setFocus();
 
         tableRollUpdate();
+        connect(ui->tableView ,SIGNAL(clicked(QModelIndex)) ,this ,SLOT(tableRowClick(QModelIndex)));
     }
     else{
         disconnect(model,0,this ,0);
+        disconnect(ui->tableView,0,this ,0);
 
         ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
         ui->tableView->setFocusPolicy(Qt::NoFocus);
@@ -663,6 +634,50 @@ void MainInterface::tableItemChange(QModelIndex tl ,QModelIndex br)
     else{
         br.column();
         submitTable();
+    }
+}
+
+/*段选、增加段、删除段操作*/
+void MainInterface::tableRowClick(QModelIndex r)
+{
+    int current;
+
+    if(table_state == TABLE_EDIT){
+        qDebug()<<r.row();
+    }
+    else if(table_state == TABLE_SELECT){
+        if(start_or_end){
+            spark_info->setUInt(UINT_START_ROW ,r.row());
+            start_or_end = false;
+        }
+        else{
+            spark_info->setUInt(UINT_END_ROW ,r.row());
+            start_or_end = true;
+        }
+        spark_info->setBool(B_SELECT ,true);
+    }
+    else if(table_state == TABLE_DELETE){
+        if(model->rowCount() > 0){
+            current = r.row();
+            model->removeRow(current);
+            submitTable();
+        }
+        else{
+            qDebug()<<"Null"<<endl;
+        }
+    }
+    else if (table_state == TABLE_ADD) {
+        if(model->rowCount() < 10){
+            current = r.row();
+            tableAddRow(current);
+            submitTable();
+        }
+        else{
+            qDebug()<<"Full"<<endl;
+        }
+    }
+    else{
+        qDebug()<<"0";
     }
 }
 

@@ -27,6 +27,7 @@ public:
     Qcheck *check_lock ;
     Qcheck *check_reverse ;
     Qcheck *check_alterpower ;
+    Qcheck *check_start ;
     Qindicate *indicate_voltage ;
     Qindicate *indicate_speed ;
     Qparameter *parameter_jump ;

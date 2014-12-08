@@ -98,6 +98,7 @@ public slots:
     void tableStateUpdate(char);
     void tableDataUpdate();
     void tableRollUpdate();
+    void tableRowClick(QModelIndex r);
     void tableItemChange(QModelIndex tl ,QModelIndex br);
     void funcbarUpdate(int);
     void XYZ_Update(int);

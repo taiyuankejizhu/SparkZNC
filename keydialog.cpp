@@ -1,5 +1,6 @@
 #include "keydialog.h"
 #include "ui_keydialog.h"
+#include "sparkinfo.h"
 #include "qdebug.h"
 
 KeyDialog::KeyDialog(QWidget *parent) :
@@ -79,13 +80,6 @@ void KeyDialog::valueChange(QString p)
     /*从铁电芯片中读出密码*/
     FM25V02_READ(PASSWD_ADDR , passwd ,sizeof passwd);
 
-    passwd[0] = '1';
-    passwd[1] = '2';
-    passwd[2] = '3';
-    passwd[3] = '4';
-    passwd[4] = '5';
-    passwd[5] = '6';
-
     for(i = 0;i < p.length();i++){
         tmp = p.at(i).toAscii();
         if(tmp != passwd[i])
@@ -95,25 +89,34 @@ void KeyDialog::valueChange(QString p)
     if(i == PASSWD_LENGTH){
         /*从铁电芯片中读出密码*/
         FM25V02_READ(ID_ADDR , id ,sizeof id);
-        QString ids;
-        ids.append(id);
-        ui->label_2->setText(ids);
+        QString str;
+        QString tmp;
+        str.append(tr("ID："));
+        str.append(id);
+        str.append(tr("当前剩余加工时间："));
+        tmp = QString::number(spark_info->target.ushorts[0] - spark_info->useup.ushorts[0] ,10);
+        str.append(tmp);
+        str.append(tr("小时 "));
+        tmp = QString::number(spark_info->target.ushorts[1] - spark_info->useup.ushorts[1] ,10);
+        str.append(tmp);
+        str.append(tr("分"));
+        ui->label_2->setText(str);
         ui->lineEdit_1->setDisabled(false);
-    }
-    else{
+    }else{
         ui->label_2->setText(tr("密码错误！"));
     }
 }
 
 void KeyDialog::keyChange(QString k)
 {
+
     if(k.length() != KEY_LENGTH)
         return;
     char key[KEY_LENGTH];
     char tmp;
     int i = 0;
 
-    memset(key ,0x00 ,sizeof key);
+    memset(key ,'1' ,sizeof key);
 
     for(i = 0;i < k.length();i++){
         tmp = k.at(i).toAscii();
@@ -122,10 +125,9 @@ void KeyDialog::keyChange(QString k)
     }
 
     if(i == KEY_LENGTH){
-        ui->label_3->setText(tr("该序列号的有效时间为：")+"200H");
+        ui->label_3->setText(tr("该序列号的有效时间为：200小时"));
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(false);
-    }
-    else{
+    }else{
         ui->label_3->setText(tr("序列号无效！"));
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);
     }
@@ -136,6 +138,18 @@ void KeyDialog::commitResult(int i)
     if(i == 0){
     }
     if(i == 1){
+        spark_info->target.ushorts[0] = 0xff;
+        spark_info->target.ushorts[1] = 0xff;
+        spark_info->target.ushorts[2] = 0x00;
+
+        spark_info->useup.ushorts[0] = 0x00;
+        spark_info->useup.ushorts[1] = 0x00;
+        spark_info->useup.ushorts[2] = 0x00;
+
+        /*向铁电芯片中写放电溢出时间*/
+        FM25V02_WRITE(TARGET_TIME_ADDR , spark_info->target.bytes ,sizeof spark_info->target);
+        /*清空铁电芯片中的已经放电时间*/
+        FM25V02_WRITE(USEDP_TIME_ADDR , spark_info->useup.bytes ,sizeof spark_info->useup);
     }
     ui->label_3->clear();
     ui->lineEdit_1->clear();

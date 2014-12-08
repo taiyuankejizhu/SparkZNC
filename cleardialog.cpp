@@ -1,5 +1,6 @@
 #include "cleardialog.h"
 #include "ui_cleardialog.h"
+#include "sparkinfo.h"
 #include "qdebug.h"
 
 ClearDialog::ClearDialog(QWidget *parent) :
@@ -71,13 +72,6 @@ void ClearDialog::valueChange(QString p)
     /*从铁电芯片中读出密码*/
     FM25V02_READ(PASSWD_ADDR , passwd ,sizeof passwd);
 
-    passwd[0] = '1';
-    passwd[1] = '2';
-    passwd[2] = '3';
-    passwd[3] = '4';
-    passwd[4] = '5';
-    passwd[5] = '6';
-
     for(i = 0;i < p.length();i++){
         tmp = p.at(i).toAscii();
         if(tmp != passwd[i])
@@ -95,13 +89,15 @@ void ClearDialog::valueChange(QString p)
 void ClearDialog::commitResult(int i)
 {
     SixBytes current;
-    memset(current.bytes , 0 ,sizeof current);
+    memset(current.bytes , 0x00 ,sizeof current);
 
     if(i == 0){
     }
     if(i == 1){
         /*向铁电芯片中写当前加工时间为零*/
         FM25V02_WRITE(CURRENT_TIME_ADDR , current.bytes, sizeof current);
+        /*同步放电时间显示*/
+        spark_info->setBool(B_START ,false);
     }
     ui->lineEdit->clear();
     ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);

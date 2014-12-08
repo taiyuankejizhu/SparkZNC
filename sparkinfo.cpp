@@ -29,6 +29,11 @@ void SparkInfo::fm25v02Init()
     /*铁电芯片初始化*/
     FM25V02_Init();
 
+    /*读取时间溢出*/
+    FM25V02_READ(TARGET_TIME_ADDR , target.bytes ,sizeof target);
+    /*读取已经放电时间*/
+    FM25V02_READ(USEDP_TIME_ADDR , useup.bytes ,sizeof useup);
+
     /*读取初始化X轴方向*/
     char tmp = 0;
     FM25V02_READ(X_ORIENT_ADDR ,&tmp ,sizeof tmp);
@@ -56,7 +61,7 @@ void SparkInfo::fm25v02Init()
     /*读取初始化光栅刻度*/
     tmp = 0;
     FM25V02_READ(SCALE_ADDR ,&tmp ,sizeof tmp);
-    //uint_array[UINT_SCALE] = tmp;
+    uint_array[UINT_SCALE] = tmp;
 
     /*读取当前坐标的索引*/
     FourBytes c_axis;

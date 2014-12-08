@@ -48,6 +48,11 @@ MesgBox::MesgBox(QWidget *parent) :
     connect(spark_info , SIGNAL(boolChange()) ,check_reverse , SLOT(updateCheck()));
     ui->verticalLayout->addWidget(check_reverse);
 
+    check_start = new Qcheck(this ,tr("放电"),B_START);
+    check_start->updateCheck();
+    connect(spark_info , SIGNAL(boolChange()) ,check_start , SLOT(updateCheck()));
+    ui->verticalLayout->addWidget(check_start);
+
     indicate_voltage = new Qindicate(this ,tr("电压"),255,0,UINT_VOLTAGE);
     indicate_voltage->updateValue();
     connect(spark_info ,SIGNAL(uintChange()) ,indicate_voltage ,SLOT(updateValue()));

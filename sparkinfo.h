@@ -101,17 +101,24 @@
 #define Z_OFFSET 0x80       /*Z轴地址偏移*/
 #define U_OFFSET 0xC0       /*放电地址偏移*/
 #define P_OFFSET 0xE0       /*IO地址偏移*/
+#define R_OFFSET 0x00       /*通信寄存器地址偏移*/
 
-#define C_X_TST0 0x00+X_OFFSET       /*X_TST通信测试的索引*/
-#define C_X_TST1 0x01+X_OFFSET
-#define C_X_TST2 0x02+X_OFFSET
-#define C_X_TST3 0x03+X_OFFSET
-#define C_X_TST4 0x04+X_OFFSET
-#define C_X_TST5 0x05+X_OFFSET
-#define C_X_TST6 0x06+X_OFFSET
-#define C_X_TST7 0x07+X_OFFSET
-#define C_X_TST8 0x08+X_OFFSET
-#define C_X_TSTC 0x0C+X_OFFSET
+#define C_R_0L 0x00+R_OFFSET        /*控制指令寄存器的索引*/
+#define C_R_0H 0x01+R_OFFSET        /*操作轴选择寄存器的索引*/
+#define C_R_1L 0x02+R_OFFSET        /*模式（W）状态（R）寄存器1L的索引*/
+#define C_R_1H 0x03+R_OFFSET        /*模式（W）状态（R）寄存器1H的索引*/
+#define C_R_2L 0x04+R_OFFSET        /*模式（W）状态（R）寄存器2L的索引*/
+#define C_R_2H 0x05+R_OFFSET        /*模式（W）状态（R）寄存器2H的索引*/
+#define C_R_3L 0x06+R_OFFSET        /*输出（W）状态（R）寄存器3L的索引*/
+#define C_R_3H 0x07+R_OFFSET        /*输出（W）状态（R）寄存器3H的索引*/
+#define C_R_4L 0x08+R_OFFSET        /*输出（W）输入（R）寄存器4L的索引*/
+#define C_R_4H 0x09+R_OFFSET        /*输出（W）输入（R）寄存器4H的索引*/
+#define C_R_5L 0x0a+R_OFFSET        /*直插（W）输入（R）寄存器的索引*/
+#define C_R_5H 0x0b+R_OFFSET        /*圆插（W）输入（R）寄存器的索引*/
+#define C_R_6L 0x0c+R_OFFSET        /*写输入缓冲（W）读输出（R）（0-7）寄存器的索引*/
+#define C_R_6H 0x0d+R_OFFSET        /*写输入缓冲（W）读输出（R）（8-15）寄存器的索引*/
+#define C_R_7L 0x0e+R_OFFSET        /*写输入缓冲（W）读输出（R）（16-23）寄存器的索引*/
+#define C_R_7H 0x0f+R_OFFSET        /*写输入缓冲（W）读输出（R）（24-31）寄存器的索引*/
 
 #define C_X_IN0 0x10+X_OFFSET       /*X_IN0的值的索引*/
 #define C_X_IN1 0x11+X_OFFSET       /*X_IN1的值的索引*/

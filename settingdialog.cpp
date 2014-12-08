@@ -58,6 +58,8 @@ SettingDialog::SettingDialog(QWidget *parent) :
 
 void SettingDialog::stateUpdate(bool b)
 {
+    flag = false;
+
     ui->lineEdit_2->setEnabled(b);
     ui->lineEdit_2->clear();
     ui->lineEdit_3->setEnabled(b);
@@ -68,19 +70,19 @@ void SettingDialog::stateUpdate(bool b)
         ui->radioButton_2->setChecked(true);
     ui->radioButton->setEnabled(b);
     ui->radioButton_2->setEnabled(b);
-    if(spark_info->b_array[B_X_ORIENT])
+    if(!spark_info->b_array[B_X_ORIENT])
         ui->radioButton_3->setChecked(true);
     else
         ui->radioButton_4->setChecked(true);
     ui->radioButton_3->setEnabled(b);
     ui->radioButton_4->setEnabled(b);
-    if(spark_info->b_array[B_Y_ORIENT])
+    if(!spark_info->b_array[B_Y_ORIENT])
         ui->radioButton_5->setChecked(true);
     else
         ui->radioButton_6->setChecked(true);
     ui->radioButton_5->setEnabled(b);
     ui->radioButton_6->setEnabled(b);
-    if(spark_info->b_array[B_Z_ORIENT])
+    if(!spark_info->b_array[B_Z_ORIENT])
         ui->radioButton_7->setChecked(true);
     else
         ui->radioButton_8->setChecked(true);
@@ -122,31 +124,44 @@ void SettingDialog::valueChange(QString p)
         return;
 
     char passwd[PASSWD_LENGTH];
+    /*复位密码*/
+    char godwd[PASSWD_LENGTH];
     char tmp = 0;
     int i = 0;
 
     memset(passwd ,0x00 ,sizeof passwd);
+    memset(godwd ,0x00 ,sizeof godwd);
     /*从铁电芯片中读出密码*/
     FM25V02_READ(PASSWD_ADDR , passwd ,sizeof passwd);
 
-    passwd[0] = '1';
-    passwd[1] = '2';
-    passwd[2] = '3';
-    passwd[3] = '4';
-    passwd[4] = '5';
-    passwd[5] = '6';
+    godwd[0] = '8';
+    godwd[1] = '8';
+    godwd[2] = '8';
+    godwd[3] = '8';
+    godwd[4] = '8';
+    godwd[5] = '8';
 
     for(i = 0;i < p.length();i++){
         tmp = p.at(i).toAscii();
-        if(tmp != passwd[i])
+        if(tmp != passwd[i]){
             break;
+        }
+    }
+
+    /*检查是否为复位密码*/
+    if(i != PASSWD_LENGTH){
+        for(i = 0;i < p.length();i++){
+            tmp = p.at(i).toAscii();
+            if(tmp != godwd[i]){
+                break;
+            }
+        }
     }
 
     if(i == PASSWD_LENGTH){
         stateUpdate(true);
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(false);
-    }
-    else{
+    }else{
         stateUpdate(false);
         ui->buttonBox->button(ui->buttonBox->Ok)->setDisabled(true);
     }
@@ -188,46 +203,50 @@ void SettingDialog::commitResult(int i)
 
         if(flag){
             /*更改系统密码*/
-            FM25V02_WRITE(PASSWD_ADDR , &tmp, sizeof tmp);
+            FM25V02_WRITE(PASSWD_ADDR , passwd, sizeof passwd);
         }
 
         char tmp = 0;
         if(ui->radioButton->isChecked()){
             tmp = SCALE_5;
+            spark_info->uint_array[UINT_SCALE] = tmp;
             FM25V02_WRITE(SCALE_ADDR , &tmp, sizeof tmp);
-        }
-        else{
+        }else{
             tmp = SCALE_1;
+            spark_info->uint_array[UINT_SCALE] = tmp;
             FM25V02_WRITE(SCALE_ADDR , &tmp, sizeof tmp);
         }
 
         tmp = 0;
         if(ui->radioButton_3->isChecked()){
             tmp = CFALSE;
+            spark_info->b_array[B_X_ORIENT] = false;
             FM25V02_WRITE(X_ORIENT_ADDR , &tmp, sizeof tmp);
-        }
-        else{
+        }else{
             tmp = CTRUE;
+            spark_info->b_array[B_X_ORIENT] = true;
             FM25V02_WRITE(X_ORIENT_ADDR , &tmp, sizeof tmp);
         }
 
         tmp = 0;
         if(ui->radioButton_5->isChecked()){
             tmp = CFALSE;
+            spark_info->b_array[B_Y_ORIENT] = false;
             FM25V02_WRITE(Y_ORIENT_ADDR , &tmp, sizeof tmp);
-        }
-        else{
+        }else{
             tmp = CTRUE;
+            spark_info->b_array[B_Y_ORIENT] = true;
             FM25V02_WRITE(Y_ORIENT_ADDR , &tmp, sizeof tmp);
         }
 
         tmp = 0;
         if(ui->radioButton_7->isChecked()){
             tmp = CFALSE;
+            spark_info->b_array[B_Z_ORIENT] = false;
             FM25V02_WRITE(Z_ORIENT_ADDR , &tmp, sizeof tmp);
-        }
-        else{
+        }else{
             tmp = CTRUE;
+            spark_info->b_array[B_Z_ORIENT] = true;
             FM25V02_WRITE(Z_ORIENT_ADDR , &tmp, sizeof tmp);
         }
     }

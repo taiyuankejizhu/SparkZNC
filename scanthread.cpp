@@ -7,7 +7,7 @@
 #include "sys/reboot.h"
 #include "qdebug.h"
 
-//#define TEST
+/* #define TEST */
 
 #ifdef TEST
 struct timeval tv_last, tv_current;
@@ -58,6 +58,7 @@ void ScanThread::run()
     while(1){
 
 #ifdef TEST
+
         gettimeofday(&tv_current, NULL);
         tv_diff.tv_sec = tv_current.tv_sec - tv_last.tv_sec;
         tv_diff.tv_usec = tv_current.tv_usec - tv_last.tv_usec;
@@ -69,26 +70,6 @@ void ScanThread::run()
 
         tv_last = tv_current;
 
-        spark_info->c_array[C_X_TST0] = 'A';
-        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST0];
-        _WRITE_BYTE_(C_X_TST0);
-        spark_info->c_array[C_X_TST0] = 0x00;
-        _READ_BYTE_(C_X_TST0);
-        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST0];
-
-        spark_info->c_array[C_X_TST1] = 'B';
-        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST1];
-        _WRITE_BYTE_(C_X_TST1);
-        spark_info->c_array[C_X_TST1] = 0x00;
-        _READ_BYTE_(C_X_TST1);
-        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST1];
-
-        spark_info->c_array[C_X_TST2] = 'C';
-        qDebug()<<"Write:"<<spark_info->c_array[C_X_TST2];
-        _WRITE_BYTE_(C_X_TST2);
-        spark_info->c_array[C_X_TST2] = 0x00;
-        _READ_BYTE_(C_X_TST2);
-        qDebug()<<"Read:"<<spark_info->c_array[C_X_TST2];
 #endif
 
         if(a_cycle == A_CYCLE){
@@ -619,15 +600,19 @@ long ScanThread::Z_Origin()
 char ScanThread::Voltage_Read()
 {
     char ret = 0;
-//    _READ_BYTE_(C_U_DVT);
-//    ret = spark_info->c_array[C_U_DVT];
-    spark_info->c_array[C_X_TST1] = 0x04;
-    _WRITE_BYTE_(C_X_TST1);
-    spark_info->c_array[C_X_TST0] = 0x1b;
-    _WRITE_BYTE_(C_X_TST0);
 
-    _READ_BYTE_(C_X_TSTC);
-    ret = spark_info->c_array[C_X_TSTC];
+/*    _READ_BYTE_(C_U_DVT);     */
+/*    ret = spark_info->c_array[C_U_DVT];   */
+
+    spark_info->c_array[C_R_0H] = 0x40;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x1b;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_U_DVT] = spark_info->c_array[C_R_6L];
+
+    ret = spark_info->c_array[C_U_DVT];
     return ret;
 }
 
