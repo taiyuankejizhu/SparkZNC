@@ -425,9 +425,21 @@ void ScanThread::Move()
 long ScanThread::X_Count()
 {
     long ret = 0;
-    _READ_BYTE_(C_X_CP0);
-    _READ_BYTE_(C_X_CP1);
-    _READ_BYTE_(C_X_CP2);
+/*   _READ_BYTE_(C_X_CP0);      */
+/*   _READ_BYTE_(C_X_CP1);      */
+/*   _READ_BYTE_(C_X_CP2);      */
+
+    spark_info->c_array[C_R_0H] = 0x01;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x11;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_X_CP0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_X_CP1] = spark_info->c_array[C_R_6H];
+    _READ_BYTE_(C_R_7L);
+    spark_info->c_array[C_X_CP2] = spark_info->c_array[C_R_7L];
 
     if(spark_info->c_array[C_X_CP2] & 0x80)
         ret = 0xff;
@@ -452,9 +464,21 @@ long ScanThread::Y_Count()
 {
     long ret = 0;
 
-    _READ_BYTE_(C_Y_CP0);
-    _READ_BYTE_(C_Y_CP1);
-    _READ_BYTE_(C_Y_CP2);
+/*    _READ_BYTE_(C_Y_CP0);     */
+/*    _READ_BYTE_(C_Y_CP1);     */
+/*    _READ_BYTE_(C_Y_CP2);     */
+
+    spark_info->c_array[C_R_0H] = 0x02;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x11;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_Y_CP0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_Y_CP1] = spark_info->c_array[C_R_6H];
+    _READ_BYTE_(C_R_7L);
+    spark_info->c_array[C_Y_CP2] = spark_info->c_array[C_R_7L];
 
     if(spark_info->c_array[C_Y_CP0] & 0x80)
         ret = 0xff;
@@ -479,9 +503,21 @@ long ScanThread::Z_Count()
 {
     long ret = 0;
 
-    _READ_BYTE_(C_Z_CP0);
-    _READ_BYTE_(C_Z_CP1);
-    _READ_BYTE_(C_Z_CP2);
+/*    _READ_BYTE_(C_Z_CP0);     */
+/*    _READ_BYTE_(C_Z_CP1);     */
+/*    _READ_BYTE_(C_Z_CP2);     */
+
+    spark_info->c_array[C_R_0H] = 0x04;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x11;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_Z_CP0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_Z_CP1] = spark_info->c_array[C_R_6H];
+    _READ_BYTE_(C_R_7L);
+    spark_info->c_array[C_Z_CP2] = spark_info->c_array[C_R_7L];
 
     if(spark_info->c_array[C_Z_CP2] & 0x80)
         ret = 0xff;
@@ -506,8 +542,18 @@ long ScanThread::X_Velocity()
 {
     long ret = 0;
 
-    _READ_BYTE_(C_X_CS0);
-    _READ_BYTE_(C_X_CS1);
+/*    _READ_BYTE_(C_X_CS0);     */
+/*    _READ_BYTE_(C_X_CS1);     */
+
+    spark_info->c_array[C_R_0H] = 0x01;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x12;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_X_CS0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_X_CS1] = spark_info->c_array[C_R_6H];
 
     if(_READ_BYTE_(C_X_CS1) & 0x80)
         ret = 0xffff;
@@ -530,8 +576,18 @@ long ScanThread::Y_Velocity()
 {
     long ret = 0;
 
-    _READ_BYTE_(C_Y_CS0);
-    _READ_BYTE_(C_Y_CS1);
+ /*   _READ_BYTE_(C_Y_CS0);     */
+ /*   _READ_BYTE_(C_Y_CS1);     */
+
+    spark_info->c_array[C_R_0H] = 0x02;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x12;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_Y_CS0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_Y_CS1] = spark_info->c_array[C_R_6H];
 
     if(_READ_BYTE_(C_Y_CS1) & 0x80)
         ret = 0xffff;
@@ -554,8 +610,18 @@ long ScanThread::Z_Velocity()
 {
     long ret = 0;
 
-    _READ_BYTE_(C_Z_CS0);
-    _READ_BYTE_(C_Z_CS1);
+/*    _READ_BYTE_(C_Z_CS0);     */
+/*    _READ_BYTE_(C_Z_CS1);     */
+
+    spark_info->c_array[C_R_0H] = 0x04;
+    _WRITE_BYTE_(C_R_0H);
+    spark_info->c_array[C_R_0L] = 0x12;
+    _WRITE_BYTE_(C_R_0L);
+
+    _READ_BYTE_(C_R_6L);
+    spark_info->c_array[C_Z_CS0] = spark_info->c_array[C_R_6L];
+    _READ_BYTE_(C_R_6H);
+    spark_info->c_array[C_Z_CS1] = spark_info->c_array[C_R_6H];
 
     if(_READ_BYTE_(C_Z_CS1) & 0x80)
         ret = 0xffff;
