@@ -95,6 +95,9 @@
 #define L_X_VELOCITY 17     /*X轴速度值的索引*/
 #define L_Y_VELOCITY 18     /*Y轴速度值的索引*/
 #define L_Z_VELOCITY 19     /*Z轴速度值的索引*/
+#define L_X_ABS_OFFSET 20   /*X轴绝对位置的偏移的索引*/
+#define L_Y_ABS_OFFSET 21   /*Y轴绝对位置的偏移的索引*/
+#define L_Z_ABS_OFFSET 22   /*Z轴绝对位置的偏移的索引*/
 
 #define X_OFFSET 0x00       /*X轴地址偏移*/
 #define Y_OFFSET 0x40       /*Y轴地址偏移*/
@@ -382,6 +385,7 @@ const UNINT32 uint_init[] = {
 };
 
 const LONG64 long_init[] = {
+        0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,

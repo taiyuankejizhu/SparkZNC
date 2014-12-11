@@ -77,10 +77,24 @@ void SparkInfo::fm25v02Init()
 
     uint_array[UINT_TAB_INDEX] = t_axis.uint;
 
-    /*读取当前坐标*/
     EightBytes  c_x;
     EightBytes  c_y;
     EightBytes  c_z;
+
+    /*读取光栅计数值*/
+    memset(c_x.bytes , 0 ,sizeof c_x);
+    memset(c_y.bytes , 0 ,sizeof c_y);
+    memset(c_z.bytes , 0 ,sizeof c_z);
+
+    FM25V02_READ(X_ABSOLUTE_ADDR, c_x.bytes ,sizeof c_x);
+    FM25V02_READ(Y_ABSOLUTE_ADDR, c_y.bytes ,sizeof c_y);
+    FM25V02_READ(Z_ABSOLUTE_ADDR, c_z.bytes ,sizeof c_z);
+
+    l_array[L_X_ABS_OFFSET] = c_x.longs;
+    l_array[L_Y_ABS_OFFSET] = c_y.longs;
+    l_array[L_Z_ABS_OFFSET] = c_z.longs;
+
+    /*读取当前坐标*/
     memset(c_x.bytes , 0 ,sizeof c_x);
     memset(c_y.bytes , 0 ,sizeof c_y);
     memset(c_z.bytes , 0 ,sizeof c_z);
@@ -89,9 +103,9 @@ void SparkInfo::fm25v02Init()
     FM25V02_READ(Y_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
     FM25V02_READ(Z_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-    l_array[L_X_CURRENT] = c_x.longs;
-    l_array[L_Y_CURRENT] = c_y.longs;
-    l_array[L_Z_CURRENT] = c_z.longs;
+    l_array[L_X_CURRENT] = c_x.longs + l_array[L_X_ABS_OFFSET];
+    l_array[L_Y_CURRENT] = c_y.longs + l_array[L_Y_ABS_OFFSET];
+    l_array[L_Z_CURRENT] = c_z.longs + l_array[L_Z_ABS_OFFSET];
 }
 
 void SparkInfo::carryInit()
@@ -433,6 +447,28 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
             emit xyzChange(i);
         }
         else if(i == L_X_ABSOLUTE||i == L_Y_ABSOLUTE||i == L_Z_ABSOLUTE){
+
+            /*只有在数据改变时才会写入铁电芯片*/
+            if(check){
+                EightBytes wr;
+                wr.longs = 0;
+                wr.longs = spark_info->l_array[i];
+
+                switch(i){
+                case L_X_ABSOLUTE:
+                    FM25V02_WRITE(X_ABSOLUTE_ADDR, wr.bytes, sizeof wr);
+                    break;
+                case L_Y_ABSOLUTE:
+                    FM25V02_WRITE(Y_ABSOLUTE_ADDR, wr.bytes, sizeof wr);
+                    break;
+                case L_Z_ABSOLUTE:
+                    FM25V02_WRITE(Z_ABSOLUTE_ADDR, wr.bytes, sizeof wr);
+                    break;
+                default:
+                    break;
+                }
+            }
+
             emit xyzChange(i);
         }
         else if(i == L_X_REMAIN||i == L_Y_REMAIN||i == L_Z_REMAIN){
@@ -440,12 +476,27 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
         }
         else if(i == L_X_COUNTER||i == L_Y_COUNTER||i == L_Z_COUNTER){
             /*更新当前位置，Position = Offset + Count*/
+            if(i == L_X_COUNTER){
+                spark_info->l_array[L_X_CURRENT] = spark_info->l_array[L_X_OFFSET] + spark_info->l_array[L_X_COUNTER];
+                emit xyzChange(L_X_CURRENT);
+            }
+            if(i == L_Y_COUNTER){
+                spark_info->l_array[L_Y_CURRENT] = spark_info->l_array[L_Y_OFFSET] + spark_info->l_array[L_Y_COUNTER];
+                emit xyzChange(L_Y_CURRENT);
+            }
+            if(i == L_Z_COUNTER){
+                spark_info->l_array[L_Z_CURRENT] = spark_info->l_array[L_Z_OFFSET] + spark_info->l_array[L_Z_COUNTER];
+                emit xyzChange(L_Z_CURRENT);
+            }
+
+            /*更新绝对位置，Position = Offset + Count*/
             if(i == L_X_COUNTER)
-                spark_info->setLong(L_X_CURRENT ,spark_info->l_array[L_X_OFFSET]+spark_info->l_array[L_X_COUNTER]);
+                spark_info->setLong(L_X_ABSOLUTE ,spark_info->l_array[L_X_ABS_OFFSET] + spark_info->l_array[L_X_COUNTER]);
             if(i == L_Y_COUNTER)
-                spark_info->setLong(L_Y_CURRENT ,spark_info->l_array[L_Y_OFFSET]+spark_info->l_array[L_Y_COUNTER]);
+                spark_info->setLong(L_Y_ABSOLUTE ,spark_info->l_array[L_Y_ABS_OFFSET] + spark_info->l_array[L_Y_COUNTER]);
             if(i == L_Z_COUNTER)
-                spark_info->setLong(L_Z_CURRENT ,spark_info->l_array[L_Z_OFFSET]+spark_info->l_array[L_Z_COUNTER]);
+                spark_info->setLong(L_Z_ABSOLUTE ,spark_info->l_array[L_Z_ABS_OFFSET] + spark_info->l_array[L_Z_COUNTER]);
+
             emit xyzChange(i);
         }
         else if(i == L_DEEP_CURRENT){
@@ -498,6 +549,7 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             FourBytes c_axis;
             memset(c_axis.bytes , 0 ,sizeof c_axis);
             c_axis.uint = uint_array[UINT_COOR_INDEX];
+            FM25V02_WRITE(CURRENT_AXIS_ADDR , c_axis.bytes ,sizeof c_axis);
 
             /*读取当前坐标*/
             EightBytes  c_x;
@@ -507,15 +559,13 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             memset(c_y.bytes , 0 ,sizeof c_y);
             memset(c_z.bytes , 0 ,sizeof c_z);
 
-            FM25V02_WRITE(CURRENT_AXIS_ADDR , c_axis.bytes ,sizeof c_axis);
-
             FM25V02_READ(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_x), c_x.bytes ,sizeof c_x);
             FM25V02_READ(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
             FM25V02_READ(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-            spark_info->setLong(L_X_CURRENT ,c_x.longs);
-            spark_info->setLong(L_Y_CURRENT ,c_y.longs);
-            spark_info->setLong(L_Z_CURRENT ,c_z.longs);
+            spark_info->setLong(L_X_CURRENT ,c_x.longs + spark_info->l_array[L_X_ABSOLUTE]);
+            spark_info->setLong(L_Y_CURRENT ,c_y.longs + spark_info->l_array[L_Y_ABSOLUTE]);
+            spark_info->setLong(L_Z_CURRENT ,c_z.longs + spark_info->l_array[L_Z_ABSOLUTE]);
 
             emit coorIndexChange();
         }

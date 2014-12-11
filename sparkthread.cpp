@@ -164,7 +164,7 @@ void SparkThread::run()
             d_state = false;
         }
 
-        spark_info->setLong(L_Z_CURRENT ,++spark_info->l_array[L_Z_CURRENT]);
+        spark_info->setLong(L_Z_COUNTER ,++spark_info->l_array[L_Z_COUNTER]);
         msleep(200);
     }
     /*todo some thing*/

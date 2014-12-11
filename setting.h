@@ -13,12 +13,15 @@
 #define TSLIB_CALIBFILE "/etc/pointercal"
 
 /*FM25V02 ADDR: 0x000000 ~ 0x007FFF*/
-#define X_AXIS_ADDR 0x000000
-#define Y_AXIS_ADDR 0x000008
-#define Z_AXIS_ADDR 0x000010
+#define X_AXIS_ADDR  0x000000
+#define Y_AXIS_ADDR  0x000008
+#define Z_AXIS_ADDR  0x000010
+#define X_ABSOLUTE_ADDR 0x0000c0   /*X轴光栅刻度值的地址*/
+#define Y_ABSOLUTE_ADDR 0x0000c8   /*Y轴光栅刻度值的地址*/
+#define Z_ABSOLUTE_ADDR 0x0000d0   /*Z轴光栅刻度值的地址*/
 
-#define CURRENT_AXIS_ADDR 0x0001e0   /*当前坐标索引*/
-#define CURRENT_TAB_ADDR  0x000200   /*当前数据表的索引*/
+#define CURRENT_AXIS_ADDR 0x0001e0   /*当前坐标索引的地址*/
+#define CURRENT_TAB_ADDR  0x000200   /*当前数据表的索引的地址*/
 
 #define CURRENT_TIME_ADDR 0x000300 /*当前放电时间的地址*/
 #define TARGET_TIME_ADDR  0x000400 /*放电溢出时间的地址*/
