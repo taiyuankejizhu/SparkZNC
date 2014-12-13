@@ -21,6 +21,9 @@ class CoorDialog : public QDialog
 
 public:
     explicit CoorDialog(QWidget *parent = 0);
+    long long x;
+    long long y;
+    long long z;
     unsigned int selected;
     QStandardItemModel *model;
     void updateContent();
@@ -39,6 +42,7 @@ private:
 
 public slots:
     void itemChange(QModelIndex);
+    void valueChange(QString);
 };
 
 #endif // COORDIALOG_H

@@ -690,6 +690,7 @@ void ScanThread::Check_Alert()
 
     /*火警*/
     if(spark_info->b_array[B_FIRE]){
+        spark_info->c_array[C_U_IN0] = 0xff;
         if(spark_info->c_array[C_U_IN0] & 0x80){
             spark_info->setBool(B_FIRE_ALERT ,true);
         }

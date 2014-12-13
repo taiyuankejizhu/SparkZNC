@@ -103,9 +103,9 @@ void SparkInfo::fm25v02Init()
     FM25V02_READ(Y_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
     FM25V02_READ(Z_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-    l_array[L_X_CURRENT] = c_x.longs + l_array[L_X_ABS_OFFSET];
-    l_array[L_Y_CURRENT] = c_y.longs + l_array[L_Y_ABS_OFFSET];
-    l_array[L_Z_CURRENT] = c_z.longs + l_array[L_Z_ABS_OFFSET];
+    l_array[L_X_CURRENT] = c_x.longs + l_array[L_X_ABS_OFFSET] + l_array[L_X_COUNTER];
+    l_array[L_Y_CURRENT] = c_y.longs + l_array[L_Y_ABS_OFFSET] + l_array[L_Y_COUNTER];
+    l_array[L_Z_CURRENT] = c_z.longs + l_array[L_Z_ABS_OFFSET] + l_array[L_Z_COUNTER];
 }
 
 void SparkInfo::carryInit()
@@ -189,79 +189,19 @@ void SparkInfo::tableAuto(LONG64 deep ,UNINT32 current,UNINT32 area,UNINT32 effe
         case 1:group = 0;break;
         case 2:group = 1;break;
         case 3:group = 2;break;
-        case 4:
-        case 5:group = 3;break;
-        case 6:
-        case 7:group = 4;break;
-        case 8:
-        case 9:group = 5;break;
-        case 10:
-        case 11:
-        case 12:group = 6;break;
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:group = 7;break;
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
-        case 24:
-        case 25:group = 8;break;
-        case 26:
-        case 27:
-        case 28:
-        case 29:
-        case 30:
-        case 31:
-        case 32:
-        case 33:
-        case 34:
-        case 35:group = 9;break;
-        case 36:
-        case 37:
-        case 38:
-        case 39:
-        case 40:
-        case 41:
-        case 42:
-        case 43:
-        case 44:
-        case 45:
-        case 46:
-        case 47:
-        case 48:
-        case 49:
-        case 50:group = 10;break;
-        case 51:
-        case 52:
-        case 53:
-        case 54:
-        case 55:
-        case 56:
-        case 57:
-        case 58:
-        case 59:
-        case 60:
-        case 61:
-        case 62:
-        case 63:
-        case 64:
-        case 65:
-        case 66:
-        case 67:
-        case 68:
-        case 69:
-        case 70:
-        case 71:
-        case 72:
-        case 73:
-        case 74:
-        case 75:
-        default:group = 11;break;
+        case 4:case 5:group = 3;break;
+        case 6:case 7:group = 4;break;
+        case 8:case 9:group = 5;break;
+        case 10:case 11:case 12:group = 6;break;
+        case 13:case 14:case 15:case 16:case 17:group = 7;break;
+        case 18:case 19:case 20:case 21:case 22:case 23:case 24:case 25:group = 8;break;
+        case 26:case 27:case 28:case 29:case 30:case 31:case 32:case 33:case 34:case 35:group = 9;break;
+        case 36:case 37:case 38:case 39:case 40:case 41:case 42:case 43:
+        case 44:case 45:case 46:case 47:case 48:case 49:case 50:group = 10;break;
+        case 51:case 52:case 53:case 54:case 55:case 56:case 57:case 58:case 59:case 60:
+        case 61:case 62:case 63:case 64:case 65:case 66:case 67:case 68:case 69:case 70:
+        case 71:case 72:case 73:case 74:case 75:group = 11;break;
+        default:break;
     }
 
     lines = search[group].Index[effect % 4];
@@ -563,9 +503,13 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             FM25V02_READ(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
             FM25V02_READ(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-            spark_info->setLong(L_X_CURRENT ,c_x.longs + spark_info->l_array[L_X_ABSOLUTE]);
-            spark_info->setLong(L_Y_CURRENT ,c_y.longs + spark_info->l_array[L_Y_ABSOLUTE]);
-            spark_info->setLong(L_Z_CURRENT ,c_z.longs + spark_info->l_array[L_Z_ABSOLUTE]);
+            spark_info->l_array[L_X_CURRENT] = c_x.longs + spark_info->l_array[L_X_ABSOLUTE];
+            spark_info->l_array[L_Y_CURRENT] = c_y.longs + spark_info->l_array[L_Y_ABSOLUTE];
+            spark_info->l_array[L_Z_CURRENT] = c_z.longs + spark_info->l_array[L_Z_ABSOLUTE];
+
+            emit xyzChange(L_X_CURRENT);
+            emit xyzChange(L_Y_CURRENT);
+            emit xyzChange(L_Z_CURRENT);
 
             emit coorIndexChange();
         }

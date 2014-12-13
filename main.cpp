@@ -85,13 +85,8 @@ int main(int argc, char *argv[])
     m.setCursor(QCursor(Qt::BlankCursor));
 #endif
 
-    /*软件盘*/
-    KeyBoard *keyboard;
-    keyboard = new KeyBoard(&m);
-    keyboard->hide();
-
     /*软键盘输入上下文*/
-    MyInputPanelContext *ic = new MyInputPanelContext(keyboard);
+    MyInputPanelContext *ic = new MyInputPanelContext(&m);
     a.setInputContext(ic);
 
     m.show();

@@ -25,6 +25,8 @@ KeyBoard::KeyBoard(QWidget *parent)
 		mapper->setMapping((*iter), i);
 		connect(*iter, SIGNAL(clicked()), mapper, SLOT(map()));
 	}
+
+    setKeyMap(en_upper_keymap);
 }
 
 KeyBoard::~KeyBoard()
@@ -39,26 +41,27 @@ void KeyBoard::setKeyMap(const char **keymap)
 			iter != m_allKeys.end(); iter++, i++) {
 		(*iter)->setText(keymap[i]);
 	}
-	
 }
 
 void KeyBoard::doButtonClicked(int idx)
 {
+    int control;
     QChar key;
 
 	if (m_allKeys.at(idx)->text() == "Caps") {
 		m_caps = !m_caps;
 		if (m_caps) {
-			setKeyMap(en_upper_keymap);
-		} else {
-			setKeyMap(en_lower_keymap);
+            setKeyMap(en_upper_keymap);
+        }else{
+            setKeyMap(en_lower_keymap);
 		}
-	} else if (m_allKeys.at(idx)->text() == "123") {
-		setKeyMap(en_number_keymap);
-	} else if (m_allKeys.at(idx)->text() == "en/cn") {
-		setKeyMap(en_lower_keymap);
-	}
-    else{
+    }else if(m_allKeys.at(idx)->text() == "<--"){
+        control = Qt::Key_Backspace;
+        emit controlGenerated(control);
+    }else if(m_allKeys.at(idx)->text() == "Enter"){
+        control = Qt::Key_Return;
+        emit controlGenerated(control);
+    }else{
         if(m_allKeys.at(idx)->text().length() == 1){
             key = m_allKeys.at(idx)->text().at(0);
             emit characterGenerated(key);

@@ -13,6 +13,7 @@
 #include "qalerts.h"
 #include "sparkthread.h"
 #include "scanthread.h"
+#include "myinputpanelcontext.h"
 #include <QWidget>
 #include <QStandardItemModel>
 #include <QStandardItem>
@@ -24,6 +25,7 @@
 #include <QAbstractItemView>
 #include <QItemSelectionModel>
 #include <QTimer>
+#include <QPushButton>
 
 #include "fcntl.h"
 #include "sys/ioctl.h"

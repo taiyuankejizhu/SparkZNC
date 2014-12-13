@@ -107,7 +107,7 @@ MainInterface::MainInterface(QWidget *parent) :
     connect(spark_info ,SIGNAL(boolChange()) ,alerts ,SLOT(alertCheck()));
 
     ui->horizontalLayout_3->addWidget(command);
-    ui->horizontalLayout_3->addWidget(alerts);
+    ui->horizontalLayout_4->addWidget(alerts);
 }
 
 void MainInterface::initHardware()

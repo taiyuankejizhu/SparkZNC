@@ -9,12 +9,13 @@
 #include <QTimer>
 #include <QColor>
 #include <QMap>
+#include <QLineEdit>
 
 #define MESG_COLOR Qt::blue
 #define INPUT_COLOR Qt::black
 #define WARNING_COLOR Qt::darkMagenta
 
-class QCommand : public QWidget
+class QCommand : public QLineEdit
 {
     Q_OBJECT
 public:
@@ -34,6 +35,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *);
     void checkString(QString);
     void recordAppend(QString);
     void initLabel();

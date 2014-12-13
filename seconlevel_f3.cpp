@@ -61,6 +61,9 @@ void seconlevel_f3::f3_Done(int r)
     }
     else{
         spark_info->setUInt(UINT_COOR_INDEX ,coor->selected);
+        spark_info->setLong(L_X_CURRENT ,coor->x);
+        spark_info->setLong(L_Y_CURRENT ,coor->y);
+        spark_info->setLong(L_Z_CURRENT ,coor->z);
         qDebug()<<"F3 OK!";
     }
     parentWidget()->setFocus();

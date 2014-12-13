@@ -2,8 +2,10 @@
 #include "sparkinfo.h"
 #include "qdebug.h"
 
+//qApp->sendEvent(this ,new QEvent(QEvent::RequestSoftwareInputPanel));
+
 QCommand::QCommand(QWidget *parent) :
-    QWidget(parent)
+    QLineEdit(parent)
 {
     initLabel();
     value = "";
@@ -189,6 +191,15 @@ void QCommand::keyPressEvent(QKeyEvent *k)
         }
     }
     update();
+}
+
+void QCommand::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    e->accept();
+
+    setFocus();
+    setStatus(0x10);
+    setType(true ,false ,0x00 ,false ,0x00);
 }
 
 void QCommand::checkString(QString s)

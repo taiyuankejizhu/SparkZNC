@@ -13,6 +13,7 @@ public:
 	~KeyBoard();
 
 signals:
+    void controlGenerated(int control);
     void characterGenerated(QChar character);
 public slots:
     void doButtonClicked(int idx);

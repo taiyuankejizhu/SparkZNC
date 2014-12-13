@@ -899,7 +899,7 @@
      <rect>
       <x>-1</x>
       <y>-1</y>
-      <width>231</width>
+      <width>235</width>
       <height>171</height>
      </rect>
     </property>
@@ -1528,7 +1528,7 @@
     <rect>
      <x>0</x>
      <y>350</y>
-     <width>874</width>
+     <width>437</width>
      <height>40</height>
     </rect>
    </property>
@@ -1543,7 +1543,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>881</width>
+      <width>431</width>
       <height>41</height>
      </rect>
     </property>
@@ -1589,7 +1589,7 @@
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>1021</width>
+      <width>1028</width>
       <height>32</height>
      </rect>
     </property>
@@ -5312,6 +5312,33 @@
       </widget>
      </item>
     </layout>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_8">
+   <property name="geometry">
+    <rect>
+     <x>437</x>
+     <y>350</y>
+     <width>437</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::WinPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>441</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4"/>
    </widget>
   </widget>
  </widget>
