@@ -79,7 +79,9 @@ int main(int argc, char *argv[])
 
     MainInterface m;
 
- #ifndef Q_WS_X11
+    qApp->installEventFilter(&m);
+
+#ifndef Q_WS_X11
     QRect screen_size = QApplication::desktop()->screenGeometry();
     m.setGeometry(0, 0, screen_size.width(), screen_size.height());
     m.setCursor(QCursor(Qt::BlankCursor));

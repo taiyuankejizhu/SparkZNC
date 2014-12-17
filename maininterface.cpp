@@ -31,9 +31,6 @@ public:
     }
 };
 
-/*蜂鸣器文件描述符*/
-static int beep_fb = 0;
-
 MainInterface::MainInterface(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainInterface)
@@ -43,7 +40,6 @@ MainInterface::MainInterface(QWidget *parent) :
     key_pressed = false;
     start_or_end = true;
 
-    initHardware();
     FPGA_Init();
 
     XYZ_Update(L_X_CURRENT);
@@ -106,22 +102,20 @@ MainInterface::MainInterface(QWidget *parent) :
     alerts->setHidden(false);
     connect(spark_info ,SIGNAL(boolChange()) ,alerts ,SLOT(alertCheck()));
 
+    clear = new ClearScreen(parent);
+    clear->setHidden(true);
+
+#ifndef Q_WS_X11
+    QRect screen_size = qApp->desktop()->screenGeometry();
+    clear->setGeometry(0, 0, screen_size.width(), screen_size.height());
+    clear->setCursor(QCursor(Qt::BlankCursor));
+#else
+    clear->setGeometry(0 ,0 ,1024 ,768);
+#endif
+    connect(scan ,SIGNAL(clear()) ,clear ,SLOT(show()));
+
     ui->horizontalLayout_3->addWidget(command);
     ui->horizontalLayout_4->addWidget(alerts);
-}
-
-void MainInterface::initHardware()
-{
-    /*初始化蜂鸣器*/
-    QFile f(BEEP_FILE);
-    if (f.exists())
-    {
-            beep_fb = open(BEEP_FILE, O_RDWR);
-            if (beep_fb < 0)
-            {
-                    perror("open device leds fail");
-            }
-    }
 }
 
 void MainInterface::initFuncBar()
@@ -169,9 +163,6 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
     if(!k->isAutoRepeat()){
         k->accept();
         QPushButton *Fn ;
-
-        if (beep_fb > 0)
-            ioctl(beep_fb, 1, 20);
 
         switch(k->key())
         {
@@ -276,9 +267,6 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
     if(!k->isAutoRepeat()){
         k->accept();
 
-        if (beep_fb > 0)
-            ioctl(beep_fb, 0, 1);
-
         switch(k->key())
         {
         case Qt::Key_F1:
@@ -318,6 +306,27 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
     }
     else
         k->ignore();
+}
+
+/*全局时间过滤器，用于监听按键鼠标动作，唤醒屏幕和点亮蜂鸣器*/
+bool MainInterface::eventFilter(QObject *o, QEvent *e)
+{
+    if(e->type() == QEvent::KeyPress){
+        scan->b_cycle = 0;
+        if((spark_info->uint_array[UINT_BRIGHTNESS] & 0xf0) != 0){
+            spark_info->setUInt(UINT_BRIGHTNESS ,spark_info->uint_array[UINT_BRIGHTNESS] & 0x0f);
+            clear->hide();
+            setFocus();
+        }
+    }else if(e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseMove){
+        scan->b_cycle = 0;
+        if((spark_info->uint_array[UINT_BRIGHTNESS] & 0xf0) != 0){
+            spark_info->setUInt(UINT_BRIGHTNESS ,spark_info->uint_array[UINT_BRIGHTNESS] & 0x0f);
+            clear->hide();
+            setFocus();
+        }
+    }
+    return qApp->eventFilter(o ,e);
 }
 
 void MainInterface::commandFinish()

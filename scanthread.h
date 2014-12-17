@@ -3,11 +3,11 @@
 
 #include <QThread>
 
-#define A_CYCLE 20   /*关机的延时计数周期*/
-#define B_CYCLE 100  /*睡眠的延时计数周期*/
-#define C_CYCLE 5  /*读取速度的延时计数周期*/
-#define D_CYCLE 100 /*关风扇延时的计数周期*/
-#define E_CYCLE 100 /*重启的延时计数周期*/
+#define A_CYCLE 20      /*关机的延时计数周期*/
+#define B_CYCLE 300000  /*睡眠的延时计数周期10S*/
+#define C_CYCLE 5       /*读取速度的延时计数周期*/
+#define D_CYCLE 100     /*关风扇延时的计数周期*/
+#define E_CYCLE 100     /*重启的延时计数周期*/
 
 /*边缘变化三态*/
 #define FALL 0x7f
@@ -53,6 +53,7 @@ public:
 
     virtual ~ScanThread();
 signals:
+    void clear();
 
 public slots:
     void keyPress(int);

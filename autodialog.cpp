@@ -70,6 +70,10 @@ void AutoDialog::keyPressEvent(QKeyEvent *k)
     case Qt::Key_F8:
         finished(0);
         break;
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+        focusNextChild();
+        break;
     default:
         break;
     }

@@ -38,7 +38,5 @@
         <file>icon_e.png</file>
         <file>icon_h_e.png</file>
         <file>icon_p_e.png</file>
-        <file>softkey.png</file>
-        <file>softkey_p.png</file>
     </qresource>
 </RCC>

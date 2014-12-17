@@ -11,10 +11,13 @@
 #include "keyboard.h"
 #include "qcommand.h"
 #include "qalerts.h"
+#include "clearscreen.h"
 #include "sparkthread.h"
 #include "scanthread.h"
 #include "myinputpanelcontext.h"
 #include <QWidget>
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QModelIndex>
@@ -27,8 +30,6 @@
 #include <QTimer>
 #include <QPushButton>
 
-#include "fcntl.h"
-#include "sys/ioctl.h"
 #include "fm25v02.h"
 #include "fpga.h"
 #include "setting.h"
@@ -58,7 +59,6 @@ class MainInterface : public QWidget
 public:
     explicit MainInterface(QWidget *parent = 0);
     void initFuncBar();
-    void initHardware();
     void submitTable();
     QString toString(LONG64);
     QStandardItemModel *model;
@@ -68,6 +68,7 @@ public:
     StartMenu *menu;
     QCommand *command;
     QAlerts *alerts;
+    ClearScreen *clear;
     /*放电加工线程*/
     SparkThread *spark;
     /*数据扫描和运行时线程*/
@@ -84,6 +85,7 @@ private:
     Ui::MainInterface *ui;
     void keyPressEvent( QKeyEvent *k );
     void keyReleaseEvent( QKeyEvent *k );
+    bool eventFilter(QObject *o, QEvent *e);
     QWidget *barui;
     QMap<int , QWidget *> barmap;
 

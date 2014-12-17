@@ -3,11 +3,12 @@
 
 #define VERSION "V1.0"
 
-#define ISA_FILE "/dev/port"
-#define GPMI_FILE "/dev/mtd0"
-#define BEEP_FILE "/dev/beep"
-#define GPMC_FILE "/dev/fpga"
-#define SPI_FILE  "/dev/spidev2.0"
+#define ISA_FILE        "/dev/port"
+#define GPMI_FILE       "/dev/mtd0"
+#define BEEP_FILE       "/dev/beep"
+#define GPMC_FILE       "/dev/fpga"
+#define SPI_FILE        "/dev/spidev2.0"
+#define BACKLIGHT_FILE  "/dev/backlight"
 
 #define TABLES_DIR "/tables/"
 #define TSLIB_CALIBFILE "/etc/pointercal"

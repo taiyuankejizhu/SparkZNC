@@ -24,7 +24,7 @@ GroupDialog::GroupDialog(QWidget *parent) :
     QPixmap cancel_pix = QPixmap(":/cancel.png");
     cancel_icon = QIcon(cancel_pix);
 
-    selected = spark_info->uint_array[UINT_COOR_INDEX];
+    selected = spark_info->uint_array[UINT_TAB_INDEX];
     model = new QStandardItemModel(0 ,1);
     updateContent();
 

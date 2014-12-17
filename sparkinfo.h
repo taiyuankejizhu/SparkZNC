@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QDir>
 #include <QByteArray>
+#include "fcntl.h"
+#include "sys/ioctl.h"
 #include "fpga.h"
 #include "fm25v02.h"
 #include "setting.h"
@@ -19,7 +21,7 @@
 
 #define B_LENGTH 40         /*布尔数组的长度*/
 #define UINT_LENGTH 15      /*无符号整型数组的长度*/
-#define L_LENGTH 20         /*长整型数组的长度*/
+#define L_LENGTH 25         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
 
 #define B_UPDATE 0          /*布尔数组有更新的开关索引*/
@@ -381,7 +383,7 @@ const bool bool_init[] = {
 const UNINT32 uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
-        99, 9, 0, 0, 5,
+        99, 9, 0, 4, 5,
 };
 
 const LONG64 long_init[] = {
@@ -404,6 +406,12 @@ public:
     unsigned int uint_array[UINT_LENGTH];
     long l_array[L_LENGTH];
     char c_array[C_LENGTH];
+
+    /*蜂鸣器文件描述符*/
+    int beep_fb;
+    /*背光文件描述符*/
+    int backlight_fb;
+
     /*放电时间溢出值*/
     SixBytes target;
     /*已经放电时间值*/
@@ -411,6 +419,7 @@ public:
     Table table;
 
 private:
+    void sysInit();
     void tableInit();
     void carryInit();
     void fm25v02Init();

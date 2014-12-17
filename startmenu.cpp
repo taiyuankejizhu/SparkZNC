@@ -392,15 +392,15 @@ void StartMenu::selectItem()
         break;
     case 8:
         if(spark_info->uint_array[UINT_SOUND] > 2)
-            spark_info->uint_array[UINT_SOUND] = 0;
+            spark_info->setUInt(UINT_SOUND , 0);
         else
-            spark_info->uint_array[UINT_SOUND]++;
+            spark_info->setUInt(UINT_SOUND , ++spark_info->uint_array[UINT_SOUND]);
         break;
     case 9:
-        if(spark_info->uint_array[UINT_BRIGHTNESS] > 3)
-            spark_info->uint_array[UINT_BRIGHTNESS] = 0;
+        if((spark_info->uint_array[UINT_BRIGHTNESS] & 0x0f) > 3)
+            spark_info->setUInt(UINT_BRIGHTNESS , 0);
         else
-            spark_info->uint_array[UINT_BRIGHTNESS]++;
+            spark_info->setUInt(UINT_BRIGHTNESS , ++spark_info->uint_array[UINT_BRIGHTNESS]);
         break;
     default:
         break;

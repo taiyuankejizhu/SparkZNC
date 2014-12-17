@@ -18,8 +18,39 @@ SparkInfo::SparkInfo(QObject *parent) :
     carryInit();
     tableInit();
 
+    sysInit();
+
     /*当前表的索引改变时，更新表的数据*/
     connect(this ,SIGNAL(tableIndexChange()) ,this ,SLOT(tableLoad()));
+
+}
+
+void SparkInfo::sysInit()
+{
+    /*初始化蜂鸣器*/
+    QFile beep(BEEP_FILE);
+    QFile backlight(BACKLIGHT_FILE);
+
+    if (beep.exists())
+    {
+        beep_fb = open(BEEP_FILE, O_RDWR);
+        if (beep_fb < 0)
+        {
+            printf("open device beep fail");
+        }
+    }
+
+    if(backlight.exists())
+    {
+        backlight_fb = open(BACKLIGHT_FILE, O_RDWR);
+        if(backlight_fb < 0)
+        {
+            printf("open device backlight fail");
+        }else{
+            ioctl(backlight_fb, (uint_array[UINT_BRIGHTNESS] & 0xf0) >> 4,
+                  20 + 20 * (uint_array[UINT_BRIGHTNESS] & 0x0f));
+        }
+    }
 
 }
 
@@ -94,6 +125,10 @@ void SparkInfo::fm25v02Init()
     l_array[L_Y_ABS_OFFSET] = c_y.longs;
     l_array[L_Z_ABS_OFFSET] = c_z.longs;
 
+    l_array[L_X_ABSOLUTE] = c_x.longs;
+    l_array[L_Y_ABSOLUTE] = c_y.longs;
+    l_array[L_Z_ABSOLUTE] = c_z.longs;
+
     /*读取当前坐标*/
     memset(c_x.bytes , 0 ,sizeof c_x);
     memset(c_y.bytes , 0 ,sizeof c_y);
@@ -103,9 +138,13 @@ void SparkInfo::fm25v02Init()
     FM25V02_READ(Y_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_y), c_y.bytes ,sizeof c_y);
     FM25V02_READ(Z_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
-    l_array[L_X_CURRENT] = c_x.longs + l_array[L_X_ABS_OFFSET] + l_array[L_X_COUNTER];
-    l_array[L_Y_CURRENT] = c_y.longs + l_array[L_Y_ABS_OFFSET] + l_array[L_Y_COUNTER];
-    l_array[L_Z_CURRENT] = c_z.longs + l_array[L_Z_ABS_OFFSET] + l_array[L_Z_COUNTER];
+    l_array[L_X_OFFSET] = c_x.longs;
+    l_array[L_Y_OFFSET] = c_x.longs;
+    l_array[L_Z_OFFSET] = c_x.longs;
+
+    l_array[L_X_CURRENT] = l_array[L_X_OFFSET] + l_array[L_X_ABS_OFFSET];
+    l_array[L_Y_CURRENT] = l_array[L_Y_OFFSET] + l_array[L_Y_ABS_OFFSET];
+    l_array[L_Z_CURRENT] = l_array[L_Z_OFFSET] + l_array[L_Z_ABS_OFFSET];
 }
 
 void SparkInfo::carryInit()
@@ -181,7 +220,7 @@ void SparkInfo::tableAuto(LONG64 deep ,UNINT32 current,UNINT32 area,UNINT32 effe
     tableClear();
 
     unsigned int i = 0;
-    unsigned int group;       /*根据电流选组别*/
+    unsigned int group = 0;       /*根据电流选组别*/
     unsigned int lines;       /*确定要显示的行数*/
     switch(current / 2)
     {
@@ -371,12 +410,20 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
 
                 switch(i){
                 case L_X_CURRENT:
+                    wr.longs -= spark_info->l_array[L_X_ABSOLUTE];
+                    spark_info->l_array[L_X_OFFSET] = wr.longs;
                     FM25V02_WRITE(X_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
                     break;
                 case L_Y_CURRENT:
+                    wr.longs -= spark_info->l_array[L_Y_ABSOLUTE];
+                    spark_info->l_array[L_Y_OFFSET] = wr.longs;
                     FM25V02_WRITE(Y_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
                     break;
                 case L_Z_CURRENT:
+                    wr.longs -= spark_info->l_array[L_Z_ABSOLUTE];
+                    spark_info->l_array[L_Z_OFFSET] = wr.longs;
+                    qDebug()<<"cu:"<<spark_info->l_array[L_Z_OFFSET]<<"---"<<spark_info->l_array[L_Z_ABSOLUTE];
+                    qDebug()<<"cu:"<<spark_info->l_array[L_Z_CURRENT];
                     FM25V02_WRITE(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
                     break;
                 default:
@@ -415,20 +462,6 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
             emit xyzChange(i);
         }
         else if(i == L_X_COUNTER||i == L_Y_COUNTER||i == L_Z_COUNTER){
-            /*更新当前位置，Position = Offset + Count*/
-            if(i == L_X_COUNTER){
-                spark_info->l_array[L_X_CURRENT] = spark_info->l_array[L_X_OFFSET] + spark_info->l_array[L_X_COUNTER];
-                emit xyzChange(L_X_CURRENT);
-            }
-            if(i == L_Y_COUNTER){
-                spark_info->l_array[L_Y_CURRENT] = spark_info->l_array[L_Y_OFFSET] + spark_info->l_array[L_Y_COUNTER];
-                emit xyzChange(L_Y_CURRENT);
-            }
-            if(i == L_Z_COUNTER){
-                spark_info->l_array[L_Z_CURRENT] = spark_info->l_array[L_Z_OFFSET] + spark_info->l_array[L_Z_COUNTER];
-                emit xyzChange(L_Z_CURRENT);
-            }
-
             /*更新绝对位置，Position = Offset + Count*/
             if(i == L_X_COUNTER)
                 spark_info->setLong(L_X_ABSOLUTE ,spark_info->l_array[L_X_ABS_OFFSET] + spark_info->l_array[L_X_COUNTER]);
@@ -436,6 +469,22 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
                 spark_info->setLong(L_Y_ABSOLUTE ,spark_info->l_array[L_Y_ABS_OFFSET] + spark_info->l_array[L_Y_COUNTER]);
             if(i == L_Z_COUNTER)
                 spark_info->setLong(L_Z_ABSOLUTE ,spark_info->l_array[L_Z_ABS_OFFSET] + spark_info->l_array[L_Z_COUNTER]);
+
+            /*更新当前位置，Position = Offset + Abs*/
+            if(i == L_X_COUNTER){
+                spark_info->l_array[L_X_CURRENT] = spark_info->l_array[L_X_OFFSET] + spark_info->l_array[L_X_ABSOLUTE];
+                emit xyzChange(L_X_CURRENT);
+            }
+            if(i == L_Y_COUNTER){
+                spark_info->l_array[L_Y_CURRENT] = spark_info->l_array[L_Y_OFFSET] + spark_info->l_array[L_Y_ABSOLUTE];
+                emit xyzChange(L_Y_CURRENT);
+            }
+            if(i == L_Z_COUNTER){
+                spark_info->l_array[L_Z_CURRENT] = spark_info->l_array[L_Z_OFFSET] + spark_info->l_array[L_Z_ABSOLUTE];
+                qDebug()<<"co:"<<spark_info->l_array[L_Z_OFFSET]<<"---"<<spark_info->l_array[L_Z_CURRENT];
+                qDebug()<<"co:"<<spark_info->l_array[L_Z_ABSOLUTE];
+                emit xyzChange(L_Z_CURRENT);
+            }
 
             emit xyzChange(i);
         }
@@ -537,6 +586,13 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
             }
             uint_array[UINT_CURRENT_ROM] = uint_array[UINT_START_ROW];
             emit tableRowChange();
+        }
+        /*切换屏幕亮度值*/
+        else if(i == UINT_BRIGHTNESS){
+            if(backlight_fb > 0){
+                ioctl(backlight_fb, (uint_array[UINT_BRIGHTNESS] & 0xf0) >> 4,
+                      20 + 20 * (uint_array[UINT_BRIGHTNESS] & 0x0f));
+            }
         }
         if(check)
             emit uintChange();

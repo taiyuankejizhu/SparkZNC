@@ -84,6 +84,8 @@ void ScanThread::run()
 
         if(b_cycle == B_CYCLE){
             /*to do*/
+            spark_info->setUInt(UINT_BRIGHTNESS ,spark_info->uint_array[UINT_BRIGHTNESS] | 0x10);
+            emit clear();
             b_cycle = 0;
         }
 
@@ -690,7 +692,6 @@ void ScanThread::Check_Alert()
 
     /*火警*/
     if(spark_info->b_array[B_FIRE]){
-        spark_info->c_array[C_U_IN0] = 0xff;
         if(spark_info->c_array[C_U_IN0] & 0x80){
             spark_info->setBool(B_FIRE_ALERT ,true);
         }

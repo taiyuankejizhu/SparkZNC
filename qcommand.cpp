@@ -199,7 +199,7 @@ void QCommand::mouseDoubleClickEvent(QMouseEvent *e)
 
     setFocus();
     setStatus(0x10);
-    setType(true ,false ,0x00 ,false ,0x00);
+    setType(true ,true ,0x04 ,true ,0x03);
 }
 
 void QCommand::checkString(QString s)
@@ -286,8 +286,6 @@ void QCommand::finalSubmit(QString s)
             if((target & 0x0F)==L_X_CURRENT||(target & 0x0F)==L_Y_CURRENT||(target & 0x0F)==L_Z_CURRENT){
                 /*设置当前位置*/
                 spark_info->setLong(target & 0x0F , l);
-                /*设置当前位置的偏移 ，Offset = Position - Count*/
-                spark_info->setLong((target & 0x0F)+(L_X_OFFSET-L_X_CURRENT) ,l - spark_info->l_array[(target & 0x0F)+(L_X_COUNTER-L_X_CURRENT)]);
             }
             else
                 spark_info->setLong(target & 0x0F , l);
@@ -373,7 +371,7 @@ void QCommand::setType(bool isString,bool isSigned,char intCount,bool isDot,char
 
 void QCommand::setTarget(char slot,char index)
 {
-    target =0;
-    target =target|(slot<<4);
-    target =target|index;
+    target = 0;
+    target = target|(slot<<4);
+    target = target|index;
 }

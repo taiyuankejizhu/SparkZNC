@@ -76,7 +76,7 @@ void CoorDialog::keyPressEvent(QKeyEvent *k)
         break;
     case Qt::Key_Return:
     case Qt::Key_Enter:
-        if(ui->listView->currentIndex().row() != selected && type.contains("View")){
+        if((unsigned int)ui->listView->currentIndex().row() != selected && type.contains("View")){
             selected = ui->listView->currentIndex().row();
             updateContent();
         }else if(type.contains("Edit")){
