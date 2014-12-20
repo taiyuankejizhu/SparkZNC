@@ -44,13 +44,16 @@ public:
     bool a_lock;
 
     void run();
-    void AxisSwitch(HandAxis);
+    void AxisSwitch(HandAxis ,HandDirect);
+    void DoMove(HandMove *);
+    void DoStop(HandMove *);
     void Move();
     void Scan_Panel();
     static void Check_Alert();
     static long X_Count();
     static long Y_Count();
     static long Z_Count();
+    static long Null_Count();
     static long X_Velocity();
     static long Y_Velocity();
     static long Z_Velocity();

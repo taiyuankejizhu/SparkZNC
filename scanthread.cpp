@@ -44,7 +44,7 @@ ScanThread::ScanThread(QObject *parent) :
     _WRITE_BYTE_(C_P_IO3);
     _WRITE_BYTE_(C_P_IO4);
 
-    AxisSwitch(Hand_Null_AXIS);
+    AxisSwitch(Hand_Null_AXIS ,Hand_A_DRIECT);
 
 }
 
@@ -240,32 +240,76 @@ void ScanThread::Scan_Panel()
 }
 
 /*切换当前移动轴*/
-void ScanThread::AxisSwitch(HandAxis a)
+void ScanThread::AxisSwitch(HandAxis a ,HandDirect d)
 {
     switch(a){
     case Hand_X_AXIS:
         spark_info->hand.Axis = Hand_X_AXIS;
+        spark_info->hand.Driect = d;
         spark_info->hand.Position_Control = SparkThread::Null_Position_Control;
         spark_info->hand.Velocity_Control = SparkThread::Null_Velocity_Control;
         spark_info->hand.Count = ScanThread::X_Count;
         break;
     case Hand_Y_AXIS:
         spark_info->hand.Axis = Hand_Y_AXIS;
+        spark_info->hand.Driect = d;
         spark_info->hand.Position_Control = SparkThread::Null_Position_Control;
         spark_info->hand.Velocity_Control = SparkThread::Null_Velocity_Control;
         spark_info->hand.Count = ScanThread::Y_Count;
         break;
     case Hand_Z_AXIS:
         spark_info->hand.Axis = Hand_Z_AXIS;
+        spark_info->hand.Driect = d;
         spark_info->hand.Position_Control = SparkThread::Z_Position_Control;
         spark_info->hand.Velocity_Control = SparkThread::Z_Velocity_Control;
         spark_info->hand.Count = ScanThread::Z_Count;
         break;
     case Hand_Null_AXIS:
         spark_info->hand.Axis = Hand_Null_AXIS;
+        spark_info->hand.Driect = d;
+        spark_info->hand.Position_Control = SparkThread::Null_Position_Control;
+        spark_info->hand.Velocity_Control = SparkThread::Null_Velocity_Control;
+        spark_info->hand.Count = ScanThread::Null_Count;
         break;
     default:
         break;
+    }
+}
+
+/*实际操作运动轴*/
+void ScanThread::DoMove(HandMove *hm)
+{
+
+    if(hm->Axis == Hand_Null_AXIS){
+        return;
+    }
+
+    if(hm->Mode == Hand_Position_MODE){
+        if(hm->Driect == Hand_A_DRIECT)
+            hm->Position_Control(hm->Count() + hm->Step);
+        else
+            hm->Position_Control(hm->Count() - hm->Step);
+    }else if(hm->Mode == Hand_Velocity_MODE){
+        if(hm->Driect == Hand_A_DRIECT)
+            hm->Velocity_Control(hm->Speed);
+        else
+            hm->Velocity_Control(- hm->Speed);
+    }
+
+}
+
+/*实际停止运动轴*/
+void ScanThread::DoStop(HandMove *hm)
+{
+    if(hm->Axis == Hand_Null_AXIS){
+        return;
+    }
+
+    if(hm->Mode == Hand_Velocity_MODE){
+        if(hm->Driect == Hand_A_DRIECT)
+            hm->Position_Control(hm->Count());
+        else
+            hm->Position_Control(hm->Count());
     }
 }
 
@@ -276,14 +320,13 @@ void ScanThread::Move()
     if(a_last){
         if(!(spark_info->c_array[C_Z_IN0] & 0x10)){
             a_edge = RISE;
-            AxisSwitch(Hand_Null_AXIS);
         }
         else
             a_edge = NONE;
     }else{
         if((spark_info->c_array[C_Z_IN0] & 0x10)){
             a_edge = FALL;
-            AxisSwitch(Hand_Z_AXIS);
+            AxisSwitch(Hand_Z_AXIS ,Hand_A_DRIECT);
         }
         else
             a_edge = NONE;
@@ -292,14 +335,14 @@ void ScanThread::Move()
     if(b_last){
         if(!(spark_info->c_array[C_Z_IN0] & 0x20)){
             b_edge = RISE;
-            AxisSwitch(Hand_Null_AXIS);
         }
         else
             b_edge = NONE;
     }else{
         if((spark_info->c_array[C_Z_IN0] & 0x20)){
             b_edge = FALL;
-            AxisSwitch(Hand_Z_AXIS);
+            AxisSwitch(Hand_Z_AXIS ,Hand_B_DRIECT);
+            DoMove(&spark_info->hand);
         }
         else
             b_edge = NONE;
@@ -308,14 +351,14 @@ void ScanThread::Move()
     if(c_last){
         if(!spark_info->b_array[B_ZERO]){
             c_edge = RISE;
-            AxisSwitch(Hand_Null_AXIS);
+            AxisSwitch(Hand_Null_AXIS ,Hand_A_DRIECT);
         }
         else
             c_edge = NONE;
     }else{
         if(spark_info->b_array[B_ZERO]){
             c_edge = FALL;
-            AxisSwitch(Hand_Z_AXIS);
+            AxisSwitch(Hand_Z_AXIS ,Hand_A_DRIECT);
         }
         else
             c_edge = NONE;
@@ -324,47 +367,15 @@ void ScanThread::Move()
     if((spark_info->c_array[C_Z_IN0] & 0x10))
     {
         if(a_edge == FALL){
-            switch(spark_info->uint_array[UINT_SPEED]){
-            case 10:
-                spark_info->hand.Position_Control(spark_info->hand.Count() + 10);
-                break;
-            case 20:
-                spark_info->hand.Velocity_Control(0x20);
-                break;
-            case 30:
-                spark_info->hand.Position_Control(spark_info->hand.Count() + 30);
-                break;
-            case 40:
-                spark_info->hand.Velocity_Control(0x400);
-                break;
-            case 50:
-                spark_info->hand.Position_Control(spark_info->hand.Count() + 50);
-                break;
-            default:
-                break;
-            }
+            DoMove(&spark_info->hand);
             a_edge = NONE;
         }
         a_last = true;
         return;
     }else{
         if(a_edge == RISE){
-            switch(spark_info->uint_array[UINT_SPEED]){
-            case 10:
-                break;
-            case 20:
-                spark_info->hand.Position_Control(spark_info->hand.Count());
-                break;
-            case 30:
-                break;
-            case 40:
-                spark_info->hand.Position_Control(spark_info->hand.Count());
-                break;
-            case 50:
-                break;
-            default:
-                break;
-            }
+            DoStop(&spark_info->hand);
+            AxisSwitch(Hand_Null_AXIS ,Hand_A_DRIECT);
             a_edge = NONE;
         }
         a_last = false;
@@ -373,47 +384,15 @@ void ScanThread::Move()
     if((spark_info->c_array[C_Z_IN0] & 0x20))
     {
         if(b_edge == FALL){
-            switch(spark_info->uint_array[UINT_SPEED]){
-            case 10:
-                spark_info->hand.Position_Control(spark_info->hand.Count() - 10);
-                break;
-            case 20:
-                spark_info->hand.Velocity_Control(0xffe0);
-                break;
-            case 30:
-                spark_info->hand.Position_Control(spark_info->hand.Count() - 30);
-                break;
-            case 40:
-                spark_info->hand.Velocity_Control(0xfc00);
-                break;
-            case 50:
-                spark_info->hand.Position_Control(spark_info->hand.Count() - 50);
-                break;
-            default:
-                break;
-            }
+            DoMove(&spark_info->hand);
             b_edge = NONE;
         }
         b_last = true;
         return;
     }else{
         if(b_edge == RISE){
-            switch(spark_info->uint_array[UINT_SPEED]){
-            case 10:
-                break;
-            case 20:
-                spark_info->hand.Position_Control(spark_info->hand.Count());
-                break;
-            case 30:
-                break;
-            case 40:
-                spark_info->hand.Position_Control(spark_info->hand.Count());
-                break;
-            case 50:
-                break;
-            default:
-                break;
-            }
+            DoStop(&spark_info->hand);
+            AxisSwitch(Hand_Null_AXIS ,Hand_A_DRIECT);
             b_edge = NONE;
         }
         b_last = false;
@@ -576,6 +555,12 @@ long ScanThread::Z_Count()
         ret = -9999999;
 
     return ret;
+}
+
+long ScanThread::Null_Count()
+{
+    qDebug()<<"Count :Null axis selected!";
+    return 0;
 }
 
 long ScanThread::X_Velocity()

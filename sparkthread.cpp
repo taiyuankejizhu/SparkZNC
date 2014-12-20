@@ -183,6 +183,7 @@ void SparkThread::sparkChange()
 /*Z轴位置控制模式*/
 void SparkThread::Z_Position_Control(long p)
 {
+    qDebug()<<"p:"<<p;
     EightBytes tmp;
     tmp.longs = p;
 
@@ -201,6 +202,7 @@ void SparkThread::Z_Position_Control(long p)
 /*Z轴速度控制模式*/
 void SparkThread::Z_Velocity_Control(long v)
 {
+    qDebug()<<"v:"<<v;
     EightBytes tmp;
     tmp.longs = v;
 

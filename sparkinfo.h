@@ -224,9 +224,23 @@ enum HandAxis{
     Hand_Z_AXIS
 };
 
+enum HandDirect{
+    Hand_A_DRIECT,
+    Hand_B_DRIECT
+};
+
+enum HandMode{
+    Hand_Position_MODE,
+    Hand_Velocity_MODE
+};
+
 /*手动操作的环境定义*/
 struct HandMove{
     HandAxis Axis;
+    HandDirect Driect;
+    HandMode Mode;
+    long Step;
+    long Speed;
     void (* Position_Control)(long);
     void (* Velocity_Control)(long);
     long (* Count)();

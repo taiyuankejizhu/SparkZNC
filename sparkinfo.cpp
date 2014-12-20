@@ -595,6 +595,33 @@ void SparkInfo::setUInt(UNINT32 i, UNINT32 u)
                       20 + 20 * (uint_array[UINT_BRIGHTNESS] & 0x0f));
             }
         }
+        /*手动操作模式转换*/
+        else if(i == UINT_SPEED){
+            switch(uint_array[UINT_SPEED]){
+            case 10:
+                hand.Mode = Hand_Position_MODE;
+                hand.Step = 10;
+                break;
+            case 20:
+                hand.Mode = Hand_Velocity_MODE;
+                hand.Speed = 200;
+                break;
+            case 30:
+                hand.Mode = Hand_Position_MODE;
+                hand.Step = 30;
+                break;
+            case 40:
+                hand.Mode = Hand_Velocity_MODE;
+                hand.Speed = 400;
+                break;
+            case 50:
+                hand.Mode = Hand_Position_MODE;
+                hand.Step = 50;
+                break;
+            default:
+                break;
+            }
+        }
         if(check)
             emit uintChange();
     }
