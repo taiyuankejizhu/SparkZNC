@@ -1,10 +1,4 @@
 #include "scanthread.h"
-#include "sparkinfo.h"
-#include "sparkthread.h"
-#include "fpga.h"
-#include "unistd.h"
-#include "sys/time.h"
-#include "sys/reboot.h"
 #include "qdebug.h"
 
 /* #define TEST */
@@ -49,6 +43,8 @@ ScanThread::ScanThread(QObject *parent) :
     _WRITE_BYTE_(C_P_IO2);
     _WRITE_BYTE_(C_P_IO3);
     _WRITE_BYTE_(C_P_IO4);
+
+    AxisSwitch(Hand_Null_AXIS);
 
 }
 
@@ -243,42 +239,84 @@ void ScanThread::Scan_Panel()
     }
 }
 
+/*切换当前移动轴*/
+void ScanThread::AxisSwitch(HandAxis a)
+{
+    switch(a){
+    case Hand_X_AXIS:
+        spark_info->hand.Axis = Hand_X_AXIS;
+        spark_info->hand.Position_Control = SparkThread::Null_Position_Control;
+        spark_info->hand.Velocity_Control = SparkThread::Null_Velocity_Control;
+        spark_info->hand.Count = ScanThread::X_Count;
+        break;
+    case Hand_Y_AXIS:
+        spark_info->hand.Axis = Hand_Y_AXIS;
+        spark_info->hand.Position_Control = SparkThread::Null_Position_Control;
+        spark_info->hand.Velocity_Control = SparkThread::Null_Velocity_Control;
+        spark_info->hand.Count = ScanThread::Y_Count;
+        break;
+    case Hand_Z_AXIS:
+        spark_info->hand.Axis = Hand_Z_AXIS;
+        spark_info->hand.Position_Control = SparkThread::Z_Position_Control;
+        spark_info->hand.Velocity_Control = SparkThread::Z_Velocity_Control;
+        spark_info->hand.Count = ScanThread::Z_Count;
+        break;
+    case Hand_Null_AXIS:
+        spark_info->hand.Axis = Hand_Null_AXIS;
+        break;
+    default:
+        break;
+    }
+}
+
 /*移动位置，包括手动操作和归零操作*/
 void ScanThread::Move()
 {
     /*检测上升按键的边缘*/
     if(a_last){
-        if(!(spark_info->c_array[C_Z_IN0] & 0x10))
+        if(!(spark_info->c_array[C_Z_IN0] & 0x10)){
             a_edge = RISE;
+            AxisSwitch(Hand_Null_AXIS);
+        }
         else
             a_edge = NONE;
     }else{
-        if((spark_info->c_array[C_Z_IN0] & 0x10))
+        if((spark_info->c_array[C_Z_IN0] & 0x10)){
             a_edge = FALL;
+            AxisSwitch(Hand_Z_AXIS);
+        }
         else
             a_edge = NONE;
     }
     /*检测上升按键的边缘*/
     if(b_last){
-        if(!(spark_info->c_array[C_Z_IN0] & 0x20))
+        if(!(spark_info->c_array[C_Z_IN0] & 0x20)){
             b_edge = RISE;
+            AxisSwitch(Hand_Null_AXIS);
+        }
         else
             b_edge = NONE;
     }else{
-        if((spark_info->c_array[C_Z_IN0] & 0x20))
+        if((spark_info->c_array[C_Z_IN0] & 0x20)){
             b_edge = FALL;
+            AxisSwitch(Hand_Z_AXIS);
+        }
         else
             b_edge = NONE;
     }
     /*检测自动归零的边缘*/
     if(c_last){
-        if(!spark_info->b_array[B_ZERO])
+        if(!spark_info->b_array[B_ZERO]){
             c_edge = RISE;
+            AxisSwitch(Hand_Null_AXIS);
+        }
         else
             c_edge = NONE;
     }else{
-        if(spark_info->b_array[B_ZERO])
+        if(spark_info->b_array[B_ZERO]){
             c_edge = FALL;
+            AxisSwitch(Hand_Z_AXIS);
+        }
         else
             c_edge = NONE;
     }
@@ -288,19 +326,19 @@ void ScanThread::Move()
         if(a_edge == FALL){
             switch(spark_info->uint_array[UINT_SPEED]){
             case 10:
-                SparkThread::Z_Position_Control(Z_Count() + 10);
+                spark_info->hand.Position_Control(spark_info->hand.Count() + 10);
                 break;
             case 20:
-                SparkThread::Z_Velocity_Control(0x20);
+                spark_info->hand.Velocity_Control(0x20);
                 break;
             case 30:
-                SparkThread::Z_Position_Control(Z_Count() + 30);
+                spark_info->hand.Position_Control(spark_info->hand.Count() + 30);
                 break;
             case 40:
-                SparkThread::Z_Velocity_Control(0x400);
+                spark_info->hand.Velocity_Control(0x400);
                 break;
             case 50:
-                SparkThread::Z_Position_Control(Z_Count() + 50);
+                spark_info->hand.Position_Control(spark_info->hand.Count() + 50);
                 break;
             default:
                 break;
@@ -315,12 +353,12 @@ void ScanThread::Move()
             case 10:
                 break;
             case 20:
-                SparkThread::Z_Position_Control(Z_Count());
+                spark_info->hand.Position_Control(spark_info->hand.Count());
                 break;
             case 30:
                 break;
             case 40:
-                SparkThread::Z_Position_Control(Z_Count());
+                spark_info->hand.Position_Control(spark_info->hand.Count());
                 break;
             case 50:
                 break;
@@ -337,19 +375,19 @@ void ScanThread::Move()
         if(b_edge == FALL){
             switch(spark_info->uint_array[UINT_SPEED]){
             case 10:
-                SparkThread::Z_Position_Control(Z_Count() - 10);
+                spark_info->hand.Position_Control(spark_info->hand.Count() - 10);
                 break;
             case 20:
-                SparkThread::Z_Velocity_Control(0xffe0);
+                spark_info->hand.Velocity_Control(0xffe0);
                 break;
             case 30:
-                SparkThread::Z_Position_Control(Z_Count() - 30);
+                spark_info->hand.Position_Control(spark_info->hand.Count() - 30);
                 break;
             case 40:
-                SparkThread::Z_Velocity_Control(0xfc00);
+                spark_info->hand.Velocity_Control(0xfc00);
                 break;
             case 50:
-                SparkThread::Z_Position_Control(Z_Count() - 50);
+                spark_info->hand.Position_Control(spark_info->hand.Count() - 50);
                 break;
             default:
                 break;
@@ -364,12 +402,12 @@ void ScanThread::Move()
             case 10:
                 break;
             case 20:
-                SparkThread::Z_Position_Control(Z_Count());
+                spark_info->hand.Position_Control(spark_info->hand.Count());
                 break;
             case 30:
                 break;
             case 40:
-                SparkThread::Z_Position_Control(Z_Count());
+                spark_info->hand.Position_Control(spark_info->hand.Count());
                 break;
             case 50:
                 break;
@@ -387,27 +425,27 @@ void ScanThread::Move()
             /*归零操作时控制放电头为速度模式*/
             if(spark_info->b_array[B_REVERSE]){
                 if(spark_info->uint_array[UINT_VOLTAGE] < 10){
-                    SparkThread::Z_Velocity_Control(0xffeb);
+                    spark_info->hand.Velocity_Control(0xffeb);
                 }else{
-                    SparkThread::Z_Velocity_Control(0xffd0);
+                    spark_info->hand.Velocity_Control(0xffd0);
                 }
             }else{
                 if(spark_info->uint_array[UINT_VOLTAGE] < 10){
-                    SparkThread::Z_Velocity_Control(0x15);
+                    spark_info->hand.Velocity_Control(0x15);
                 }else{
-                    SparkThread::Z_Velocity_Control(0x30);
+                    spark_info->hand.Velocity_Control(0x30);
                 }
             }
             qDebug()<<"fall";
         }else{
             /*电压过低时表示已经接触到工件*/
             if(spark_info->uint_array[UINT_VOLTAGE] < 1){
-                 SparkThread::Z_Position_Control(Z_Count());
+                spark_info->hand.Position_Control(spark_info->hand.Count());
             }else{
                 if(spark_info->b_array[B_REVERSE]){
-                    SparkThread::Z_Velocity_Control(0xffeb);
+                    spark_info->hand.Velocity_Control(0xffeb);
                 }else{
-                    SparkThread::Z_Velocity_Control(0x15);
+                    spark_info->hand.Velocity_Control(0x15);
                 }
             }
             qDebug()<<"none";
@@ -418,7 +456,7 @@ void ScanThread::Move()
         /*手动停止归零操作*/
         if(c_edge == RISE){
             qDebug()<<"rise";
-            SparkThread::Z_Position_Control(Z_Count());
+            spark_info->hand.Position_Control(spark_info->hand.Count());
         }
         c_last = false;
     }

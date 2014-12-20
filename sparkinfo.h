@@ -217,6 +217,21 @@ struct SearchTable
     UNCHAR8 Gongshi[10];  /*工时*/
 };
 
+enum HandAxis{
+    Hand_Null_AXIS,
+    Hand_X_AXIS,
+    Hand_Y_AXIS,
+    Hand_Z_AXIS
+};
+
+/*手动操作的环境定义*/
+struct HandMove{
+    HandAxis Axis;
+    void (* Position_Control)(long);
+    void (* Velocity_Control)(long);
+    long (* Count)();
+};
+
 union TwoBytes
 {
     CHAR8 bytes[sizeof(unsigned short)];
@@ -416,7 +431,10 @@ public:
     SixBytes target;
     /*已经放电时间值*/
     SixBytes useup;
+    /*放电参数表*/
     Table table;
+    /*手动操作环境*/
+    HandMove hand;
 
 private:
     void sysInit();

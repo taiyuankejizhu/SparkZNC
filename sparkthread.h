@@ -42,6 +42,8 @@ public:
     static void Z_Velocity_Control(long);
     static void Z_Voltage_Control(bool);
     static void Z_PID_Tune(char ,char ,char ,char);
+    static void Null_Position_Control(long);
+    static void Null_Velocity_Control(long);
     static void Set_Row(unsigned int);
     virtual ~SparkThread();
 

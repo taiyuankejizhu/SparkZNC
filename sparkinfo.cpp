@@ -13,6 +13,11 @@ SparkInfo::SparkInfo(QObject *parent) :
     memset(target.bytes , 0 ,sizeof target);
     memset(useup.bytes , 0 ,sizeof useup);
 
+    hand.Axis = Hand_Null_AXIS;
+    hand.Position_Control = NULL;
+    hand.Velocity_Control = NULL;
+    hand.Count = NULL;
+
     fm25v02Init();
 
     carryInit();
@@ -139,12 +144,12 @@ void SparkInfo::fm25v02Init()
     FM25V02_READ(Z_AXIS_ADDR + uint_array[UINT_COOR_INDEX]*3*(sizeof c_z), c_z.bytes ,sizeof c_z);
 
     l_array[L_X_OFFSET] = c_x.longs;
-    l_array[L_Y_OFFSET] = c_x.longs;
-    l_array[L_Z_OFFSET] = c_x.longs;
+    l_array[L_Y_OFFSET] = c_y.longs;
+    l_array[L_Z_OFFSET] = c_z.longs;
 
-    l_array[L_X_CURRENT] = l_array[L_X_OFFSET] + l_array[L_X_ABS_OFFSET];
-    l_array[L_Y_CURRENT] = l_array[L_Y_OFFSET] + l_array[L_Y_ABS_OFFSET];
-    l_array[L_Z_CURRENT] = l_array[L_Z_OFFSET] + l_array[L_Z_ABS_OFFSET];
+    l_array[L_X_CURRENT] = l_array[L_X_OFFSET] + l_array[L_X_ABSOLUTE];
+    l_array[L_Y_CURRENT] = l_array[L_Y_OFFSET] + l_array[L_Y_ABSOLUTE];
+    l_array[L_Z_CURRENT] = l_array[L_Z_OFFSET] + l_array[L_Z_ABSOLUTE];
 }
 
 void SparkInfo::carryInit()
@@ -422,8 +427,6 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
                 case L_Z_CURRENT:
                     wr.longs -= spark_info->l_array[L_Z_ABSOLUTE];
                     spark_info->l_array[L_Z_OFFSET] = wr.longs;
-                    qDebug()<<"cu:"<<spark_info->l_array[L_Z_OFFSET]<<"---"<<spark_info->l_array[L_Z_ABSOLUTE];
-                    qDebug()<<"cu:"<<spark_info->l_array[L_Z_CURRENT];
                     FM25V02_WRITE(Z_AXIS_ADDR + spark_info->uint_array[UINT_COOR_INDEX]*3*(sizeof wr), wr.bytes, sizeof wr);
                     break;
                 default:
@@ -481,8 +484,6 @@ void SparkInfo::setLong(UNINT32 i,LONG64 l)
             }
             if(i == L_Z_COUNTER){
                 spark_info->l_array[L_Z_CURRENT] = spark_info->l_array[L_Z_OFFSET] + spark_info->l_array[L_Z_ABSOLUTE];
-                qDebug()<<"co:"<<spark_info->l_array[L_Z_OFFSET]<<"---"<<spark_info->l_array[L_Z_CURRENT];
-                qDebug()<<"co:"<<spark_info->l_array[L_Z_ABSOLUTE];
                 emit xyzChange(L_Z_CURRENT);
             }
 

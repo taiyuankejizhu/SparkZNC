@@ -243,6 +243,16 @@ void SparkThread::Z_PID_Tune(char p, char i, char d, char t)
     _WRITE_BYTE_(C_Z_STT);
 }
 
+void SparkThread::Null_Position_Control(long p)
+{
+    qDebug()<<"Position control :Null axis selected!"<<p;
+}
+
+void SparkThread::Null_Velocity_Control(long v)
+{
+    qDebug()<<"Velocity control :Null axis selected!"<<v;
+}
+
 void SparkThread::Set_Row(unsigned int r)
 {
     unsigned int row;

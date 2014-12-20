@@ -2,6 +2,12 @@
 #define SCANTHREAD_H
 
 #include <QThread>
+#include "sparkinfo.h"
+#include "sparkthread.h"
+#include "fpga.h"
+#include "unistd.h"
+#include "sys/time.h"
+#include "sys/reboot.h"
 
 #define A_CYCLE 20      /*关机的延时计数周期*/
 #define B_CYCLE 300000  /*睡眠的延时计数周期10S*/
@@ -38,6 +44,7 @@ public:
     bool a_lock;
 
     void run();
+    void AxisSwitch(HandAxis);
     void Move();
     void Scan_Panel();
     static void Check_Alert();
