@@ -8,6 +8,7 @@
 #include "unistd.h"
 #include "sys/time.h"
 #include "sys/reboot.h"
+#include "sys/inotify.h"
 
 #define A_CYCLE 20      /*关机的延时计数周期*/
 #define B_CYCLE 300000  /*睡眠的延时计数周期10S*/
@@ -19,6 +20,9 @@
 #define FALL 0x7f
 #define NONE 0x00
 #define RISE 0xff
+
+#define EVENT_SIZE  (sizeof(struct inotify_event))
+#define BUF_LENGTH  1 * EVENT_SIZE + 16
 
 class ScanThread : public QThread
 {
@@ -40,14 +44,29 @@ public:
     unsigned char c_edge;
     bool d_last;
     unsigned char d_edge;
+    bool e_last;
+    unsigned char e_edge;
+    bool f_last;
+    unsigned char f_edge;
     /*键盘与遥控操作的互斥锁，保证在键盘操作方向和模式时遥控板不起作用*/
     bool a_lock;
 
+    /*USB鼠标inotify监视*/
+    int mouse_fd;
+    int mouse_wd;
+    struct inotify_event *mouse_event;
+
+    /*程序操作环境*/
+    HandMove program;
+
     void run();
-    void AxisSwitch(HandAxis ,HandDirect);
+    void AxisSwitch(HandMove * ,HandAxis ,HandDirect);
     void DoMove(HandMove *);
     void DoStop(HandMove *);
     void Move();
+    void HandleMove();
+    void ZeroMove();
+    void HomeMove();
     void Scan_Panel();
     static void Check_Alert();
     static long X_Count();
@@ -64,6 +83,7 @@ public:
     virtual ~ScanThread();
 signals:
     void clear();
+    void cursor(bool);
 
 public slots:
     void keyPress(int);

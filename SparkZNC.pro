@@ -40,7 +40,8 @@ HEADERS += autodialog.h \
            toplevel.h \
     qalerts.h \
     calibration.h \
-    clearscreen.h
+    clearscreen.h \
+    homedialog.h
 FORMS += autodialog.ui \
          cleardialog.ui \
          coordialog.ui \
@@ -57,7 +58,8 @@ FORMS += autodialog.ui \
          settingdialog.ui \
          startmenu.ui \
          toplevel.ui \
-    clearscreen.ui
+    clearscreen.ui \
+    homedialog.ui
 SOURCES += autodialog.cpp \
            cleardialog.cpp \
            coordialog.cpp \
@@ -89,7 +91,8 @@ SOURCES += autodialog.cpp \
            toplevel.cpp \
     qalerts.cpp \
     calibration.cpp \
-    clearscreen.cpp
+    clearscreen.cpp \
+    homedialog.cpp
 RESOURCES += resource.qrc
 TRANSLATIONS += en.ts
 

@@ -619,7 +619,7 @@
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="text">
-       <string>归原点</string>
+       <string>^归原点^</string>
       </property>
      </widget>
     </item>

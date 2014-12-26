@@ -255,6 +255,16 @@ void SparkThread::Null_Velocity_Control(long v)
     qDebug()<<"Velocity control :Null axis selected!"<<v;
 }
 
+void SparkThread::Null_Voltage_Control(bool b)
+{
+    qDebug()<<"Voltage control :Null axis selected!"<<b;
+}
+
+void SparkThread::Null_PID_Tune(char p, char i, char d, char t)
+{
+    qDebug()<<"PID set :Null axis selected!"<<p<<i<<d<<t;
+}
+
 void SparkThread::Set_Row(unsigned int r)
 {
     unsigned int row;

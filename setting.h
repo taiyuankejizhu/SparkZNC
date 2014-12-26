@@ -10,8 +10,10 @@
 #define SPI_FILE        "/dev/spidev2.0"
 #define BACKLIGHT_FILE  "/dev/backlight"
 
+#define DEV_DIR         "/dev/"
 #define TABLES_DIR      "/tables/"
 #define TSLIB_CALIBFILE "/etc/pointercal"
+#define USB_MOUSE       "/dev/mouse1"
 
 /*FM25V02 ADDR: 0x000000 ~ 0x007FFF*/
 

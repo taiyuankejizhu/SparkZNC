@@ -84,7 +84,6 @@ int main(int argc, char *argv[])
 #ifndef Q_WS_X11
     QRect screen_size = QApplication::desktop()->screenGeometry();
     m.setGeometry(0, 0, screen_size.width(), screen_size.height());
-    m.setCursor(QCursor(Qt::BlankCursor));
 #endif
 
     /*软键盘输入上下文*/

@@ -38,5 +38,10 @@
         <file>icon_e.png</file>
         <file>icon_h_e.png</file>
         <file>icon_p_e.png</file>
+        <file>home.png</file>
+        <file>down.png</file>
+        <file>up.png</file>
+        <file>down_p.png</file>
+        <file>up_p.png</file>
     </qresource>
 </RCC>

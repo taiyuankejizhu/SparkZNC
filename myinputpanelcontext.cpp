@@ -15,17 +15,13 @@ MyInputPanelContext::MyInputPanelContext(QWidget *parent)
     connect(this, SIGNAL(setVisible(bool)),keyboard, SLOT(setVisible(bool)));
 }
 
-MyInputPanelContext::~MyInputPanelContext()
-{
-}
-
 bool MyInputPanelContext::filterEvent(const QEvent* event)
 {
     if (event->type() == QEvent::RequestSoftwareInputPanel) {
         updatePosition();
         emit setVisible(true);
         return true;
-    } else if (event->type() == QEvent::CloseSoftwareInputPanel) {
+    }else if(event->type() == QEvent::CloseSoftwareInputPanel) {
         emit setVisible(false);
         return true;
     }
@@ -107,4 +103,8 @@ void MyInputPanelContext::sendControl(int control)
 
     QKeyEvent keyRelease(QEvent::KeyRelease, control, Qt::NoModifier, QString::number(control));
     QApplication::sendEvent(w, &keyRelease);
+}
+
+MyInputPanelContext::~MyInputPanelContext()
+{
 }

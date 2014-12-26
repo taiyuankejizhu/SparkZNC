@@ -14,9 +14,13 @@
 #include "clearscreen.h"
 #include "sparkthread.h"
 #include "scanthread.h"
+#include "sparkinfo.h"
 #include "myinputpanelcontext.h"
 #include <QWidget>
 #include <QApplication>
+#include <QFileSystemWatcher>
+#include <QMouseDriverFactory>
+#include <QWSServer>
 #include <QDesktopWidget>
 #include <QStandardItemModel>
 #include <QStandardItem>
@@ -24,7 +28,6 @@
 #include <QKeyEvent>
 #include <QMap>
 #include <QPushButton>
-#include <QFile>
 #include <QAbstractItemView>
 #include <QItemSelectionModel>
 #include <QTimer>
@@ -73,6 +76,7 @@ public:
     SparkThread *spark;
     /*数据扫描和运行时线程*/
     ScanThread *scan;
+
     ~MainInterface();
 
 private:
@@ -80,8 +84,15 @@ private:
     bool start_or_end;
     /*标志键盘是否已经被按下*/
     bool key_pressed;
+    /*是否有鼠标设备插入*/
+    bool is_usb;
+    /*当前输入目标*/
+    int target;
+
     /*开始菜单的触发定时器*/
     QTimer *timer;
+    /*USB鼠标设备文件监听*/
+    QFileSystemWatcher *watcher;
     Ui::MainInterface *ui;
     void keyPressEvent( QKeyEvent *k );
     void keyReleaseEvent( QKeyEvent *k );
@@ -109,6 +120,8 @@ public slots:
     void axisIndexUpdate();
     void menuShow(bool);
     void menuTimeout();
+    void cursorSwitch(bool);
+    void mouseChange(QString);
 };
 
 #endif // MAININTERFACE_H

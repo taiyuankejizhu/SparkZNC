@@ -19,7 +19,7 @@
 #define L_SLOT 2            /*长整型数组的槽标记*/
 #define C_SLOT 3            /*字符型数组的槽标记*/
 
-#define B_LENGTH 40         /*布尔数组的长度*/
+#define B_LENGTH 45         /*布尔数组的长度*/
 #define UINT_LENGTH 15      /*无符号整型数组的长度*/
 #define L_LENGTH 25         /*长整型数组的长度*/
 #define C_LENGTH 255        /*字符型数组的长度*/
@@ -60,6 +60,9 @@
 #define B_Y_UP_ALERT 33     /*Y轴上限位发生的索引*/
 #define B_Y_DOWN_ALERT 34   /*Y轴下限位发生的索引*/
 #define B_ZERO 35           /*自动归零开关的索引*/
+/*预留归零*/
+#define B_HOME_Z_UP 41      /*Z轴上归原点*/
+#define B_HOME_Z_DOWN 42    /*Z轴下归原点*/
 
 #define UINT_VOLTAGE 0      /*放电电压值的索引*/
 #define UINT_CURRENT 1      /*放电电流值的索引*/
@@ -218,7 +221,7 @@ struct SearchTable
 };
 
 enum HandAxis{
-    Hand_Null_AXIS,
+    Hand_NULL_AXIS,
     Hand_X_AXIS,
     Hand_Y_AXIS,
     Hand_Z_AXIS
@@ -234,15 +237,28 @@ enum HandMode{
     Hand_Velocity_MODE
 };
 
+enum HandMutex{
+    Hand_NULL_MUTEX,    /*操作轴空闲*/
+    Hand_MOVE_MUTEX,    /*手动操作占用*/
+    Hand_ZERO_MUTEX,    /*归零操作占用*/
+    Hand_POINT_MUTEX,   /*定点操作占用*/
+    Hand_CALIB_MUTEX,  /*校模操作占用*/
+    Hand_HOME_MUTEX,    /*归原点操作占用*/
+    Hand_SPARK_MUTEX    /*放电操作占用*/
+};
+
 /*手动操作的环境定义*/
 struct HandMove{
     HandAxis Axis;
     HandDirect Driect;
     HandMode Mode;
+    HandMutex Mutex;
     long Step;
     long Speed;
     void (* Position_Control)(long);
     void (* Velocity_Control)(long);
+    void (* Voltage_Control)(bool);
+    void (* PID_Tune)(char ,char ,char ,char);
     long (* Count)();
 };
 
@@ -407,12 +423,13 @@ const bool bool_init[] = {
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
         false ,false ,false ,false ,false ,
+        false ,false ,false ,false ,false ,
 };
 
 const UNINT32 uint_init[] = {
         0, 0, 10, 0, 5,
         0, 0, 10, 10, 10,
-        99, 9, 0, 4, 5,
+        99, 9, 0, 3, 5,
 };
 
 const LONG64 long_init[] = {

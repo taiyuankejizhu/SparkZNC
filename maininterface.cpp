@@ -1,7 +1,5 @@
 #include "maininterface.h"
 #include "ui_maininterface.h"
-#include "sparkinfo.h"
-#include "setting.h"
 #include "qdebug.h"
 
 /*数据表格中的深度栏自动排序规则*/
@@ -39,6 +37,8 @@ MainInterface::MainInterface(QWidget *parent) :
 
     key_pressed = false;
     start_or_end = true;
+
+    target = 0;
 
     FPGA_Init();
 
@@ -78,6 +78,7 @@ MainInterface::MainInterface(QWidget *parent) :
     scan->start();
     connect(this ,SIGNAL(keyPress(int)) ,scan ,SLOT(keyPress(int)));
     connect(this ,SIGNAL(keyRelease(int)) ,scan ,SLOT(keyRelease(int)));
+    connect(scan ,SIGNAL(cursor(bool)) ,this ,SLOT(cursorSwitch(bool)));
 
     mesg = new MesgBox(this);
     mesg ->setHidden(false);
@@ -109,6 +110,17 @@ MainInterface::MainInterface(QWidget *parent) :
     QRect screen_size = qApp->desktop()->screenGeometry();
     clear->setGeometry(0, 0, screen_size.width(), screen_size.height());
     clear->setCursor(QCursor(Qt::BlankCursor));
+
+    watcher = new QFileSystemWatcher(this);
+    watcher->addPath(DEV_DIR);
+    connect(watcher ,SIGNAL(directoryChanged(QString)) ,this ,SLOT(mouseChange(QString)));
+    is_usb = false;
+
+    if(!QFile::exists(USB_MOUSE)){
+        setCursor(QCursor(Qt::BlankCursor));
+    }else{
+        setCursor(QCursor(Qt::ArrowCursor));
+    }
 #else
     clear->setGeometry(0 ,0 ,1024 ,768);
 #endif
@@ -159,6 +171,10 @@ void MainInterface::initFuncBar()
 
 void MainInterface::keyPressEvent( QKeyEvent *k )
 {
+    QPalette palette;
+    QColor color(255 ,0 ,0);
+    palette.setColor(QPalette::WindowText,color);
+
     /*去除按键重复事件*/
     if(!k->isAutoRepeat()){
         k->accept();
@@ -213,23 +229,32 @@ void MainInterface::keyPressEvent( QKeyEvent *k )
             }
             break;
         case Qt::Key_X:
+            ui->label_cux->setPalette(palette);
+
             command ->setFocus();
             command ->setStatus(0x10);
             command ->setType(false ,true ,0x04 ,true ,0x03);
+            target = L_SLOT << 8 | L_X_CURRENT;
             command ->setTarget(L_SLOT ,L_X_CURRENT);
 
             break;
         case Qt::Key_Y:
+            ui->label_cuy->setPalette(palette);
+
             command ->setFocus();
             command ->setStatus(0x10);
             command ->setType(false ,true ,0x04 ,true ,0x03);
+            target = L_SLOT << 8 | L_Y_CURRENT;
             command ->setTarget(L_SLOT ,L_Y_CURRENT);
 
             break;
         case Qt::Key_Z:
+            ui->label_cuz->setPalette(palette);
+
             command ->setFocus();
             command ->setStatus(0x10);
             command ->setType(false ,true ,0x04 ,true ,0x03);
+            target = L_SLOT << 8 | L_Z_CURRENT;
             command ->setTarget(L_SLOT ,L_Z_CURRENT);
 
             break;
@@ -311,6 +336,9 @@ void MainInterface::keyReleaseEvent(QKeyEvent *k)
 /*全局时间过滤器，用于监听按键鼠标动作，唤醒屏幕和点亮蜂鸣器*/
 bool MainInterface::eventFilter(QObject *o, QEvent *e)
 {
+    QPalette palette;
+    QColor color(255 ,0 ,0);
+
     if(e->type() == QEvent::KeyPress){
         scan->b_cycle = 0;
         if((spark_info->uint_array[UINT_BRIGHTNESS] & 0xf0) != 0){
@@ -325,7 +353,66 @@ bool MainInterface::eventFilter(QObject *o, QEvent *e)
             clear->hide();
             setFocus();
         }
+
+        if(e->type() == QEvent::MouseButtonPress){
+            if(o->objectName() == "label_cux"){
+                qDebug()<<"x";
+                if(target != (L_SLOT << 8 | L_X_CURRENT)){
+                    color = QColor(255 ,0 ,0);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cux->setPalette(palette);
+                    color = QColor(24 ,93 ,255);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cuy->setPalette(palette);
+                    ui->label_cuz->setPalette(palette);
+                }
+                QApplication::sendEvent(command, new QEvent(QEvent::MouseButtonDblClick));
+
+                command ->setFocus();
+                command ->setStatus(0x10);
+                command ->setType(false ,true ,0x04 ,true ,0x03);
+                target = L_SLOT << 8 | L_X_CURRENT;
+                command ->setTarget(L_SLOT ,L_X_CURRENT);
+            }else if(o->objectName() == "label_cuy"){
+                qDebug()<<"y";
+                if(target != (L_SLOT << 8 | L_Y_CURRENT)){
+                    color = QColor(255 ,0 ,0);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cuy->setPalette(palette);
+                    color = QColor(24 ,93 ,255);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cux->setPalette(palette);
+                    ui->label_cuz->setPalette(palette);
+                }
+                QApplication::sendEvent(command, new QEvent(QEvent::MouseButtonDblClick));
+
+                command ->setFocus();
+                command ->setStatus(0x10);
+                command ->setType(false ,true ,0x04 ,true ,0x03);
+                target = L_SLOT << 8 | L_Y_CURRENT;
+                command ->setTarget(L_SLOT ,L_Y_CURRENT);
+            }else if(o->objectName() == "label_cuz"){
+                qDebug()<<"z";
+                if(target != (L_SLOT << 8 | L_Z_CURRENT)){
+                    color = QColor(255 ,0 ,0);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cuz->setPalette(palette);
+                    color = QColor(24 ,93 ,255);
+                    palette.setColor(QPalette::WindowText,color);
+                    ui->label_cux->setPalette(palette);
+                    ui->label_cuy->setPalette(palette);
+                }
+                QApplication::sendEvent(command, new QEvent(QEvent::MouseButtonDblClick));
+
+                command ->setFocus();
+                command ->setStatus(0x10);
+                command ->setType(false ,true ,0x04 ,true ,0x03);
+                target = L_SLOT << 8 | L_Z_CURRENT;
+                command ->setTarget(L_SLOT ,L_Z_CURRENT);
+            }
+        }
     }
+
     return qApp->eventFilter(o ,e);
 }
 
@@ -333,6 +420,50 @@ void MainInterface::commandFinish()
 {
     /*恢复输入之前的屏幕焦点*/
     /*tableStateUpdate(table_state);*/
+    QPalette palette;
+    QColor color(24 ,93 ,255);
+    palette.setColor(QPalette::WindowText,color);
+
+    ui->label_cux->setPalette(palette);
+    ui->label_cuy->setPalette(palette);
+    ui->label_cuz->setPalette(palette);
+
+    target = 0;
+}
+
+/*鼠标显示与隐藏，由ScanThread激发*/
+void MainInterface::cursorSwitch(bool b)
+{
+
+    if(b){
+        setCursor(QCursor(Qt::ArrowCursor));
+    }else{
+        /*b 为false时隐藏鼠标*/
+        setCursor(QCursor(Qt::BlankCursor));
+    }
+
+}
+
+void MainInterface::mouseChange(QString s)
+{
+
+#ifndef Q_WS_X11
+    if(s == DEV_DIR){
+        qDebug()<<"MouseChange:"<<s;
+        if(QFile::exists(USB_MOUSE) && !is_usb){
+            QWSServer::setMouseHandler(QMouseDriverFactory::create("mouseman",USB_MOUSE));
+            is_usb = true;
+            setCursor(QCursor(Qt::ArrowCursor));
+        }
+        else{
+            is_usb = false;
+            setCursor(QCursor(Qt::BlankCursor));
+        }
+    }
+#else
+    qDebug()<<"DirChange:"<<s;
+#endif
+
 }
 
 void MainInterface::commandSwitch(char status ,char type ,char slot,char index)
@@ -793,6 +924,7 @@ void MainInterface::menuShow(bool b)
 
 void MainInterface::XYZ_Update(int i)
 {
+
     QString s;
     s = toString(spark_info->l_array[i]);
 

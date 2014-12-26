@@ -13,7 +13,7 @@ SparkInfo::SparkInfo(QObject *parent) :
     memset(target.bytes , 0 ,sizeof target);
     memset(useup.bytes , 0 ,sizeof useup);
 
-    hand.Axis = Hand_Null_AXIS;
+    hand.Axis = Hand_NULL_AXIS;
     hand.Position_Control = NULL;
     hand.Velocity_Control = NULL;
     hand.Count = NULL;

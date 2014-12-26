@@ -397,7 +397,7 @@ void StartMenu::selectItem()
             spark_info->setUInt(UINT_SOUND , ++spark_info->uint_array[UINT_SOUND]);
         break;
     case 9:
-        if((spark_info->uint_array[UINT_BRIGHTNESS] & 0x0f) > 3)
+        if((spark_info->uint_array[UINT_BRIGHTNESS] & 0x0f) > 2)
             spark_info->setUInt(UINT_BRIGHTNESS , 0);
         else
             spark_info->setUInt(UINT_BRIGHTNESS , ++spark_info->uint_array[UINT_BRIGHTNESS]);

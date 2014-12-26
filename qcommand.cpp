@@ -200,6 +200,7 @@ void QCommand::mouseDoubleClickEvent(QMouseEvent *e)
     setFocus();
     setStatus(0x10);
     setType(true ,true ,0x04 ,true ,0x03);
+
 }
 
 void QCommand::checkString(QString s)
@@ -224,6 +225,7 @@ void QCommand::checkString(QString s)
         /*检查输入字符串的整数小数类型是否与设定一致*/
         if(dot != (bool)(type & 0x04)){
             showMesg(0x20 ,3);
+            emit finish();
             return;
         }
 
@@ -312,7 +314,6 @@ void QCommand::recordAppend(QString r)
 
 void QCommand::showMesg(char c ,int i)
 {
-
     if(c != 0x10){
         setStatus(c);
         mesg.clear();
