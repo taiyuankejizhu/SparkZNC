@@ -197,6 +197,42 @@ bool SparkInfo::checkTime()
 void SparkInfo::tableInit()
 {
     int i = 0;
+    bool b = false;
+
+    database = QSqlDatabase::addDatabase("QSQLITE");
+    database.setDatabaseName(DATABASE);
+
+    if(!database.open()){
+        qDebug()<<"spark database is error";
+    }else{
+        qDebug()<<"spark database is ok";
+    }
+
+    QSqlQueryModel model;
+    model.setQuery("select * from cust0",database);
+
+    for (int i = 0; i < model.rowCount(); ++i) {
+        int id = model.record(i).value("h_area").toInt();
+        QString name = model.record(i).value("no").toString();
+        qDebug() << id << name;
+    }
+
+/*    QSqlQuery query(database);
+    query.prepare("select * from cust0 where h_area > :value1 and l_area < :value2 and cnf = 0");
+    query.bindValue(":value1" ,2);
+    query.bindValue(":value2" ,2);
+    b = query.exec();
+    if(!b){
+        qDebug()<<"table is error";
+    }else{
+        qDebug()<<"table is ok";
+        while(query.next()){
+            qDebug()<<query.value(S_OFS).toString()<<query.value(PP).toString();
+        }
+    }*/
+
+    database.close();
+
     /*默认的数据表*/
     if(uint_array[UINT_TAB_INDEX] == 0){
         for(; i < 10; i++){
@@ -315,7 +351,6 @@ void SparkInfo::tableLoad()
         if(file.size() < sizeof table){
             tableClear();
             tableSave();
-
         }
         else{
             bytes = file.read(sizeof table);
@@ -367,6 +402,7 @@ void SparkInfo::setBool(UNINT32 i,bool b)
             b_array[B_UPDATE] = true;
         if(i == B_START|| i == B_TIME){
             emit startChange();
+            emit boolChange();
         }
         if(check)
             emit boolChange();
@@ -385,6 +421,7 @@ void SparkInfo::reverseBool(UNINT32 i)
             b_array[i] = true;
         if(i == B_START|| i == B_TIME){
             emit startChange();
+            emit boolChange();
         }
         else
             emit boolChange();

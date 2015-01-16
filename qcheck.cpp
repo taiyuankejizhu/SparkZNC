@@ -130,6 +130,9 @@ void Qcheck::mousePressEvent(QMouseEvent *ev)
 void Qcheck::mouseReleaseEvent(QMouseEvent *ev)
 {
         ev->accept();
+        if(ev->x() > width() / 2){
+            spark_info->reverseBool(index);
+        }
         update();
 }
 

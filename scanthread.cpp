@@ -34,14 +34,6 @@ ScanThread::ScanThread(QObject *parent) :
 
     a_lock = false;
 
-    mouse_fd = inotify_init();
-    mouse_wd = inotify_add_watch(mouse_fd, DEV_DIR, IN_MODIFY | IN_DELETE | IN_CREATE);
-    mouse_event = NULL;
-
-    if (mouse_fd < 0 || mouse_wd < 0){
-        printf("Fail to initialize inotify.\n");
-    }
-
     program.Axis = Hand_NULL_AXIS;
     program.Position_Control = NULL;
     program.Velocity_Control = NULL;
@@ -69,28 +61,7 @@ ScanThread::ScanThread(QObject *parent) :
 void ScanThread::run()
 {
 
-//    char mouse_buf[BUF_LENGTH];
-//    int length = 0;
-//    int index = 0;
-
     while(1){
-
-/*        length = read(mouse_fd, mouse_buf, BUF_LENGTH);
-        if(index < length){
-            mouse_event = (struct inotify_event *) &mouse_buf[index];
-            if (mouse_event -> mask & IN_DELETE){
-                qDebug()<<"del:"<<mouse_event->name;
-                if (!strcmp ("mouse1", mouse_event->name)){
-                    emit cursor(false);
-                }
-            }else if (mouse_event -> mask & IN_CREATE){
-                qDebug()<<"create:"<<mouse_event->name;
-                if (!strcmp ("mouse1", mouse_event->name)){
-                    emit cursor(true);
-                }
-            }
-            index = 0;
-        }*/
 
 #ifdef TEST
 

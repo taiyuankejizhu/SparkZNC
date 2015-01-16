@@ -106,6 +106,7 @@ signals:
     void keyRelease(int);
 
 public slots:
+    void updateF0();
     void commandFinish();
     void commandSwitch(char ,char ,char ,char);
     void tableSelect(bool);
@@ -120,7 +121,6 @@ public slots:
     void axisIndexUpdate();
     void menuShow(bool);
     void menuTimeout();
-    void cursorSwitch(bool);
     void mouseChange(QString);
 };
 

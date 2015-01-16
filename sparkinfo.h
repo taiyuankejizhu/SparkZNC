@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QDir>
 #include <QByteArray>
+#include <QtSql>
 #include "fcntl.h"
 #include "sys/ioctl.h"
 #include "fpga.h"
@@ -192,6 +193,30 @@
 #define C_P_IO4 0x04+P_OFFSET       /*P_IO4的值的索引*/
 #define C_P_IO5 0x05+P_OFFSET       /*P_IO5的值的索引*/
 #define C_P_IO6 0x06+P_OFFSET       /*P_IO6的值的索引*/
+
+/*数据段在数据表中的索引*/
+#define CNF      0
+#define H_AREA   1
+#define L_AREA   2
+#define RY       3
+#define S_OFS    4
+#define B_OFS    5
+#define LNM      6
+#define STEP     7
+#define LNS      8
+#define PP       9
+#define LC       10
+#define HV       11
+#define V        12
+#define DN_S     13
+#define UP_P     14
+#define S        15
+#define SV       16
+#define OFF_PWM  17
+#define ON_PWM   18
+#define IP       19
+#define PL       20
+#define NO       21
 
 struct Table
 {
@@ -466,6 +491,9 @@ public:
     Table table;
     /*手动操作环境*/
     HandMove hand;
+
+    /*用于产生参数表的数据库*/
+    QSqlDatabase database;
 
 private:
     void sysInit();

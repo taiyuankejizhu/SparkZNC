@@ -51,11 +51,6 @@ public:
     /*键盘与遥控操作的互斥锁，保证在键盘操作方向和模式时遥控板不起作用*/
     bool a_lock;
 
-    /*USB鼠标inotify监视*/
-    int mouse_fd;
-    int mouse_wd;
-    struct inotify_event *mouse_event;
-
     /*程序操作环境*/
     HandMove program;
 

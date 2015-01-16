@@ -78,7 +78,6 @@ MainInterface::MainInterface(QWidget *parent) :
     scan->start();
     connect(this ,SIGNAL(keyPress(int)) ,scan ,SLOT(keyPress(int)));
     connect(this ,SIGNAL(keyRelease(int)) ,scan ,SLOT(keyRelease(int)));
-    connect(scan ,SIGNAL(cursor(bool)) ,this ,SLOT(cursorSwitch(bool)));
 
     mesg = new MesgBox(this);
     mesg ->setHidden(false);
@@ -114,12 +113,13 @@ MainInterface::MainInterface(QWidget *parent) :
     watcher = new QFileSystemWatcher(this);
     watcher->addPath(DEV_DIR);
     connect(watcher ,SIGNAL(directoryChanged(QString)) ,this ,SLOT(mouseChange(QString)));
-    is_usb = false;
 
     if(!QFile::exists(USB_MOUSE)){
         setCursor(QCursor(Qt::BlankCursor));
+        is_usb = false;
     }else{
         setCursor(QCursor(Qt::ArrowCursor));
+        is_usb = true;
     }
 #else
     clear->setGeometry(0 ,0 ,1024 ,768);
@@ -165,7 +165,10 @@ void MainInterface::initFuncBar()
 
     barui->setHidden(false);
     ui->horizontalLayout->addWidget(barui);
+
     connect(this ,SIGNAL(barF0()) ,barui ,SLOT(F0()));
+    connect(spark_info ,SIGNAL(boolChange()) ,this ,SLOT(updateF0()));
+
     emit barF0();
 }
 
@@ -431,19 +434,6 @@ void MainInterface::commandFinish()
     target = 0;
 }
 
-/*鼠标显示与隐藏，由ScanThread激发*/
-void MainInterface::cursorSwitch(bool b)
-{
-
-    if(b){
-        setCursor(QCursor(Qt::ArrowCursor));
-    }else{
-        /*b 为false时隐藏鼠标*/
-        setCursor(QCursor(Qt::BlankCursor));
-    }
-
-}
-
 void MainInterface::mouseChange(QString s)
 {
 
@@ -452,12 +442,12 @@ void MainInterface::mouseChange(QString s)
         qDebug()<<"MouseChange:"<<s;
         if(QFile::exists(USB_MOUSE) && !is_usb){
             QWSServer::setMouseHandler(QMouseDriverFactory::create("mouseman",USB_MOUSE));
-            is_usb = true;
             setCursor(QCursor(Qt::ArrowCursor));
+            is_usb = true;
         }
         else{
-            is_usb = false;
             setCursor(QCursor(Qt::BlankCursor));
+            is_usb = false;
         }
     }
 #else
@@ -884,7 +874,12 @@ void MainInterface::funcbarUpdate(int i)
     ui->horizontalLayout->addWidget(barui);
     connect(this ,SIGNAL(barF0()) ,barui ,SLOT(F0()));
     emit barF0();
+}
 
+/*串联SparkInfo的boolChange信号与barF0，更新功能栏的显示*/
+void MainInterface::updateF0()
+{
+    emit barF0();
 }
 
 void MainInterface::menuTimeout()

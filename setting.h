@@ -12,6 +12,7 @@
 
 #define DEV_DIR         "/dev/"
 #define TABLES_DIR      "/tables/"
+#define DATABASE        "spark.db"
 #define TSLIB_CALIBFILE "/etc/pointercal"
 #define USB_MOUSE       "/dev/mouse1"
 
