@@ -197,41 +197,16 @@ bool SparkInfo::checkTime()
 void SparkInfo::tableInit()
 {
     int i = 0;
-    bool b = false;
 
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(DATABASE);
+    Table0 table0;
+    table0.Nummber[0] = 1;
+    table0.Shendu[0] = 100;
+    table0.Jixing[0] = 0;
 
-    if(!database.open()){
-        qDebug()<<"spark database is error";
-    }else{
-        qDebug()<<"spark database is ok";
-    }
-
-    QSqlQueryModel model;
-    model.setQuery("select * from cust0",database);
-
-    for (int i = 0; i < model.rowCount(); ++i) {
-        int id = model.record(i).value("h_area").toInt();
-        QString name = model.record(i).value("no").toString();
-        qDebug() << id << name;
-    }
-
-/*    QSqlQuery query(database);
-    query.prepare("select * from cust0 where h_area > :value1 and l_area < :value2 and cnf = 0");
-    query.bindValue(":value1" ,2);
-    query.bindValue(":value2" ,2);
-    b = query.exec();
-    if(!b){
-        qDebug()<<"table is error";
-    }else{
-        qDebug()<<"table is ok";
-        while(query.next()){
-            qDebug()<<query.value(S_OFS).toString()<<query.value(PP).toString();
-        }
-    }*/
-
-    database.close();
+    DataBank bank;
+    bank.createTable(9);
+    bank.tableSave(&table0 ,9);
+    //bank.tableLoad(&table0 ,9);
 
     /*默认的数据表*/
     if(uint_array[UINT_TAB_INDEX] == 0){
@@ -316,7 +291,7 @@ void SparkInfo::tableAuto(LONG64 deep ,UNINT32 current,UNINT32 area,UNINT32 effe
 /*保存数据表数据*/
 void SparkInfo::tableSave()
 {
-    bool state =false;
+    bool state = false;
 
     /*写方式打开数据表文件*/
     QFile file(QDir::currentPath()+TABLES_DIR+QString::number(uint_array[UINT_TAB_INDEX]));

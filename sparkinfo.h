@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QByteArray>
 #include <QtSql>
+#include <databank.h>
 #include "fcntl.h"
 #include "sys/ioctl.h"
 #include "fpga.h"
@@ -232,6 +233,24 @@ struct Table
     UNCHAR8 Jixing[10];   /*极性*/
     UNCHAR8 Gaoya[10];    /*高压*/
     UNCHAR8 Index[10];    /*索引*/
+};
+
+struct Table0
+{
+    UNCHAR8 Nummber[10];  /*索引*/
+    LONG64  Shendu[10];   /*深度*/
+    UNCHAR8 Jixing[10];   /*极性*/
+    UNINT32 Dianliu[10];  /*电流*/
+    UNINT32 Maikuan[10];  /*脉宽*/
+    UNINT32 Xiuzhi[10];   /*休止*/
+    UNCHAR8 Jianxi[10];   /*间隙*/
+    UNCHAR8 Sudu[10];     /*速度*/
+    UNCHAR8 Shenggao[10]; /*升高*/
+    UNCHAR8 Gongshi[10];  /*工时*/
+    UNCHAR8 LV[10];       /*面积*/
+    UNCHAR8 Gaoya[10];    /*高压*/
+    UNCHAR8 PPP[10];      /*PPP*/
+    UNCHAR8 WCLC[10];     /*WCLC*/
 };
 
 struct SearchTable
@@ -491,9 +510,6 @@ public:
     Table table;
     /*手动操作环境*/
     HandMove hand;
-
-    /*用于产生参数表的数据库*/
-    QSqlDatabase database;
 
 private:
     void sysInit();
