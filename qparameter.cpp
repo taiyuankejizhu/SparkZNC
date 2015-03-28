@@ -19,6 +19,7 @@ Qparameter::Qparameter(QWidget *parent) :
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     d_color = QColor(0,0,0);
+    back = QPixmap(":/combox.png");
 }
 
 Qparameter::Qparameter(QWidget *parent ,QString l ,unsigned int maxh ,unsigned int minh ,unsigned int ih,unsigned int maxt ,unsigned int mint ,unsigned int it):
@@ -37,10 +38,11 @@ Qparameter::Qparameter(QWidget *parent ,QString l ,unsigned int maxh ,unsigned i
     index_t = it;
     v_color = QColor(64,64,64);
     b_color = QColor(255,255,255);
-    l_color = QColor(255,255,255);
+    l_color = QColor(0,0,0);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     d_color = QColor(0,0,0);
+    back = QPixmap(":/combox.png");
 
     updateValue();
     //setMinimumSize(0 , 60);
@@ -50,7 +52,7 @@ void Qparameter::drawBackground(QPainter *painter)
 {
     painter->save();
 
-    painter->setPen(r_color);
+    /*painter->setPen(r_color);
     painter->setBrush(r_color);
     painter->fillRect(0,0,width(),height(),r_color);
 
@@ -60,20 +62,25 @@ void Qparameter::drawBackground(QPainter *painter)
 
     int i;
     painter->setPen(b_color);
-    painter->setBrush(b_color);
+    painter->setBrush(b_color);*/
     /*Draw 3D effect border*/
-    for(i = 0;i < pad;i++){
+    /*for(i = 0;i < pad;i++){
         painter->drawLine(0,i,width()-i-1,i);
     }
 
     for(i = 0;i < pad;i++){
         painter->drawLine(i,0,i,height()-i-1);
-    }
+    }*/
 
     /*画分割线*/
-    painter->setPen(r_color);
+    /*painter->setPen(r_color);
     painter->setBrush(r_color);
-    painter->drawLine(QPoint(width()/2 , height()/2) ,QPoint(width()/2 , height()));
+    painter->drawLine(QPoint(width()/2 , height()/2) ,QPoint(width()/2 , height()));*/
+
+    setAutoFillBackground(true);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QBrush(back.scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    setPalette(palette);
 
     painter->restore();
 }
@@ -82,9 +89,9 @@ void Qparameter::drawWidget(QPainter *painter)
 {
     painter->save();
 
-    painter->setPen(v_color);
+    /*painter->setPen(v_color);
     painter->setBrush(v_color);
-    painter->fillRect(pad,pad,(width()-2*pad),height()/2-pad,v_color);
+    painter->fillRect(pad,pad,(width()-2*pad),height()/2-pad,v_color);*/
 
     /*画标签*/
     painter->setPen(l_color);

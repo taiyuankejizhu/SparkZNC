@@ -21,6 +21,8 @@ public:
     unsigned int max_value;
     unsigned int min_value;
 
+    QPixmap back;
+
 protected:
     void drawBackground(QPainter *painter);
     void drawWidget(QPainter *painter);

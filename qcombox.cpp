@@ -14,16 +14,17 @@ Qcombox::Qcombox(QWidget *parent ,QString l ,unsigned int i):
     index = i;
     f_color = QColor(64,64,64);
     b_color = QColor(255,255,255);
-    l_color = QColor(255,255,255);
+    l_color = QColor(0,0,0);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
+    back = QPixmap(":/combox.png");
 }
 
 void Qcombox::drawBackground(QPainter *painter)
 {
     painter->save();
 
-    painter->setPen(r_color);
+    /*painter->setPen(r_color);
     painter->setBrush(r_color);
     painter->fillRect(0,0,width(),height(),r_color);
 
@@ -33,15 +34,20 @@ void Qcombox::drawBackground(QPainter *painter)
 
     int i;
     painter->setPen(b_color);
-    painter->setBrush(b_color);
+    painter->setBrush(b_color);*/
     /*Draw 3D effect border*/
-    for(i = 0;i < pad;i++){
+    /*for(i = 0;i < pad;i++){
         painter->drawLine(0,i,width()-i-1,i);
     }
 
     for(i = 0;i < pad;i++){
         painter->drawLine(i,0,i,height()-i-1);
-    }
+    }*/
+
+    setAutoFillBackground(true);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QBrush(back.scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    setPalette(palette);
 
     painter->restore();
 }
@@ -53,7 +59,7 @@ void Qcombox::drawWidget(QPainter *painter)
     painter->setPen(f_color);
     painter->setBrush(f_color);
 
-    painter->fillRect(pad,pad,width()-2*pad,(height()-2*pad)/2,f_color);
+    /*painter->fillRect(pad,pad,width()-2*pad,(height()-2*pad)/2,f_color);*/
 
     /*Paint the label name*/
     painter->translate(width()/2, height()/4);

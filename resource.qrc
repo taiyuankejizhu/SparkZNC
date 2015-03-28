@@ -43,5 +43,9 @@
         <file>up.png</file>
         <file>down_p.png</file>
         <file>up_p.png</file>
+        <file>off.png</file>
+        <file>on.png</file>
+        <file>label.png</file>
+        <file>combox.png</file>
     </qresource>
 </RCC>

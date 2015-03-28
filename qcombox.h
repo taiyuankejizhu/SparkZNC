@@ -27,6 +27,7 @@ private:
     QColor r_color;
     QColor l_color;
     QColor z_color;
+    QPixmap back;
 
 signals:
 

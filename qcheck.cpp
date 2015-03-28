@@ -19,7 +19,8 @@ Qcheck::Qcheck(QWidget *parent) :
     l_color = QColor(0,0,0);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
-    //pix = QPixmap(":/icon.png");
+    off = QPixmap(":/off.png");
+    on = QPixmap(":/on.png");
 }
 
 Qcheck::Qcheck(QWidget *parent ,QString l,unsigned int i):
@@ -35,20 +36,15 @@ Qcheck::Qcheck(QWidget *parent ,QString l,unsigned int i):
     l_color = QColor(0,0,0);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
-    //pix = QPixmap(":/combox.png");
+    off = QPixmap(":/off.png");
+    on = QPixmap(":/on.png");
 }
 
 void Qcheck::drawBackground(QPainter *painter)
 {
     painter->save();
-/*
-    setAutoFillBackground(true);
-    QPalette palette;
-    palette.setBrush(QPalette::Background, QBrush(pix));
-    setPalette(palette);
-*/
 
-    painter->setPen(r_color);
+    /*painter->setPen(r_color);
     painter->setBrush(r_color);
     painter->fillRect(0,0,width(),height(),r_color);
 
@@ -58,15 +54,23 @@ void Qcheck::drawBackground(QPainter *painter)
 
     int i;
     painter->setPen(b_color);
-    painter->setBrush(b_color);
+    painter->setBrush(b_color);*/
     /*Draw 3D effect border*/
-    for(i = 0;i < pad;i++){
+    /*for(i = 0;i < pad;i++){
         painter->drawLine(0,i,width()-i-1,i);
     }
 
     for(i = 0;i < pad;i++){
         painter->drawLine(i,0,i,height()-i-1);
-    }
+    }*/
+
+    setAutoFillBackground(true);
+    QPalette palette;
+    if(check)
+        palette.setBrush(QPalette::Background, QBrush(on.scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    else
+        palette.setBrush(QPalette::Background, QBrush(off.scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    setPalette(palette);
 
     painter->restore();
 }
@@ -75,13 +79,13 @@ void Qcheck::drawWidget(QPainter *painter)
 {
     painter->save();
 
-    painter->setPen(f_color);
+    /*painter->setPen(f_color);
     painter->setBrush(f_color);
     if(check)
         painter->fillRect(pad+(width()-2*pad)/2+1,pad,(width()-2*pad)/2,height()-2*pad,t_color);
         //painter->fillRect(pad,pad,(width()-2*pad)/2,height()-2*pad,f_color);
     else
-        painter->fillRect(pad+(width()-2*pad)/2+1,pad,(width()-2*pad)/2,height()-2*pad,f_color);
+        painter->fillRect(pad+(width()-2*pad)/2+1,pad,(width()-2*pad)/2,height()-2*pad,f_color);*/
 
     painter->setPen(l_color);
     painter->setBrush(l_color);
@@ -97,7 +101,7 @@ void Qcheck::drawWidget(QPainter *painter)
     painter->translate(width()/4, height()/2);
     painter->drawText(-w/2 ,h/2-pad ,label);
 
-    if(check)
+    /*if(check)
     {
         w = fm.size(Qt::TextSingleLine,tr("开")).width();
         h = fm.size(Qt::TextSingleLine,tr("开")).height();
@@ -108,7 +112,7 @@ void Qcheck::drawWidget(QPainter *painter)
         w = fm.size(Qt::TextSingleLine,tr("关")).width();
         h = fm.size(Qt::TextSingleLine,tr("关")).height();
         painter->drawText(width()/2-w/2 ,h/2-pad ,tr("关"));
-    }
+    }*/
 
     painter->restore();
 }
