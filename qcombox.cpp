@@ -14,7 +14,7 @@ Qcombox::Qcombox(QWidget *parent ,QString l ,unsigned int i):
     index = i;
     f_color = QColor(64,64,64);
     b_color = QColor(255,255,255);
-    l_color = QColor(0,0,0);
+    l_color = QColor(255,255,255);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     back = QPixmap(":/combox.png");

@@ -15,7 +15,7 @@ Qparameter::Qparameter(QWidget *parent) :
     label = "Null";
     v_color = QColor(255,204,0);
     b_color = QColor(255,255,255);
-    l_color = QColor(0,0,0);
+    l_color = QColor(255,255,255);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     d_color = QColor(0,0,0);
@@ -38,7 +38,7 @@ Qparameter::Qparameter(QWidget *parent ,QString l ,unsigned int maxh ,unsigned i
     index_t = it;
     v_color = QColor(64,64,64);
     b_color = QColor(255,255,255);
-    l_color = QColor(0,0,0);
+    l_color = QColor(255,255,255);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     d_color = QColor(0,0,0);
@@ -73,9 +73,9 @@ void Qparameter::drawBackground(QPainter *painter)
     }*/
 
     /*画分割线*/
-    /*painter->setPen(r_color);
+    painter->setPen(r_color);
     painter->setBrush(r_color);
-    painter->drawLine(QPoint(width()/2 , height()/2) ,QPoint(width()/2 , height()));*/
+    painter->drawLine(QPoint(width()/2 , height()/2) ,QPoint(width()/2 , height()-4));
 
     setAutoFillBackground(true);
     QPalette palette;

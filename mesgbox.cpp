@@ -28,6 +28,11 @@ MesgBox::MesgBox(QWidget *parent) :
     connect(spark_info ,SIGNAL(longChange()) ,label_mdeepth ,SLOT(updateValue()));
     ui->verticalLayout->addWidget(label_mdeepth);
 
+    parameter_jump = new Qparameter(this ,tr("跳高"),100,0,UINT_JUMP_H,10,0,UINT_JUMP_T);
+    parameter_jump->updateValue();
+    connect(spark_info ,SIGNAL(uintChange()) ,parameter_jump ,SLOT(updateValue()));
+    ui->verticalLayout->addWidget(parameter_jump);
+
     check_pump = new Qcheck(this ,tr("油泵"),B_PUMP);
     check_pump->updateCheck();
     connect(spark_info , SIGNAL(boolChange()) ,check_pump , SLOT(updateCheck()));
@@ -62,11 +67,6 @@ MesgBox::MesgBox(QWidget *parent) :
     indicate_speed->updateValue();
     connect(spark_info ,SIGNAL(uintChange()) ,indicate_speed ,SLOT(updateValue()));
     ui->verticalLayout->addWidget(indicate_speed);
-
-    parameter_jump = new Qparameter(this ,tr("跳高"),100,0,UINT_JUMP_H,10,0,UINT_JUMP_T);
-    parameter_jump->updateValue();
-    connect(spark_info ,SIGNAL(uintChange()) ,parameter_jump ,SLOT(updateValue()));
-    ui->verticalLayout->addWidget(parameter_jump);
 }
 
 MesgBox::~MesgBox()
