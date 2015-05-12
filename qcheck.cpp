@@ -16,7 +16,7 @@ Qcheck::Qcheck(QWidget *parent) :
     f_color = QColor(255,0,0);
     b_color = QColor(255,255,255);
     t_color = QColor(0,255,0);
-    l_color = QColor(0,0,0);
+    l_color = QColor(255,255,255);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     off = QPixmap(":/off.png");
@@ -33,7 +33,7 @@ Qcheck::Qcheck(QWidget *parent ,QString l,unsigned int i):
     f_color = QColor(255,0,0);
     b_color = QColor(255,255,255);
     t_color = QColor(0,255,0);
-    l_color = QColor(0,0,0);
+    l_color = QColor(255,255,255);
     r_color = QColor(64,64,64);
     z_color = QColor(128,128,128);
     off = QPixmap(":/off.png");

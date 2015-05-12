@@ -76,8 +76,8 @@ void Qindicate::drawWidget(QPainter *painter)
     painter->fillRect(pad+(width()-2*pad)/2+1,pad,(width()-2*pad)/2,height()-2*pad,v_color);*/
 
     /*画标签*/
-    painter->setPen(l_color);
-    painter->setBrush(l_color);
+    painter->setPen(b_color);
+    painter->setBrush(b_color);
 
     QFont font = qApp->font();
     font.setPointSize(14);
@@ -89,6 +89,10 @@ void Qindicate::drawWidget(QPainter *painter)
 
     painter->translate(width()/4, height()/2);
     painter->drawText(-w/2 ,h/2-pad ,label);
+
+    /*画标签*/
+    painter->setPen(l_color);
+    painter->setBrush(l_color);
     /*画数据*/
     QString str = QString::number(value);
 
