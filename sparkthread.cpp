@@ -177,6 +177,7 @@ void SparkThread::sparkChange()
         start();
     }
     else if(!spark_info->b_array[B_START] && isRunning()){
+
     }
 }
 

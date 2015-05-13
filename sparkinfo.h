@@ -472,7 +472,7 @@ const bool bool_init[] = {
 
 const UNINT32 uint_init[] = {
         0, 0, 10, 0, 5,
-        0, 0, 10, 10, 10,
+        0, 0, 0, 0, 0,
         99, 9, 0, 3, 5,
 };
 

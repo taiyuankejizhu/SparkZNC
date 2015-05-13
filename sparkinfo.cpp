@@ -379,8 +379,9 @@ void SparkInfo::setBool(UNINT32 i,bool b)
             emit startChange();
             emit boolChange();
         }
-        if(check)
+        if(check){
             emit boolChange();
+        }
     }
 }
 
@@ -398,8 +399,9 @@ void SparkInfo::reverseBool(UNINT32 i)
             emit startChange();
             emit boolChange();
         }
-        else
+        else{
             emit boolChange();
+        }
     }
 }
 
